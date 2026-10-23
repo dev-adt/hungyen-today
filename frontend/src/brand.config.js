@@ -36,23 +36,24 @@ export const brandConfig = {
     fallbackCompanyLogo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=80'
   },
 
-  // Bảng màu chuẩn theo tài liệu Định hướng thiết kế Hưng Yên Today
+  // Bảng màu chuẩn theo định hướng: Hưng Yên — Dòng chảy di sản và giao thương
   colors: {
-    primary: '#123B46',          // Xanh đậm chủ đạo
-    primaryHover: '#0D2B33',
-    primaryDark: '#081D23',
-    primaryLight: '#E7EEF0',
-    creamBg: '#FAF8F3',          // Nền trắng ấm
-    charcoalDark: '#172D36',     // Màu chữ chính
-    gold: '#CFA34A',             // Điểm nhấn vàng
-    goldLight: '#DFBA6B',
-    goldGlow: 'rgba(207, 163, 74, 0.35)',
-    accent: '#CFA34A',
-    accentGlow: 'rgba(207, 163, 74, 0.4)',
-    border: 'rgba(18, 59, 70, 0.12)',
-    borderStrong: 'rgba(18, 59, 70, 0.22)',
-    darkBg: '#0F262D',
-    darkCard: '#163640'
+    primary: '#103D3B',          // Xanh chủ đạo
+    primaryHover: '#0C312F',
+    primaryDark: '#082927',       // Xanh rất đậm
+    primaryLight: '#E6EFEF',
+    creamBg: '#F7F4EC',          // Nền giấy ngà
+    charcoalDark: '#203330',     // Màu chữ chính
+    gold: '#D6A846',             // Vàng nhấn
+    goldLight: '#E4BF68',
+    goldGlow: 'rgba(214, 168, 70, 0.35)',
+    brickRed: '#A6533D',         // Đỏ gạch dùng tiết chế
+    accent: '#D6A846',
+    accentGlow: 'rgba(214, 168, 70, 0.4)',
+    border: 'rgba(16, 61, 59, 0.12)',
+    borderStrong: 'rgba(16, 61, 59, 0.22)',
+    darkBg: '#082927',
+    darkCard: '#103D3B'
   },
 
   // Trợ lý Trí tuệ Nhân tạo (AI Assistant)

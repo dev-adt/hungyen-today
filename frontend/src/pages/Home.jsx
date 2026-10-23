@@ -7,220 +7,291 @@ import Footer from '../components/Footer';
 import FloatingAIBot from '../components/FloatingAIBot';
 import SEOHead from '../components/SEOHead';
 import brandConfig from '../brand.config';
-import { fetchJsonWithTimeout, FALLBACK_POSTS } from '../utils/api';
+import { fetchJsonWithTimeout, FALLBACK_POSTS, FALLBACK_EVENTS } from '../utils/api';
 import './HomeHungYen.css';
 
-// 6 Trụ cột phát triển Hưng Yên (Theo Phần III Chương 8 & Phụ lục)
-const SIX_PILLARS = [
+// TOP 9 KHU CÔNG NGHIỆP TIÊU BIỂU HƯNG YÊN (TOP 3 NỔI BẬT HƠN)
+const TOP_INDUSTRIAL_PARKS = [
   {
-    id: 'pillar-industry',
-    title: 'Công nghiệp và chuỗi cung ứng',
-    desc: 'Phát triển công nghiệp công nghệ cao, chuỗi cung ứng cơ khí, linh kiện điện tử và hệ sinh thái KCN Thăng Long II hiện đại.',
-    tag: 'Trụ cột Công nghiệp',
-    img: '/images/hungyen/hungyen_kcn_thang_long.jpg',
-    category: 'Giao thương và Đầu tư',
-    subCategory: 'Khu & Cụm công nghiệp'
+    id: 'kcn-thang-long-2',
+    rank: 1,
+    name: 'Khu Công Nghiệp Thăng Long II (TLIP II)',
+    location: 'Thị xã Mỹ Hào & Huyện Yên Mỹ (Trục QL5)',
+    acreage: '525 ha',
+    occupancy: 'Lấp đầy >85%',
+    badge: 'TOP 1 • CHUẨN SINH THÁI NHẬT BẢN',
+    badgeClass: 'rank-1',
+    desc: 'KCN sinh thái kiểu mẫu hàng đầu miền Bắc do Tập đoàn Sumitomo (Nhật Bản) phát triển, cứ điểm quy tụ hàng loạt tập đoàn công nghệ cao toàn cầu như Panasonic, Toto, Daikin, Canon, Kyocera.',
+    focus: 'Điện tử viễn thông, linh kiện bán dẫn, cơ khí chính xác, thiết bị ô tô & công nghệ cao.'
   },
   {
-    id: 'pillar-agriculture',
-    title: 'Nông nghiệp và sản phẩm địa phương',
-    desc: 'Nông nghiệp giá trị cao, sản vật OCOP tiêu biểu (Nhãn lồng Phố Hiến, Tương Bần...) và vùng nguyên liệu hữu cơ đạt chuẩn VietGAP.',
-    tag: 'Trụ cột Nông nghiệp',
-    img: '/images/hungyen/hungyen_nhan_long.jpg',
-    category: 'Doanh nghiệp & Sản phẩm',
-    subCategory: 'Sản phẩm OCOP & Nông sản'
+    id: 'kcn-pho-noi-a',
+    rank: 2,
+    name: 'Khu Công Nghiệp Phố Nối A',
+    location: 'Huyện Văn Lâm & Thị xã Mỹ Hào',
+    acreage: '600 ha',
+    occupancy: 'Lấp đầy >90%',
+    badge: 'TOP 2 • CỬA NGÕ KINH TẾ THỦ ĐÔ',
+    badgeClass: 'rank-2',
+    desc: 'Cứ điểm công nghiệp quy mô lớn nhất tỉnh, nằm ở cửa ngõ kết nối Hà Nội - Hải Phòng, hạ tầng kỹ thuật đồng bộ, trung tâm kho vận và chuỗi cung ứng liên vùng hiện đại.',
+    focus: 'Cơ khí chế tạo, điện - điện tử, vật liệu mới, kho bãi logistics & bao bì thông minh.'
   },
   {
-    id: 'pillar-marine-logistics',
-    title: 'Kinh tế kết nối và logistics',
-    desc: 'Kết nối trục hành lang kinh tế liên vùng, vành đai giao thông trọng điểm, trung tâm kho vận hiện đại và công nghiệp phụ trợ.',
-    tag: 'Trụ cột Logistics',
-    img: '/images/hungyen/hungyen_giao_thong.jpg',
-    category: 'Giao thương và Đầu tư',
-    subCategory: 'Cảng biển & Logistics liên vùng'
-  },
-  {
-    id: 'pillar-heritage-tourism',
-    title: 'Di sản và du lịch',
-    desc: 'Bảo tồn không gian văn hóa Phố Hiến, Đền Mẫu, Chùa Keo, Chùa Chuông, các làng nghề cổ truyền và du lịch sinh thái sông Hồng.',
-    tag: 'Trụ cột Di sản',
-    img: '/images/hungyen/hungyen_den_mau.jpg',
-    category: 'Khám phá Hưng Yên',
-    subCategory: 'Di sản Phố Hiến'
-  },
-  {
-    id: 'pillar-innovation',
-    title: 'Đô thị sinh thái & Đổi mới sáng tạo',
-    desc: 'Đại đô thị xanh Ecopark, thúc đẩy chuyển đổi số, thu hút nhân lực chất lượng cao và ứng dụng trí tuệ nhân tạo AI vào quản trị.',
-    tag: 'Trụ cột Đổi mới',
-    img: '/images/hungyen/hungyen_ecopark.jpg',
-    category: 'Doanh nghiệp & Sản phẩm',
-    subCategory: 'Đổi mới sáng tạo & Khởi nghiệp'
-  },
-  {
-    id: 'pillar-community',
-    title: 'Làng nghề & Cộng đồng toàn cầu',
-    desc: 'Gìn giữ hồn quê qua các làng nghề trăm năm (Thủ Sỹ, Thôn Cao) và mạng lưới kết nối doanh nhân, kiều bào Hưng Yên khắp năm châu.',
-    tag: 'Trụ cột Cộng đồng',
-    img: '/images/hungyen/hungyen_lang_dan_do.jpg',
-    category: 'Cộng đồng',
-    subCategory: 'Người Hưng Yên Toàn cầu'
+    id: 'kcn-yen-my-2',
+    rank: 3,
+    name: 'Khu Công Nghiệp Yên Mỹ II & Yên Mỹ',
+    location: 'Huyện Yên Mỹ (Nút giao Cao tốc HN - HP)',
+    acreage: '313 ha',
+    occupancy: 'Trọng điểm thu hút FDI',
+    badge: 'TOP 3 • TRỌNG ĐIỂM FDI MỚI',
+    badgeClass: 'rank-3',
+    desc: 'Nằm ngay nút giao chiến lược của cao tốc Hà Nội - Hải Phòng, sẵn sàng quỹ đất sạch đón đầu các dự án công nghệ phụ trợ, thiết bị y tế và năng lượng sạch thế hệ mới.',
+    focus: 'Công nghiệp phụ trợ, thiết bị y tế cao cấp, năng lượng sạch & tự động hóa hiện đại.'
   }
 ];
 
-// Khám phá Hưng Yên (Lưới biên tập 8 điểm đến chuẩn địa bàn Hưng Yên)
-const EXPLORE_DESTINATIONS = [
+const NEXT_INDUSTRIAL_PARKS = [
+  {
+    id: 'kcn-sach-viet-han',
+    name: 'KCN Sạch Hưng Yên (Khu Hợp tác Kinh tế Việt - Hàn)',
+    location: 'Huyện Ân Thi & Yên Mỹ',
+    acreage: '143 ha • Tập đoàn LH Hàn Quốc'
+  },
+  {
+    id: 'kcn-so-5',
+    name: 'KCN Số 5 Hưng Yên',
+    location: 'Huyện Ân Thi & Kim Động',
+    acreage: '192,6 ha • Công nghiệp logistics & sinh thái'
+  },
+  {
+    id: 'kcn-so-3',
+    name: 'KCN Số 3 Hưng Yên',
+    location: 'Huyện Yên Mỹ & Khoái Châu',
+    acreage: '159 ha • Đa ngành công nghệ sạch'
+  },
+  {
+    id: 'kcn-pho-noi-b',
+    name: 'KCN Dệt may Phố Nối (Phố Nối B)',
+    location: 'TX Mỹ Hào & Huyện Yên Mỹ',
+    acreage: '121 ha • Thời trang & Dệt kỹ thuật cao'
+  },
+  {
+    id: 'kcn-minh-duc',
+    name: 'KCN Minh Đức',
+    location: 'Phường Minh Đức, TX Mỹ Hào',
+    acreage: '198 ha • Cơ khí lắp ráp & Vật liệu mới'
+  },
+  {
+    id: 'kcn-kim-dong',
+    name: 'KCN Kim Động',
+    location: 'Huyện Kim Động',
+    acreage: '100 ha • Chế biến sạch & Kho vận liên vùng'
+  }
+];
+
+// 6 Trụ cột phát triển Hưng Yên (Topic Navigator gọn gàng)
+const STRATEGIC_TOPICS = [
+  {
+    id: 'topic-industry',
+    title: 'Công nghiệp & Chuỗi cung ứng',
+    desc: 'KCN Thăng Long II, công nghệ cao & quỹ đất sạch',
+    icon: 'ti ti-building-factory-2',
+    link: '/posts?category=Giao thương và Đầu tư&subCategory=Khu & Cụm công nghiệp'
+  },
+  {
+    id: 'topic-agriculture',
+    title: 'Nông nghiệp & Sản vật địa phương',
+    desc: 'Nhãn lồng Phố Hiến, tương Bần & vùng VietGAP',
+    icon: 'ti ti-leaf',
+    link: '/posts?category=Doanh nghiệp & Sản phẩm&subCategory=Sản phẩm OCOP & Nông sản'
+  },
+  {
+    id: 'topic-logistics',
+    title: 'Kinh tế kết nối & Logistics',
+    desc: 'Hành lang sông Hồng, Vành đai 4 & trung tâm kho vận',
+    icon: 'ti ti-truck-delivery',
+    link: '/posts?category=Giao thương và Đầu tư&subCategory=Cảng biển & Logistics liên vùng'
+  },
+  {
+    id: 'topic-heritage',
+    title: 'Di sản & Du lịch trải nghiệm',
+    desc: 'Phố Hiến đệ nhất, đền Mẫu, chùa Chuông & làng cổ',
+    icon: 'ti ti-building-monument',
+    link: '/posts?category=Khám phá Hưng Yên&subCategory=Di sản Phố Hiến'
+  },
+  {
+    id: 'topic-innovation',
+    title: 'Đô thị sinh thái & Đổi mới',
+    desc: 'Đại đô thị xanh Ecopark, công nghệ số & ứng dụng AI',
+    icon: 'ti ti-trees',
+    link: '/posts?category=Doanh nghiệp & Sản phẩm&subCategory=Đổi mới sáng tạo & Khởi nghiệp'
+  },
+  {
+    id: 'topic-community',
+    title: 'Làng nghề & Mạng lưới kiều bào',
+    desc: 'Làng nghề Thủ Sỹ, Thôn Cao & kết nối toàn cầu',
+    icon: 'ti ti-world',
+    link: '/posts?category=Cộng đồng&subCategory=Người Hưng Yên Toàn cầu'
+  }
+];
+
+// Danh mục di sản tiêu biểu Hưng Yên (Khu khám phá 2 cột tương tác)
+const HERITAGE_DESTINATIONS = [
   {
     id: 'pho-hien',
+    index: '01',
     title: 'Quần thể Di tích Quốc gia đặc biệt Phố Hiến',
-    type: 'heritage',
-    typeLabel: 'Di sản Lịch sử',
+    typeLabel: 'Di sản Lịch sử • Đền Mẫu & Hồ Bán Nguyệt',
     location: 'TP. Hưng Yên',
-    desc: 'Thương cảng cổ phồn hoa “Thứ nhất Kinh kỳ, thứ nhì Phố Hiến”, nơi lưu giữ Đền Mẫu, hồ Bán Nguyệt và hàng chục di tích độc đáo.',
+    desc: 'Thương cảng cổ sầm uất bậc nhất thế kỷ XVII “Thứ nhất Kinh kỳ, thứ nhì Phố Hiến”. Quần thể gồm Đền Mẫu soi bóng hồ Bán Nguyệt, Đông Đô Quảng Hội và hệ thống văn hóa phù sa sông Hồng kết tinh nghìn năm lịch sử.',
     img: '/images/hungyen/hungyen_den_mau.jpg'
   },
   {
     id: 'chua-chuong',
-    title: 'Chùa Chuông — Phố Hiến đệ nhất danh thắng',
-    type: 'heritage',
-    typeLabel: 'Di sản & Tâm linh',
+    index: '02',
+    title: 'Chùa Chuông — Phố Hiến đệ nhất danh lam',
+    typeLabel: 'Di sản Kiến trúc & Tâm linh',
     location: 'Phường Hiến Nam, TP. Hưng Yên',
-    desc: 'Ngôi cổ tự linh thiêng bậc nhất xứ nhãn với tam quan cổ kính, cầu đá xanh và hệ thống tượng Phật thời Hậu Lê quý giá.',
+    desc: 'Được tôn vinh là danh thắng đệ nhất xứ nhãn với tam quan cổ kính, cây cầu đá xanh rêu phong và hệ thống tượng Phật thời Hậu Lê bằng gỗ sơn son thếp vàng vô cùng tinh xảo.',
     img: '/images/hungyen/hungyen_chua_chuong.jpg'
   },
   {
     id: 'lang-thu-sy',
+    index: '03',
     title: 'Làng nghề đan đó Thủ Sỹ truyền thống',
-    type: 'craft',
-    typeLabel: 'Làng nghề truyền thống',
+    typeLabel: 'Làng nghề cổ truyền Bắc Bộ',
     location: 'Huyện Tiên Lữ',
-    desc: 'Không gian làng quê Bắc Bộ thanh bình với nghề đan đó thủ công hơn hai thế kỷ, những đóa hoa tre nở rộ giữa sân gạch cổ.',
+    desc: 'Không gian văn hóa làng quê mộc mạc lưu giữ nghề đan đó thủ công hơn hai thế kỷ. Những chiếc đó tre xòe hoa giữa sân gạch cổ vừa là ngư cụ gắn với đời sống sông nước, vừa là tác phẩm mỹ nghệ xuất khẩu.',
     img: '/images/hungyen/hungyen_lang_dan_do.jpg'
   },
   {
     id: 'chua-keo',
+    index: '04',
     title: 'Chùa Keo — Di sản kiến trúc gỗ lim cổ kính',
-    type: 'heritage',
-    typeLabel: 'Di sản Kiến trúc',
+    typeLabel: 'Kiến trúc Cổ truyền',
     location: 'Không gian Văn hóa Hưng Yên',
-    desc: 'Kiệt tác kiến trúc cổ Việt Nam với gác chuông 3 tầng bằng gỗ lim độc nhất vô nhị, gắn liền với lễ hội truyền thống đặc sắc.',
+    desc: 'Kiệt tác nghệ thuật kiến trúc gỗ cổ truyền Việt Nam với kỹ thuật đục mộng chuẩn xác, không dùng đinh thép, lưu giữ không gian thanh tịnh và lễ hội truyền thống đặc sắc.',
     img: '/images/hungyen/hungyen_chua_keo.jpg'
   },
   {
     id: 'lang-huong-cao',
+    index: '05',
     title: 'Làng nghề hương xạ Thôn Cao',
-    type: 'craft',
-    typeLabel: 'Làng nghề truyền thống',
+    typeLabel: 'Làng nghề Thảo mộc truyền thống',
     location: 'Huyện Ân Thi',
-    desc: 'Nổi tiếng khắp cả nước với hương thơm thảo mộc tự nhiên tinh tế, sắc đỏ rực rỡ và bí quyết thảo dược gia truyền từ thế kỷ 18.',
+    desc: 'Làng nghề làm hương nức tiếng với công thức 36 vị thảo mộc thiên nhiên cổ truyền, tạo nên mùi thơm thanh khiết, tao nhã lan tỏa khắp các nếp nhà và đình chùa Việt.',
     img: '/images/hungyen/hungyen_lang_huong.jpg'
-  },
-  {
-    id: 'nhan-long',
-    title: 'Vùng đặc sản Nhãn lồng Phố Hiến',
-    type: 'cuisine',
-    typeLabel: 'Ẩm thực & Đặc sản',
-    location: 'TP. Hưng Yên & Khoái Châu',
-    desc: 'Vương giả chi quả tiến vua nức tiếng với cùi dày, giòn ngọt, hương thơm thanh khiết của vùng phù sa châu thổ sông Hồng.',
-    img: '/images/hungyen/hungyen_nhan_long.jpg'
-  },
-  {
-    id: 'lang-hoa-xuan-quan',
-    title: 'Làng hoa & cây cảnh Phụng Công - Xuân Quan',
-    type: 'eco',
-    typeLabel: 'Sinh thái & Trải nghiệm',
-    location: 'Huyện Văn Giang',
-    desc: 'Thủ phủ hoa cây cảnh và vựa quất cảnh trù phú ven sông Hồng, cung cấp hoa kiểng cho toàn miền Bắc và du lịch sinh thái.',
-    img: '/images/hungyen/hungyen_lang_hoa_vangiang.jpg'
   },
   {
     id: 'den-da-hoa',
+    index: '06',
     title: 'Đền Đa Hòa — Huyền tích Chử Đồng Tử Tiên Dung',
-    type: 'heritage',
-    typeLabel: 'Di sản & Tâm linh',
+    typeLabel: 'Di tích Lịch sử & Tâm linh',
     location: 'Huyện Khoái Châu',
-    desc: 'Ngôi đền cổ kính tuyệt mỹ soi bóng sông Hồng, tôn vinh mối tình bất tử trong Tứ bất tử văn hóa dân gian Việt Nam.',
+    desc: 'Ngôi đền cổ tuyệt mỹ soi bóng sông Hồng, tôn vinh Đức thánh Chử Đồng Tử — một trong Tứ bất tử của tín ngưỡng dân gian Việt Nam, biểu tượng của tình yêu bất diệt và khát vọng khai mở giao thương.',
     img: '/images/hungyen/hungyen_den_da_hoa.jpg'
   }
 ];
 
-// 6 Sản phẩm OCOP & Đặc sản tiêu biểu Hưng Yên
-const OCOP_PRODUCTS = [
+// Danh sách sản vật tiêu biểu Hưng Yên (OCOP & Đặc sản địa phương)
+const LOCAL_PRODUCTS = [
   {
+    id: 'prod-nhan-long',
     name: 'Nhãn lồng tiến vua Phố Hiến',
-    category: 'OCOP 5 Sao • Đặc sản Tiến Vua',
-    desc: 'Trái to, cùi dày giòn ngọt nước, hương thơm quý phái được bảo hộ chỉ dẫn địa lý toàn cầu.',
+    producer: 'HTX Nhãn lồng Hồng Nam',
+    location: 'TP. Hưng Yên',
+    cert: 'OCOP 5 Sao • Chỉ dẫn địa lý',
+    desc: 'Trái to, cùi dày giòn ráo nước, hạt tiêu nhỏ, hương thơm thanh khiết đặc trưng vùng đất bãi phù sa.',
     img: '/images/hungyen/hungyen_nhan_long.jpg'
   },
   {
-    name: 'Gà Đông Tảo thuần chủng Khoái Châu',
-    category: 'Đặc sản Tiến Vua • Nông nghiệp quý hiếm',
-    desc: 'Đôi chân to vảy rồng đặc trưng, thịt chắc thơm ngọt đậm đà, quà biếu thượng hạng xứ nhãn.',
+    id: 'prod-ga-dong-tao',
+    name: 'Gà Đông Tảo thuần chủng',
+    producer: 'Hội Chăn nuôi Gà Đông Tảo',
+    location: 'Huyện Khoái Châu',
+    cert: 'Đặc sản Tiến Vua • Nguồn gen quý',
+    desc: 'Đôi chân to vảy rồng đặc trưng, nuôi thả tự nhiên bằng ngô thóc, thịt chắc ngọt đậm đà danh bất hư truyền.',
     img: '/images/hungyen/hungyen_ga_dong_tao.jpg'
   },
   {
+    id: 'prod-tuong-ban',
     name: 'Tương Bần Mỹ Hào hảo hạng',
-    category: 'OCOP 4 Sao • Gia vị truyền thống',
-    desc: 'Lên men tự nhiên từ gạo nếp cái hoa vàng và đỗ tương thơm ngon, nước chấm trứ danh xứ Bắc.',
+    producer: 'Làng nghề Tương Bần truyền thống',
+    location: 'Thị xã Mỹ Hào',
+    cert: 'OCOP 4 Sao • Gia vị cổ truyền',
+    desc: 'Lên men tự nhiên từ đỗ tương rang vàng, nếp cái hoa vàng và muối sạch, sánh mịn thơm ngon nức tiếng miền Bắc.',
     img: '/images/hungyen/hungyen_den_da_hoa.jpg'
   },
   {
-    name: 'Mật ong hoa nhãn nguyên chất Hưng Yên',
-    category: 'OCOP 4 Sao • Nông sản sạch',
-    desc: 'Thu hoạch từ những vườn nhãn bạt ngàn nở rộ ven đê sông Hồng, sánh mịn vàng óng tự nhiên.',
+    id: 'prod-mat-ong-nhan',
+    name: 'Mật ong hoa nhãn nguyên chất',
+    producer: 'Vùng nuôi ong ven đê sông Hồng',
+    location: 'Tỉnh Hưng Yên',
+    cert: 'OCOP 4 Sao • Tự nhiên 100%',
+    desc: 'Thu hoạch từ những vườn nhãn bạt ngàn vào độ nở rộ tháng ba, sắc vàng óng ánh và hương thơm hoa nhãn tự nhiên.',
     img: '/images/hungyen/hungyen_lang_hoa_vangiang.jpg'
   },
   {
-    name: 'Hoa kiểng & Bonsai Văn Giang',
-    category: 'Nông nghiệp sinh thái đô thị',
-    desc: 'Nghệ thuật cây cảnh thế và hoa rực rỡ phục vụ lễ hội, đô thị sinh thái Vùng Thủ đô.',
-    img: '/images/hungyen/hungyen_lang_huong.jpg'
+    id: 'prod-do-tre-thu-sy',
+    name: 'Đó tre mỹ nghệ Thủ Sỹ',
+    producer: 'Làng nghề Thủ Sỹ',
+    location: 'Huyện Tiên Lữ',
+    cert: 'OCOP 3 Sao • Thủ công mỹ nghệ',
+    desc: 'Những chiếc đó tre tinh xảo đan thủ công từ nan nứa già, vừa là ngư cụ truyền thống vừa là sản phẩm trang trí nghệ thuật.',
+    img: '/images/hungyen/hungyen_lang_dan_do.jpg'
   },
   {
-    name: 'Sản phẩm mây tre đan đó Thủ Sỹ',
-    category: 'OCOP 3 Sao • Thủ công mỹ nghệ',
-    desc: 'Những chiếc đó tre tinh xảo vừa là ngư cụ truyền thống vừa là tác phẩm trang trí mỹ thuật độc đáo.',
-    img: '/images/hungyen/hungyen_lang_dan_do.jpg'
+    id: 'prod-bonsai-vangiang',
+    name: 'Hoa kiểng & Bonsai Văn Giang',
+    producer: 'Làng hoa Xuân Quan - Phụng Công',
+    location: 'Huyện Văn Giang',
+    cert: 'Nông nghiệp Sinh thái Đô thị',
+    desc: 'Nghệ thuật tạo tác cây cảnh thế và hoa rực rỡ cung ứng cho không gian sống sinh thái và các lễ hội lớn.',
+    img: '/images/hungyen/hungyen_lang_huong.jpg'
   }
 ];
 
-// Cơ hội hợp tác & Đầu tư tiêu biểu
-const INVESTMENT_OPPORTUNITIES = [
+// Dữ liệu nhu cầu hợp tác & cơ hội đầu tư thật
+const CONNECTION_OPPORTUNITIES = [
   {
+    id: 'conn-1',
     title: 'Thu hút công nghiệp phụ trợ & công nghệ cao vào KCN Thăng Long II',
-    type: 'investment',
-    typeLabel: 'Cơ hội Đầu tư',
-    provider: 'Ban Quản lý KCN Hưng Yên',
-    desc: 'Hạ tầng đồng bộ chuẩn Nhật Bản, quỹ đất sạch sẵn sàng tiếp nhận doanh nghiệp cơ khí chính xác và điện tử.',
-    updated: 'Tháng 10/2026',
-    status: 'Đang mở tiếp nhận'
+    category: 'Cơ hội Đầu tư',
+    tagClass: 'brick',
+    unit: 'Ban Quản lý KCN Hưng Yên & Tập đoàn Sumitomo',
+    time: 'Cập nhật Q4/2026',
+    desc: 'Hạ tầng đồng bộ chuẩn Nhật Bản, quỹ đất sạch sẵn sàng tiếp nhận các dự án sản xuất linh kiện điện tử, cơ khí chính xác và năng lượng xanh.',
+    link: '/posts?search=Thăng Long'
   },
   {
-    title: 'Tìm kiếm đối tác cung ứng bao bì & đóng gói nông sản xuất khẩu',
-    type: 'supplier',
-    typeLabel: 'Tìm nhà cung cấp',
-    provider: 'HTX Nông sản Hưng Yên',
-    desc: 'Nhu cầu hợp tác lâu dài với đơn vị cung cấp bao bì tự hủy sinh học và thùng carton chịu lực cho nhãn lồng xuất khẩu.',
-    updated: 'Tháng 10/2026',
-    status: 'Xác nhận nhu cầu'
+    id: 'conn-2',
+    title: 'Tìm kiếm đối tác cung ứng bao bì & bảo quản lạnh nông sản xuất khẩu',
+    category: 'Tìm Nhà cung cấp',
+    tagClass: '',
+    unit: 'Liên minh Hợp tác xã Nông sản Hưng Yên',
+    time: 'Đang mở tiếp nhận',
+    desc: 'Nhu cầu hợp tác dài hạn với các đơn vị cung cấp màng sinh học tự hủy, hộp bảo quản lạnh đạt chuẩn xuất khẩu đi Nhật Bản và EU.',
+    link: '/posts?category=Doanh nghiệp & Sản phẩm'
   },
   {
-    title: 'Dự án Trung tâm Logistics & Kho bãi liên vùng ven sông Hồng',
-    type: 'partner',
-    typeLabel: 'Tìm đối tác phát triển',
-    provider: 'Liên danh Hạ tầng Hưng Yên',
-    desc: 'Hợp tác liên doanh vận hành trung tâm phân phối hàng hóa kết nối hành lang kinh tế Hà Nội - Hải Phòng.',
-    updated: 'Tháng 10/2026',
-    status: 'Đang kêu gọi đối tác'
+    id: 'conn-3',
+    title: 'Hợp tác phát triển cụm Logistics & Kho bãi liên vùng ven sông Hồng',
+    category: 'Tìm Đối tác phát triển',
+    tagClass: '',
+    unit: 'Liên danh Hạ tầng & Cảng bến Hưng Yên',
+    time: 'Tháng 10/2026',
+    desc: 'Kêu gọi liên doanh khai thác trung tâm phân phối hàng hóa kết nối hành lang kinh tế Hà Nội - Hải Phòng - Quảng Ninh.',
+    link: '/posts?category=Giao thương và Đầu tư'
   },
   {
-    title: 'Hợp tác phát triển chuỗi chế biến sâu dược liệu & thảo mộc OCOP',
-    type: 'partner',
-    typeLabel: 'Hợp tác chế biến',
-    provider: 'Hiệp hội Doanh nghiệp Hưng Yên',
-    desc: 'Mời các doanh nghiệp chuyển giao công nghệ chiết xuất tinh dầu, chế biến trà dược liệu và mỹ phẩm thiên nhiên.',
-    updated: 'Tháng 10/2026',
-    status: 'Đang kết nối'
+    id: 'conn-4',
+    title: 'Chuyển giao công nghệ chế biến sâu dược liệu & trà thảo mộc OCOP',
+    category: 'Chuyển giao Công nghệ',
+    tagClass: 'brick',
+    unit: 'Hiệp hội Doanh nghiệp Tỉnh Hưng Yên',
+    time: 'Đang kết nối',
+    desc: 'Hợp tác chiết xuất tinh dầu hoa cúc, sen Hưng Yên và chế biến thực phẩm chức năng từ thảo mộc địa phương.',
+    link: '/posts?search=dược liệu'
   }
 ];
 
@@ -228,26 +299,37 @@ export const Home = () => {
   const { currentLang } = useTranslation();
   const navigate = useNavigate();
 
-  // State tìm kiếm & Tab nhu cầu
-  const [activeSearchTab, setActiveSearchTab] = useState('all');
+  // State tìm kiếm tinh gọn
   const [searchQuery, setSearchQuery] = useState('');
 
-  // State bộ lọc khám phá
-  const [exploreFilter, setExploreFilter] = useState('all');
-
-  // State dữ liệu sự kiện từ backend
-  const [eventsList, setEventsList] = useState([]);
-  const [eventsLoading, setEventsLoading] = useState(true);
-
-  // State danh sách bài viết & bộ lọc chuyên mục
+  // State bài viết (Hưng Yên hôm nay)
   const [postsList, setPostsList] = useState([]);
   const [postsLoading, setPostsLoading] = useState(true);
-  const [activePostCategory, setActivePostCategory] = useState('all');
 
-  // Nạp bài viết từ backend hoặc fallback Hưng Yên
+  // State Theo dấu di sản (Interactive 2-column)
+  const [selectedHeritageId, setSelectedHeritageId] = useState('pho-hien');
+
+  // State sự kiện
+  const [eventsList, setEventsList] = useState([]);
+
+  // State Tham gia cùng Hưng Yên Today (Single Conversion Hub)
+  const [activeNeed, setActiveNeed] = useState('enterprise');
+  const [formData, setFormData] = useState({
+    fullName: '',
+    phone: '',
+    companyName: '',
+    email: '',
+    city: 'Hưng Yên',
+    notes: '',
+    agreeProcess: true
+  });
+  const [formLoading, setFormLoading] = useState(false);
+  const [formSuccess, setFormSuccess] = useState(false);
+
+  // Nạp danh sách bài viết từ Backend (fallback FALLBACK_POSTS)
   useEffect(() => {
     let isMounted = true;
-    const fetchPosts = async () => {
+    const loadPosts = async () => {
       try {
         const res = await fetchJsonWithTimeout('/api/posts?limit=8');
         if (isMounted) {
@@ -263,61 +345,68 @@ export const Home = () => {
         if (isMounted) setPostsLoading(false);
       }
     };
-    fetchPosts();
+    loadPosts();
     return () => { isMounted = false; };
   }, []);
 
-  // State Form tiếp nhận nhu cầu kết nối (Gửi đến /api/leads)
-  const [formData, setFormData] = useState({
-    fullName: '',
-    companyName: '',
-    phone: '',
-    email: '',
-    city: 'Hưng Yên',
-    serviceNeed: 'Tìm đối tác phù hợp',
-    notes: '',
-    agreeProcess: true,
-    subscribeNewsletter: false
-  });
-  const [formLoading, setFormLoading] = useState(false);
-  const [formSuccess, setFormSuccess] = useState(false);
-
-  // Nạp sự kiện thật từ backend
+  // Nạp danh sách sự kiện từ Backend (fallback FALLBACK_EVENTS)
   useEffect(() => {
     let isMounted = true;
-    const fetchEvents = async () => {
+    const loadEvents = async () => {
       try {
         const res = await fetchJsonWithTimeout('/api/events?limit=4');
         if (isMounted) {
-          if (res?.data && Array.isArray(res.data)) {
+          if (res?.data && Array.isArray(res.data) && res.data.length > 0) {
             setEventsList(res.data);
+          } else {
+            setEventsList(FALLBACK_EVENTS);
           }
         }
       } catch (err) {
-        console.warn('Không có sự kiện từ backend:', err.message);
-      } finally {
-        if (isMounted) setEventsLoading(false);
+        if (isMounted) setEventsList(FALLBACK_EVENTS);
       }
     };
-    fetchEvents();
+    loadEvents();
     return () => { isMounted = false; };
   }, []);
 
-  // Xử lý tìm kiếm theo nhu cầu
+  // Tách bài viết nổi bật bên trái (~2/3) và danh sách 3-4 bài bên phải (KHÔNG TRÙNG NHAU)
+  const featuredPost = postsList.find(p => p.is_featured === 1) || postsList[0];
+  const sidePosts = postsList
+    .filter(p => {
+      const pId = p.id || p._id || p.slug;
+      const fId = featuredPost?.id || featuredPost?._id || featuredPost?.slug;
+      return pId !== fId;
+    })
+    .slice(0, 4);
+
+  // Tách sự kiện tiêu điểm và danh sách sự kiện tiếp theo
+  const allEvents = eventsList.length > 0 ? eventsList : FALLBACK_EVENTS;
+  const featuredEvent = allEvents[0];
+  const nextEvents = allEvents.slice(1, 4);
+
+  // Địa danh di sản đang chọn
+  const selectedHeritage = HERITAGE_DESTINATIONS.find(d => d.id === selectedHeritageId) || HERITAGE_DESTINATIONS[0];
+
+  // Xử lý tìm kiếm tinh gọn
   const handleSearchSubmit = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      let targetUrl = `/posts?search=${encodeURIComponent(searchQuery.trim())}`;
-      if (activeSearchTab !== 'all') {
-        targetUrl += `&type=${encodeURIComponent(activeSearchTab)}`;
-      }
-      navigate(targetUrl);
+      navigate(`/posts?search=${encodeURIComponent(searchQuery.trim())}`);
     } else {
       navigate('/posts');
     }
   };
 
-  // Xử lý gửi Form Đăng ký tham gia mạng lưới (Gửi đến /api/leads)
+  // Nhãn nhu cầu hiện tại
+  const NEED_LABELS = {
+    enterprise: 'Giới thiệu doanh nghiệp',
+    product: 'Giới thiệu sản phẩm / OCOP',
+    partner: 'Gửi nhu cầu hợp tác & đầu tư',
+    content: 'Đóng góp nội dung & sự kiện'
+  };
+
+  // Xử lý gửi Form Đăng ký vào backend /api/leads
   const handleLeadSubmit = async (e) => {
     e.preventDefault();
     if (!formData.fullName.trim() || !formData.phone.trim() || !formData.companyName.trim()) {
@@ -325,7 +414,7 @@ export const Home = () => {
       return;
     }
     if (!formData.agreeProcess) {
-      alert(currentLang === 'en' ? 'Please agree to information processing for feedback' : 'Vui lòng đồng ý xử lý thông tin để bộ phận điều phối liên hệ phản hồi');
+      alert(currentLang === 'en' ? 'Please agree to information processing for feedback' : 'Vui lòng xác nhận đồng ý xử lý thông tin để nhận phản hồi');
       return;
     }
 
@@ -340,8 +429,8 @@ export const Home = () => {
           email: formData.email.trim(),
           city: formData.city.trim(),
           companyName: formData.companyName.trim(),
-          memberType: formData.serviceNeed,
-          notes: `Nhóm nhu cầu: ${formData.serviceNeed}. Bản tin: ${formData.subscribeNewsletter ? 'Có nhận' : 'Không'}. Ghi chú: ${formData.notes.trim() || 'Không có'}`
+          memberType: NEED_LABELS[activeNeed] || 'Đăng ký kết nối',
+          notes: `[Nhu cầu: ${NEED_LABELS[activeNeed]}]. Ghi chú: ${formData.notes.trim() || 'Không có'}`
         })
       });
 
@@ -352,935 +441,808 @@ export const Home = () => {
         alert(errJson.error || 'Có lỗi xảy ra khi gửi thông tin. Vui lòng thử lại sau.');
       }
     } catch (err) {
-      alert('Không thể kết nối máy chủ. Vui lòng liên hệ hotline 0986 354 152.');
+      alert('Không thể kết nối máy chủ. Vui lòng liên hệ ban điều phối qua hotline 0986 354 152.');
     } finally {
       setFormLoading(false);
     }
   };
 
-  // Lọc điểm đến khám phá
-  const filteredDestinations = exploreFilter === 'all' 
-    ? EXPLORE_DESTINATIONS 
-    : EXPLORE_DESTINATIONS.filter(d => d.type === exploreFilter);
-
-  // Lọc danh sách bài viết theo chuyên mục
-  const filteredPosts = postsList.filter((post) => {
-    if (activePostCategory === 'all') return true;
-    const cat = `${post.category || ''} ${post.sub_category || ''} ${post.title || ''}`.toLowerCase();
-    if (activePostCategory === 'kinh-te') {
-      return cat.includes('đầu tư') || cat.includes('kinh tế') || cat.includes('công nghiệp') || cat.includes('kcn') || cat.includes('doanh nghiệp');
-    }
-    if (activePostCategory === 'di-san') {
-      return cat.includes('di sản') || cat.includes('văn hóa') || cat.includes('du lịch') || cat.includes('phố hiến') || cat.includes('làng nghề');
-    }
-    if (activePostCategory === 'ocop') {
-      return cat.includes('ocop') || cat.includes('nông sản') || cat.includes('sản phẩm') || cat.includes('đặc sản') || cat.includes('nhãn');
-    }
-    return true;
-  });
-
-  const featuredPost = filteredPosts[0] || postsList[0];
-  const sidePosts = filteredPosts.length > 1 ? filteredPosts.slice(1, 4) : postsList.slice(1, 4);
-  const bottomPosts = filteredPosts.length > 4 ? filteredPosts.slice(4, 7) : (postsList.length > 4 ? postsList.slice(4, 7) : []);
-
   return (
     <div className="hy-home-wrapper">
       <SEOHead 
-        title={`${brandConfig.brandName} — ${brandConfig.slogan}`}
-        description={brandConfig.description}
+        title={`${brandConfig.brandName} — Hưng Yên: Dòng chảy di sản và giao thương`}
+        description="Khám phá di sản, trải nghiệm đời sống và kết nối những giá trị mới của Hưng Yên trên nền tảng tích hợp AI."
       />
       <Navbar />
 
       <main id="main-content">
         {/* =========================================================================
-            KHU VỰC 1: KHỐI MỞ ĐẦU (HERO SECTION)
+            1. HERO SECTION (ẢNH PHONG CẢNH LỚN, NỘI DUNG LỆCH TRÁI PHÍA DƯỚI)
             ========================================================================= */}
         <section className="hy-hero-section">
-          <div className="hy-hero-content">
-            <div className="hy-hero-badge">
-              <i className="ti ti-sparkles" /> Nền tảng Tích hợp AI • ADT Quốc tế
-            </div>
-            <h1 className="hy-hero-title">
-              Hưng Yên <span>Today</span>
-            </h1>
-            <div className="hy-hero-tagline">
-              {brandConfig.slogan}
-            </div>
-            <p className="hy-hero-desc">
-              Khám phá di sản, kết nối doanh nghiệp và mở rộng cơ hội hợp tác tại Hưng Yên trên nền tảng tích hợp AI.
-            </p>
-            <div className="hy-hero-actions">
-              <a href="#kham-pha" className="hy-btn-primary">
-                <i className="ti ti-compass" />
-                <span>Khám phá Hưng Yên</span>
-              </a>
-              <a href="#dang-ky-mang-luoi" className="hy-btn-secondary">
-                <i className="ti ti-briefcase" />
-                <span>Tìm đối tác phù hợp</span>
-              </a>
+          <div className="hy-container">
+            <div className="hy-hero-content">
+              <div className="hy-hero-caption">
+                <i className="ti ti-map-pin" /> Sông Hồng & Đất bãi Phố Hiến trù phú
+              </div>
+              <h1 className="hy-hero-title">
+                Dấu xưa còn đó.
+                <span>Nhịp sống đang lên.</span>
+              </h1>
+              <p className="hy-hero-desc">
+                Khám phá di sản, trải nghiệm đời sống và kết nối những giá trị mới của Hưng Yên.
+              </p>
+              <div className="hy-hero-actions">
+                <a href="#theo-dau-di-san" className="hy-btn-primary">
+                  <i className="ti ti-compass" />
+                  <span>Khám phá Hưng Yên</span>
+                </a>
+                <a href="#kcn-hung-yen" className="hy-btn-secondary">
+                  <i className="ti ti-building-factory-2" />
+                  <span>Hạ tầng KCN & Đầu tư</span>
+                </a>
+              </div>
+
+              {/* Quick Stats Bar lấp đầy khoảng trống, tạo chiều sâu dữ liệu */}
+              <div className="hy-hero-stats-row">
+                <div className="hy-hero-stat-item">
+                  <span className="hy-hero-stat-num">17</span>
+                  <span className="hy-hero-stat-lbl">Khu & Cụm công nghiệp</span>
+                </div>
+                <div className="hy-hero-stat-item">
+                  <span className="hy-hero-stat-num">1.800+</span>
+                  <span className="hy-hero-stat-lbl">Di tích lịch sử & văn hóa</span>
+                </div>
+                <div className="hy-hero-stat-item">
+                  <span className="hy-hero-stat-num">120+</span>
+                  <span className="hy-hero-stat-lbl">Sản phẩm OCOP đạt chuẩn</span>
+                </div>
+                <div className="hy-hero-stat-item">
+                  <span className="hy-hero-stat-num">Top đầu</span>
+                  <span className="hy-hero-stat-lbl">Thu hút FDI Bắc Bộ</span>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
+        {/* =========================================================================
+            TÌM KIẾM TINH GỌN (NGAY CHÂN HERO)
+            ========================================================================= */}
         <div className="hy-container">
-          {/* =========================================================================
-              KHU VỰC 2: TÌM KIẾM THEO NHU CẦU
-              ========================================================================= */}
-          <section className="hy-search-section">
-            <div className="hy-search-box">
-              <div className="hy-search-tabs">
-                <button
-                  type="button"
-                  className={`hy-search-tab-btn ${activeSearchTab === 'all' ? 'active' : ''}`}
-                  onClick={() => setActiveSearchTab('all')}
-                >
-                  <i className="ti ti-grid-dots" /> Tất cả nhu cầu
-                </button>
-                <button
-                  type="button"
-                  className={`hy-search-tab-btn ${activeSearchTab === 'destination' ? 'active' : ''}`}
-                  onClick={() => setActiveSearchTab('destination')}
-                >
-                  <i className="ti ti-map-pin" /> Điểm đến
-                </button>
-                <button
-                  type="button"
-                  className={`hy-search-tab-btn ${activeSearchTab === 'enterprise' ? 'active' : ''}`}
-                  onClick={() => setActiveSearchTab('enterprise')}
-                >
-                  <i className="ti ti-building" /> Doanh nghiệp
-                </button>
-                <button
-                  type="button"
-                  className={`hy-search-tab-btn ${activeSearchTab === 'product' ? 'active' : ''}`}
-                  onClick={() => setActiveSearchTab('product')}
-                >
-                  <i className="ti ti-package" /> Sản phẩm
-                </button>
-                <button
-                  type="button"
-                  className={`hy-search-tab-btn ${activeSearchTab === 'opportunity' ? 'active' : ''}`}
-                  onClick={() => setActiveSearchTab('opportunity')}
-                >
-                  <i className="ti ti-target" /> Cơ hội
-                </button>
+          <div className="hy-search-strip">
+            <form onSubmit={handleSearchSubmit} className="hy-search-form">
+              <div className="hy-search-input-box">
+                <i className="ti ti-search" />
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder="Bạn muốn tìm điểm đến, doanh nghiệp, sản phẩm hay cơ hội hợp tác?"
+                  className="hy-search-input"
+                  aria-label="Tìm kiếm trên Hưng Yên Today"
+                />
               </div>
-
-              <form onSubmit={handleSearchSubmit} className="hy-search-form">
-                <div className="hy-search-input-wrapper">
-                  <i className="ti ti-search" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Bạn muốn tìm điểm đến, doanh nghiệp, sản phẩm hay cơ hội hợp tác?"
-                    className="hy-search-input"
-                  />
-                </div>
-                <button type="submit" className="hy-search-submit">
-                  <span>Tìm kiếm</span>
-                  <i className="ti ti-arrow-right" />
-                </button>
-              </form>
-            </div>
-          </section>
-
-          {/* =========================================================================
-              KHU VỰC 3: GIỚI THIỆU NỀN TẢNG
-              ========================================================================= */}
-          <section className="hy-intro-card">
-            <div className="hy-intro-title">
-              Một địa chỉ để <span>khám phá và kết nối</span> Hưng Yên
-            </div>
-            <p className="hy-intro-text">
-              Hưng Yên Today kết nối câu chuyện địa phương với doanh nghiệp, sản phẩm, sự kiện và những người đang tìm cơ hội hợp tác. Dữ liệu được tổ chức để dễ tìm kiếm; AI hỗ trợ gợi ý, còn mỗi kết nối quan trọng đều có đầu mối tiếp nhận.
-            </p>
-            <div className="hy-intro-highlights">
-              <div className="hy-intro-item">
-                <div className="hy-intro-item-icon"><i className="ti ti-database" /></div>
-                <div className="hy-intro-item-text">
-                  <strong>Dữ liệu chuẩn hóa</strong>
-                  <span>Thông tin có nguồn xác thực và cập nhật thường xuyên</span>
-                </div>
-              </div>
-              <div className="hy-intro-item">
-                <div className="hy-intro-item-icon"><i className="ti ti-robot" /></div>
-                <div className="hy-intro-item-text">
-                  <strong>Trợ lý AI địa phương</strong>
-                  <span>Tích hợp giải pháp AI gợi ý và tra cứu 24/7</span>
-                </div>
-              </div>
-              <div className="hy-intro-item">
-                <div className="hy-intro-item-icon"><i className="ti ti-headset" /></div>
-                <div className="hy-intro-item-text">
-                  <strong>Đầu mối tiếp nhận</strong>
-                  <span>Mỗi yêu cầu kết nối đều có người đồng hành hỗ trợ</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* =========================================================================
-              KHU VỰC 4: SÁU TRỤ CỘT PHÁT TRIỂN
-              ========================================================================= */}
-          <section className="hy-section">
-            <div className="hy-section-header">
-              <span className="hy-section-badge">Định hướng chiến lược</span>
-              <h2 className="hy-section-title">Sáu Trụ Cột Phát Triển Hưng Yên</h2>
-              <p className="hy-section-desc">
-                Không gian kinh tế, văn hóa và đổi mới sáng tạo toàn tỉnh kết nối trong một nền tảng thống nhất.
-              </p>
-            </div>
-
-            <div className="hy-pillars-grid">
-              {SIX_PILLARS.map((pillar) => (
-                <Link
-                  key={pillar.id}
-                  to={`/posts?category=${encodeURIComponent(pillar.category)}&subCategory=${encodeURIComponent(pillar.subCategory)}`}
-                  className="hy-pillar-card"
-                >
-                  <div className="hy-pillar-img-box">
-                    <img src={pillar.img} alt={pillar.title} className="hy-pillar-img" loading="lazy" />
-                    <span className="hy-pillar-tag">{pillar.tag}</span>
-                  </div>
-                  <div className="hy-pillar-body">
-                    <h3 className="hy-pillar-title">{pillar.title}</h3>
-                    <p className="hy-pillar-desc">{pillar.desc}</p>
-                    <div className="hy-pillar-link">
-                      <span>Xem chuyên mục</span>
-                      <i className="ti ti-arrow-right" />
-                    </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
+              <button type="submit" className="hy-search-btn">
+                <span>Tìm kiếm</span>
+                <i className="ti ti-arrow-right" />
+              </button>
+            </form>
+          </div>
         </div>
 
         {/* =========================================================================
-            KHU VỰC BÀI VIẾT TIÊU ĐIỂM & ĐIỂM TIN MỚI (BENTO SPOTLIGHT)
-            Nổi bật bài viết mới, phong cách hiện đại Bento Box Magazine
+            A. HƯNG YÊN HÔM NAY (ĐƯA LÊN NGAY SAU HERO & TÌM KIẾM)
+            Desktop: 1 bài nổi bật ~2/3 + 3-4 bài ngắn bên phải
             ========================================================================= */}
-        <section className="hy-posts-section">
+        <section className="hy-section">
           <div className="hy-container">
-            <div className="hy-posts-header">
-              <div>
-                <span className="hy-section-badge">Bản tin & Tiêu điểm</span>
-                <h2 className="hy-section-title">Điểm Tin Mới & Bài Viết Nổi Bật</h2>
-                <p className="hy-section-desc">
-                  Cập nhật chuyển động kinh tế, xúc tiến đầu tư, nhịp sống di sản và nông sản đặc sắc Hưng Yên.
-                </p>
-                <div className="hy-posts-filter-tabs">
-                  <button
-                    type="button"
-                    className={`hy-post-pill-btn ${activePostCategory === 'all' ? 'active' : ''}`}
-                    onClick={() => setActivePostCategory('all')}
-                  >
-                    <i className="ti ti-layout-grid" /> Tất cả bài viết
-                  </button>
-                  <button
-                    type="button"
-                    className={`hy-post-pill-btn ${activePostCategory === 'kinh-te' ? 'active' : ''}`}
-                    onClick={() => setActivePostCategory('kinh-te')}
-                  >
-                    <i className="ti ti-chart-line" /> Kinh tế & Đầu tư
-                  </button>
-                  <button
-                    type="button"
-                    className={`hy-post-pill-btn ${activePostCategory === 'di-san' ? 'active' : ''}`}
-                    onClick={() => setActivePostCategory('di-san')}
-                  >
-                    <i className="ti ti-building-monument" /> Di sản & Văn hóa
-                  </button>
-                  <button
-                    type="button"
-                    className={`hy-post-pill-btn ${activePostCategory === 'ocop' ? 'active' : ''}`}
-                    onClick={() => setActivePostCategory('ocop')}
-                  >
-                    <i className="ti ti-leaf" /> Nông sản & OCOP
-                  </button>
-                </div>
-              </div>
-
-              <Link to="/posts" className="hy-posts-view-all-btn">
-                <span>Xem toàn bộ bài viết</span>
-                <i className="ti ti-arrow-right" />
-              </Link>
+            <div className="hy-section-header">
+              <span className="hy-section-badge">Tin tức & Nhịp sống</span>
+              <h2 className="hy-section-title">Hưng Yên hôm nay</h2>
+              <p className="hy-section-desc">
+                Cập nhật chuyển động kinh tế, đời sống di sản và những câu chuyện mới nhất từ địa phương.
+              </p>
             </div>
 
-            {/* Bento Grid */}
-            {featuredPost && (
-              <div className="hy-posts-bento-grid">
-                {/* Cột Trái: Spotlight Hero Card */}
-                <Link 
-                  to={featuredPost.slug ? `/posts/${featuredPost.slug}` : `/posts/${featuredPost.id || featuredPost._id || ''}`} 
-                  className="hy-post-spotlight-card"
+            <div className="hy-news-grid">
+              {/* Cột trái: 1 Bài nổi bật lớn */}
+              {featuredPost && (
+                <Link
+                  to={featuredPost.slug ? `/posts/${featuredPost.slug}` : `/posts/${featuredPost.id || featuredPost._id || ''}`}
+                  className="hy-news-featured-card"
                 >
-                  <div className="hy-post-spotlight-img-wrap">
-                    <img 
-                      src={featuredPost.image_url || featuredPost.cover_image || featuredPost.img || featuredPost.image || '/images/hungyen/hungyen_kcn_thang_long.jpg'} 
-                      alt={featuredPost.title} 
-                      className="hy-post-spotlight-img"
+                  <div className="hy-news-featured-img-wrap">
+                    <img
+                      src={featuredPost.image_url || featuredPost.cover_image || featuredPost.img || '/images/hungyen/hungyen_kcn_thang_long.jpg'}
+                      alt={featuredPost.title}
+                      className="hy-news-featured-img"
                       loading="lazy"
                     />
                   </div>
-                  <div className="hy-post-spotlight-overlay" />
-                  <div className="hy-post-spotlight-content">
-                    <div className="hy-post-spotlight-badges">
-                      <span className="hy-post-cat-badge">
-                        {featuredPost.sub_category || featuredPost.category || 'Tiêu Điểm'}
-                      </span>
-                      <span className="hy-post-trending-badge">
-                        <i className="ti ti-flame" /> MỚI NHẤT
-                      </span>
-                    </div>
-                    <h3 className="hy-post-spotlight-title">{featuredPost.title}</h3>
-                    <p className="hy-post-spotlight-desc">
+                  <div className="hy-news-featured-body">
+                    <span className="hy-tag-pill brick">
+                      {featuredPost.sub_category || featuredPost.category || 'Tiêu điểm'}
+                    </span>
+                    <h3 className="hy-news-featured-title">{featuredPost.title}</h3>
+                    <p className="hy-news-featured-desc">
                       {featuredPost.summary || featuredPost.excerpt || featuredPost.desc}
                     </p>
-                    <div className="hy-post-spotlight-footer">
-                      <span>
-                        <i className="ti ti-user" /> {featuredPost.author_name || featuredPost.author || 'Ban Biên Tập'} • {featuredPost.created_at ? new Date(featuredPost.created_at).toLocaleDateString('vi-VN') : 'Mới cập nhật'}
-                      </span>
-                      <span className="hy-post-read-cta">
-                        Đọc bài viết <i className="ti ti-arrow-right" />
-                      </span>
+                    <div className="hy-news-meta">
+                      <span><i className="ti ti-user" /> {featuredPost.author_name || featuredPost.author || 'Ban Biên Tập'}</span>
+                      <span>•</span>
+                      <span><i className="ti ti-calendar" /> {featuredPost.created_at ? new Date(featuredPost.created_at).toLocaleDateString('vi-VN') : 'Mới cập nhật'}</span>
+                      <span>•</span>
+                      <span><i className="ti ti-eye" /> {featuredPost.views ? featuredPost.views.toLocaleString() : '1,250'} xem</span>
                     </div>
                   </div>
                 </Link>
+              )}
 
-                {/* Cột Phải: Side Stack */}
-                <div className="hy-posts-side-stack">
-                  {sidePosts.map((post, idx) => (
-                    <Link 
-                      key={post.id || post._id || idx} 
-                      to={post.slug ? `/posts/${post.slug}` : `/posts/${post.id || post._id || idx}`} 
-                      className="hy-post-side-card"
-                    >
-                      <div className="hy-post-side-thumb">
-                        <img 
-                          src={post.image_url || post.cover_image || post.img || post.image || '/images/hungyen/hungyen_nhan_long.jpg'} 
-                          alt={post.title} 
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className="hy-post-side-info">
-                        <span className="hy-post-side-cat">
-                          {post.sub_category || post.category || 'Tin tức'}
-                        </span>
-                        <h4 className="hy-post-side-title">{post.title}</h4>
-                        <div className="hy-post-side-meta">
-                          <span>
-                            <i className="ti ti-calendar" /> {post.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : 'Hôm nay'}
-                          </span>
-                          <span>
-                            <i className="ti ti-eye" /> {post.views ? post.views.toLocaleString() : '1,200'} xem
-                          </span>
-                        </div>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* Hàng Dưới: Mini Cards */}
-            {bottomPosts.length > 0 && (
-              <div className="hy-posts-bottom-row">
-                {bottomPosts.map((post, idx) => (
-                  <Link 
-                    key={post.id || post._id || idx} 
-                    to={post.slug ? `/posts/${post.slug}` : `/posts/${post.id || post._id || idx}`} 
-                    className="hy-post-mini-card"
+              {/* Cột phải: Danh sách 3-4 bài ngắn, không trùng bài nổi bật */}
+              <div className="hy-news-side-list">
+                {sidePosts.map((post, idx) => (
+                  <Link
+                    key={post.id || post._id || idx}
+                    to={post.slug ? `/posts/${post.slug}` : `/posts/${post.id || post._id || idx}`}
+                    className="hy-news-side-item"
                   >
-                    <div className="hy-post-mini-thumb">
-                      <img 
-                        src={post.image_url || post.cover_image || post.img || post.image || '/images/hungyen/hungyen_den_mau.jpg'} 
-                        alt={post.title} 
+                    <div className="hy-news-side-thumb">
+                      <img
+                        src={post.image_url || post.cover_image || post.img || '/images/hungyen/hungyen_nhan_long.jpg'}
+                        alt={post.title}
                         loading="lazy"
                       />
                     </div>
-                    <div className="hy-post-mini-body">
-                      <span className="hy-post-side-cat">
-                        {post.sub_category || post.category || 'Khám phá'}
+                    <div className="hy-news-side-content">
+                      <span className="hy-tag-pill" style={{ alignSelf: 'flex-start', fontSize: '10px', padding: '2px 8px' }}>
+                        {post.sub_category || post.category || 'Tin tức'}
                       </span>
-                      <h4 className="hy-post-mini-title">{post.title}</h4>
-                      <p className="hy-post-mini-desc">
-                        {post.summary || post.excerpt || post.desc}
-                      </p>
-                      <div className="hy-post-side-meta" style={{ marginTop: 'auto' }}>
-                        <span>
-                          <i className="ti ti-calendar" /> {post.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : 'Gần đây'}
-                        </span>
-                        <span>
-                          <i className="ti ti-eye" /> {post.views ? post.views.toLocaleString() : '850'} xem
-                        </span>
+                      <h4 className="hy-news-side-title">{post.title}</h4>
+                      <div className="hy-news-meta" style={{ marginTop: '2px', fontSize: '11.5px' }}>
+                        <span>{post.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : 'Gần đây'}</span>
                       </div>
                     </div>
                   </Link>
                 ))}
               </div>
-            )}
+            </div>
+
+            <div className="hy-news-view-all">
+              <Link to="/posts" className="hy-link-arrow">
+                <span>Xem tất cả bài viết</span>
+                <i className="ti ti-arrow-right" />
+              </Link>
+            </div>
           </div>
         </section>
 
-        <div className="hy-container">
-          {/* =========================================================================
-              KHU VỰC 5: KHÁM PHÁ HƯNG YÊN (DI SẢN, LÀNG NGHỀ, ẨM THỰC, SINH THÁI)
-              ========================================================================= */}
-          <section id="kham-pha" className="hy-section">
+        {/* =========================================================================
+            BLOCK MỚI: TOP 9 KHU CÔNG NGHIỆP TIÊU BIỂU HƯNG YÊN
+            (Thiết kế chuyên sâu: Top 3 nổi bật hơn hẳn, 6 KCN tiếp theo gọn gàng)
+            ========================================================================= */}
+        <section id="kcn-hung-yen" className="hy-section" style={{ background: '#FFFFFF' }}>
+          <div className="hy-container">
             <div className="hy-section-header">
-              <span className="hy-section-badge">Hành trình trải nghiệm</span>
-              <h2 className="hy-section-title">Khám Phá Di Sản & Điểm Đến Hưng Yên</h2>
+              <span className="hy-section-badge">Hạ tầng công nghiệp & Động lực phát triển</span>
+              <h2 className="hy-section-title">Top 9 Khu Công Nghiệp Tiêu Biểu Hưng Yên</h2>
               <p className="hy-section-desc">
-                Tìm một hành trình phù hợp với thời gian và sở thích của bạn, từ câu chuyện di sản Phố Hiến đến đời sống làng nghề và sinh thái ven biển.
+                Các trung tâm công nghiệp công nghệ cao, chuỗi cung ứng cơ khí chính xác và hạ tầng logistics trọng điểm thu hút dòng vốn đầu tư toàn cầu.
               </p>
             </div>
 
-            <div className="hy-explore-filter">
-              <button
-                type="button"
-                className={`hy-filter-btn ${exploreFilter === 'all' ? 'active' : ''}`}
-                onClick={() => setExploreFilter('all')}
-              >
-                Tất cả điểm đến
-              </button>
-              <button
-                type="button"
-                className={`hy-filter-btn ${exploreFilter === 'heritage' ? 'active' : ''}`}
-                onClick={() => setExploreFilter('heritage')}
-              >
-                Di sản Phố Hiến
-              </button>
-              <button
-                type="button"
-                className={`hy-filter-btn ${exploreFilter === 'craft' ? 'active' : ''}`}
-                onClick={() => setExploreFilter('craft')}
-              >
-                Làng nghề truyền thống
-              </button>
-              <button
-                type="button"
-                className={`hy-filter-btn ${exploreFilter === 'cuisine' ? 'active' : ''}`}
-                onClick={() => setExploreFilter('cuisine')}
-              >
-                Ẩm thực & Đặc sản
-              </button>
-              <button
-                type="button"
-                className={`hy-filter-btn ${exploreFilter === 'eco' ? 'active' : ''}`}
-                onClick={() => setExploreFilter('eco')}
-              >
-                Sinh thái & Ven biển
-              </button>
-            </div>
-
-            <div className="hy-dest-grid">
-              {filteredDestinations.map((dest) => (
-                <div key={dest.id} className="hy-dest-card">
-                  <div className="hy-dest-thumb">
-                    <img src={dest.img} alt={dest.title} loading="lazy" />
-                    <span className="hy-dest-category-badge">{dest.typeLabel}</span>
+            {/* Hàng 1: TOP 3 KHU CÔNG NGHIỆP NỔI BẬT NHẤT */}
+            <div className="hy-kcn-top3-grid">
+              {TOP_INDUSTRIAL_PARKS.map((kcn) => (
+                <Link
+                  key={kcn.id}
+                  to={`/posts?search=${encodeURIComponent(kcn.name)}`}
+                  className={`hy-kcn-card-top ${kcn.badgeClass}`}
+                >
+                  <span className={`hy-kcn-badge-top ${kcn.badgeClass}`}>
+                    <i className="ti ti-award" /> {kcn.badge}
+                  </span>
+                  <h3 className="hy-kcn-top-title">{kcn.name}</h3>
+                  <div className="hy-kcn-top-loc">
+                    <i className="ti ti-map-pin" /> {kcn.location}
                   </div>
-                  <div className="hy-dest-body">
-                    <div className="hy-dest-loc">
-                      <i className="ti ti-map-pin" />
-                      <span>{dest.location}</span>
-                    </div>
-                    <h3 className="hy-dest-title">{dest.title}</h3>
-                    <p className="hy-dest-desc">{dest.desc}</p>
-                    <div className="hy-dest-footer">
-                      <Link 
-                        to={`/posts?search=${encodeURIComponent(dest.title)}`} 
-                        className="hy-dest-btn"
-                      >
-                        <span>Xem chi tiết</span>
-                        <i className="ti ti-arrow-right" />
-                      </Link>
-                    </div>
+                  <div className="hy-kcn-metrics-box">
+                    <span><i className="ti ti-maximize" /> {kcn.acreage}</span>
+                    <span>•</span>
+                    <span style={{ color: '#A6533D' }}><i className="ti ti-chart-pie" /> {kcn.occupancy}</span>
                   </div>
-                </div>
+                  <p className="hy-kcn-top-desc">{kcn.desc}</p>
+                  <div className="hy-kcn-focus-box">
+                    <strong>Ngành mũi nhọn:</strong> {kcn.focus}
+                  </div>
+                </Link>
               ))}
             </div>
-          </section>
 
-          {/* =========================================================================
-              KHU VỰC 6: DOANH NGHIỆP & SẢN PHẨM OCOP
-              ========================================================================= */}
-          <section className="hy-section">
+            {/* Hàng 2: 6 KHU CÔNG NGHIỆP TIÊU BIỂU TIẾP THEO (Gọn gàng kiểu Đắk Lắk) */}
+            <div className="hy-kcn-next-grid">
+              {NEXT_INDUSTRIAL_PARKS.map((item) => (
+                <Link
+                  key={item.id}
+                  to={`/posts?search=${encodeURIComponent(item.name)}`}
+                  className="hy-kcn-mini-card"
+                >
+                  <div className="hy-kcn-mini-left">
+                    <div className="hy-kcn-mini-icon">
+                      <i className="ti ti-building-factory-2" />
+                    </div>
+                    <div>
+                      <h4 className="hy-kcn-mini-title">{item.name}</h4>
+                      <div className="hy-kcn-mini-meta">
+                        <i className="ti ti-map-pin" /> {item.location}
+                      </div>
+                    </div>
+                  </div>
+                  <span className="hy-kcn-mini-badge">{item.acreage}</span>
+                </Link>
+              ))}
+            </div>
+
+            <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
+              <Link
+                to="/posts?category=Giao thương và Đầu tư&subCategory=Khu & Cụm công nghiệp"
+                className="hy-link-arrow"
+              >
+                <span>Xem quy hoạch toàn bộ các KCN & Cụm công nghiệp Hưng Yên</span>
+                <i className="ti ti-arrow-right" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            B. CHỌN ĐIỀU BẠN QUAN TÂM (ĐIỀU HƯỚNG CHUYÊN ĐỀ GỌN)
+            ========================================================================= */}
+        <section className="hy-section">
+          <div className="hy-container">
             <div className="hy-section-header">
-              <span className="hy-section-badge">Mạng lưới kinh tế</span>
-              <h2 className="hy-section-title">Doanh Nghiệp & Sản Phẩm Tiêu Biểu</h2>
+              <span className="hy-section-badge">Chuyên đề chiến lược</span>
+              <h2 className="hy-section-title">Chọn điều bạn quan tâm</h2>
               <p className="hy-section-desc">
-                Đưa năng lực sản xuất, chuỗi cung ứng và sản vật OCOP Hưng Yên đến đúng đối tác trong nước và quốc tế.
+                Điều hướng nhanh tới sáu lĩnh vực trọng tâm phát triển kinh tế, văn hóa và đời sống tỉnh Hưng Yên.
               </p>
             </div>
 
-            {/* Khối lời mời đăng ký hồ sơ doanh nghiệp */}
-            <div className="hy-enterprise-cta-card">
-              <div className="hy-enterprise-cta-text">
-                <h3>Đưa năng lực doanh nghiệp đến đúng đối tác</h3>
-                <p>Đăng ký hồ sơ số trên HungYen.today để được nhận diện năng lực và tiếp nhận cơ hội hợp tác minh bạch.</p>
-              </div>
-              <Link to="/register" className="hy-btn-primary">
-                <i className="ti ti-id-badge-2" />
-                <span>Đăng ký hồ sơ doanh nghiệp</span>
-              </Link>
+            <div className="hy-topics-grid">
+              {STRATEGIC_TOPICS.map((topic) => (
+                <Link key={topic.id} to={topic.link} className="hy-topic-card">
+                  <div className="hy-topic-icon">
+                    <i className={topic.icon} />
+                  </div>
+                  <div className="hy-topic-info">
+                    <h3 className="hy-topic-name">{topic.title}</h3>
+                    <p className="hy-topic-desc">{topic.desc}</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            C. THEO DẤU DI SẢN (KHU KHÁM PHÁ 2 CỘT TƯƠNG TÁC)
+            Cột trái: danh sách chọn. Cột phải: ảnh lớn + mô tả chi tiết.
+            ========================================================================= */}
+        <section id="theo-dau-di-san" className="hy-section">
+          <div className="hy-container">
+            <div className="hy-section-header">
+              <span className="hy-section-badge">Hành trình địa phương</span>
+              <h2 className="hy-section-title">Theo dấu di sản</h2>
+              <p className="hy-section-desc">
+                Khám phá chiều sâu lịch sử, không gian kiến trúc cổ và nét đẹp làng nghề truyền thống nghìn năm đất Phố Hiến.
+              </p>
             </div>
 
-            {/* Lưới sản phẩm OCOP & Đặc sản */}
-            <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <h3 style={{ fontSize: '20px', fontWeight: '800', color: 'var(--hy-text-main)' }}>
-                Sản phẩm OCOP & Đặc sản có nguồn gốc xác thực
-              </h3>
-              <Link to="/posts?category=Doanh nghiệp & Sản phẩm" style={{ color: 'var(--hy-primary)', fontWeight: '700', textDecoration: 'none', fontSize: '14px' }}>
-                Xem tất cả sản phẩm →
-              </Link>
+            <div className="hy-heritage-explorer">
+              {/* Cột trái: Danh sách địa điểm có thể chọn */}
+              <div className="hy-heritage-list" role="tablist" aria-label="Danh sách di sản">
+                {HERITAGE_DESTINATIONS.map((dest) => (
+                  <button
+                    key={dest.id}
+                    type="button"
+                    role="tab"
+                    aria-selected={selectedHeritageId === dest.id}
+                    tabIndex={0}
+                    className={`hy-heritage-btn ${selectedHeritageId === dest.id ? 'active' : ''}`}
+                    onClick={() => setSelectedHeritageId(dest.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        setSelectedHeritageId(dest.id);
+                      }
+                    }}
+                  >
+                    <span className="hy-heritage-idx">{dest.index}</span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div className="hy-heritage-btn-title">{dest.title}</div>
+                      <div className="hy-heritage-btn-loc">
+                        <i className="ti ti-map-pin" /> {dest.location}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+
+              {/* Cột phải: Ảnh lớn, tên địa điểm, mô tả ngắn và nút xem chi tiết */}
+              <div className="hy-heritage-display" key={selectedHeritage.id}>
+                <div className="hy-heritage-display-img-wrap">
+                  <img
+                    src={selectedHeritage.img}
+                    alt={selectedHeritage.title}
+                    className="hy-heritage-display-img"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="hy-heritage-display-body">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className="hy-tag-pill brick">{selectedHeritage.typeLabel}</span>
+                    <span style={{ fontSize: '12.5px', color: '#556B67' }}>
+                      <i className="ti ti-map-pin" /> {selectedHeritage.location}
+                    </span>
+                  </div>
+                  <h3 className="hy-heritage-display-title">{selectedHeritage.title}</h3>
+                  <p className="hy-heritage-display-desc">{selectedHeritage.desc}</p>
+                  <div className="hy-heritage-display-footer">
+                    <Link
+                      to={`/posts?search=${encodeURIComponent(selectedHeritage.title.split('—')[0].trim())}`}
+                      className="hy-link-arrow"
+                    >
+                      <span>Xem bài viết về địa danh này</span>
+                      <i className="ti ti-arrow-right" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            D. NGƯỜI LÀM NÊN GIÁ TRỊ (KỂ CHUYỆN BẤT ĐỐI XỨNG - NỀN XANH ĐẬM)
+            ========================================================================= */}
+        <section className="hy-story-section">
+          <div className="hy-container">
+            <div className="hy-story-grid">
+              <div className="hy-story-content">
+                <span className="hy-story-badge">Người làm nên giá trị</span>
+                <h2 className="hy-story-title">Giữ trọn vị tiến vua giữa nhịp đời hiện đại</h2>
+                <div>
+                  <h3 className="hy-story-entity">Hợp tác xã Đặc sản Nhãn lồng & Nông sản Phố Hiến</h3>
+                  <p className="hy-story-entity-sub">Xã Hồng Nam, TP. Hưng Yên • Vùng chỉ dẫn địa lý VietGAP</p>
+                </div>
+                <p className="hy-story-quote">
+                  “Dưới những nếp đê sông Hồng màu mỡ, người nông dân Hồng Nam đã gìn giữ từng gốc nhãn hương chi cùi dày, hạt nhỏ qua nhiều thế hệ. Không chỉ kế thừa niềm tự hào của vùng đất tiến vua, chúng tôi đã chuẩn hóa quy trình VietGAP, áp dụng mã QR truy xuất nguồn gốc để quả nhãn Hưng Yên tự tin bước vào các hệ thống siêu thị cao cấp và vươn ra thị trường quốc tế.”
+                </p>
+                <div className="hy-story-actions">
+                  <Link to="/members" className="hy-btn-primary">
+                    <i className="ti ti-building" />
+                    <span>Xem mạng lưới cơ sở & doanh nghiệp</span>
+                  </Link>
+                  <a href="#dang-ky-mang-luoi" className="hy-btn-secondary">
+                    <i className="ti ti-user-plus" />
+                    <span>Giới thiệu doanh nghiệp của bạn</span>
+                  </a>
+                </div>
+              </div>
+
+              <div className="hy-story-media">
+                <img
+                  src="/images/hungyen/hungyen_nhan_long.jpg"
+                  alt="Nhãn lồng Phố Hiến Hưng Yên"
+                  loading="lazy"
+                />
+                <div className="hy-story-media-caption">
+                  Cành nhãn hương chi trĩu quả vào vụ thu hoạch tại vùng bãi sông Hồng
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            E. SẢN VẬT TỪ ĐỊA PHƯƠNG (TÁCH BIỆT KHỎI DOANH NGHIỆP, DẢI SẢN PHẨM)
+            ========================================================================= */}
+        <section className="hy-section">
+          <div className="hy-container">
+            <div className="hy-section-header">
+              <span className="hy-section-badge">Nông sản & OCOP</span>
+              <h2 className="hy-section-title">Sản vật từ địa phương</h2>
+              <p className="hy-section-desc">
+                Những đặc sản kết tinh từ phù sa trù phú, bàn tay khéo léo của người thợ và tiêu chuẩn chứng nhận OCOP rõ ràng.
+              </p>
             </div>
 
             <div className="hy-products-grid">
-              {OCOP_PRODUCTS.map((prod, idx) => (
-                <div key={idx} className="hy-product-card">
-                  <img src={prod.img} alt={prod.name} className="hy-product-img" loading="lazy" />
+              {LOCAL_PRODUCTS.slice(0, 4).map((prod) => (
+                <Link
+                  key={prod.id}
+                  to={`/posts?search=${encodeURIComponent(prod.name)}`}
+                  className="hy-product-card"
+                >
+                  <div className="hy-product-thumb">
+                    <img src={prod.img} alt={prod.name} loading="lazy" />
+                    <span className="hy-product-cert-badge">{prod.cert.split('•')[0]}</span>
+                  </div>
                   <div className="hy-product-body">
-                    <span className="hy-product-badge">{prod.category}</span>
-                    <h4 className="hy-product-title">{prod.name}</h4>
+                    <h3 className="hy-product-name">{prod.name}</h3>
+                    <p className="hy-product-producer">
+                      <i className="ti ti-building-store" /> {prod.producer} • {prod.location}
+                    </p>
                     <p className="hy-product-desc">{prod.desc}</p>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
-          </section>
 
-          {/* =========================================================================
-              KHU VỰC 7: CƠ HỘI HỢP TÁC VÀ ĐẦU TƯ
-              ========================================================================= */}
-          <section className="hy-section">
-            <div className="hy-section-header">
-              <span className="hy-section-badge">Xúc tiến thương mại</span>
-              <h2 className="hy-section-title">Kết Nối Nhu Cầu Với Nguồn Lực Phù Hợp</h2>
-              <p className="hy-section-desc">
-                Cập nhật các cơ hội đầu tư hạ tầng, tìm nhà cung cấp và kết nối giao thương có nguồn xác thực.
-              </p>
-            </div>
-
-            <div className="hy-opp-grid">
-              {INVESTMENT_OPPORTUNITIES.map((opp, idx) => (
-                <div key={idx} className="hy-opp-card">
-                  <span className={`hy-opp-type-badge badge-${opp.type}`}>
-                    {opp.typeLabel}
-                  </span>
-                  <h3 className="hy-opp-title">{opp.title}</h3>
-                  <p className="hy-opp-content">{opp.desc}</p>
-                  <div className="hy-opp-meta">
-                    <span>Đơn vị: <strong>{opp.provider}</strong></span>
-                    <span>{opp.status}</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-
-          {/* =========================================================================
-              KHU VỰC 8: SỰ KIỆN & DIỄN ĐÀN TRỌNG ĐIỂM
-              ========================================================================= */}
-          <section className="hy-section">
-            <div className="hy-section-header">
-              <span className="hy-section-badge">Kết nối trực tiếp</span>
-              <h2 className="hy-section-title">Sự Kiện & Diễn Đàn</h2>
-              <p className="hy-section-desc">
-                Các hoạt động hội thảo, xúc tiến thương mại và kết nối B2B chính thức.
-              </p>
-            </div>
-
-            {eventsList.length > 0 ? (
-              <div className="hy-opp-grid">
-                {eventsList.map((evt) => (
-                  <div key={evt.id} className="hy-opp-card">
-                    <span className="hy-opp-type-badge badge-partner">Sự kiện chính thức</span>
-                    <h3 className="hy-opp-title">{evt.title}</h3>
-                    <p className="hy-opp-content">{evt.summary || evt.description}</p>
-                    <div className="hy-opp-meta">
-                      <span>Thời gian: {evt.start_time ? new Date(evt.start_time).toLocaleDateString('vi-VN') : 'Sắp diễn ra'}</span>
-                      <Link to={`/events/${evt.slug || evt.id}`} style={{ color: 'var(--hy-primary)', fontWeight: '750' }}>
-                        Xem và đăng ký →
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              /* Hiển thị trạng thái phù hợp theo quy chuẩn tài liệu, không dùng lịch giả */
-              <div className="hy-event-banner-empty">
-                <i className="ti ti-calendar-time" />
-                <h3>Các hoạt động kết nối đang được chuẩn bị</h3>
-                <p>
-                  Lịch hội nghị xúc tiến đầu tư và diễn đàn kết nối doanh nghiệp năm 2026 đang được cập nhật cùng các cơ quan ban ngành và đối tác địa phương.
-                </p>
-                <a href="#dang-ky-mang-luoi" className="hy-btn-primary">
-                  <i className="ti ti-bell-ringing" />
-                  <span>Đăng ký nhận thông báo sự kiện</span>
-                </a>
-              </div>
-            )}
-          </section>
-
-          {/* =========================================================================
-              KHU VỰC 9: AI CENTER CỦA HƯNG YÊN TODAY
-              ========================================================================= */}
-          <section className="hy-ai-section">
-            <div className="hy-ai-header">
-              <div className="hy-ai-badge">
-                <i className="ti ti-sparkles" /> Trí tuệ Nhân tạo Hưng Yên Today
-              </div>
-              <h2 className="hy-ai-title">
-                Bắt đầu từ <span>điều bạn đang cần</span>
-              </h2>
-              <p className="hy-ai-desc">
-                Trợ lý AI hỗ trợ tra cứu thông tin di sản, gợi ý đối tác và hỗ trợ thao tác trên nền tảng theo kho tri thức địa phương đã được xác minh.
-              </p>
-            </div>
-
-            <div className="hy-ai-prompts-grid">
-              <button
-                type="button"
-                className="hy-ai-prompt-btn"
-                onClick={() => navigate('/ai-chat?q=Tôi muốn khám phá Hưng Yên cuối tuần')}
+            <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
+              <Link
+                to="/posts?category=Doanh nghiệp & Sản phẩm&subCategory=Sản phẩm OCOP & Nông sản"
+                className="hy-link-arrow"
               >
-                <i className="ti ti-compass" />
-                <span>“Tôi muốn khám phá Hưng Yên cuối tuần”</span>
-              </button>
-              <button
-                type="button"
-                className="hy-ai-prompt-btn"
-                onClick={() => navigate('/ai-chat?q=Tôi cần tìm nhà cung cấp phù hợp tại Hưng Yên')}
-              >
-                <i className="ti ti-building" />
-                <span>“Tôi cần tìm nhà cung cấp phù hợp”</span>
-              </button>
-              <button
-                type="button"
-                className="hy-ai-prompt-btn"
-                onClick={() => navigate('/ai-chat?q=Tôi muốn giới thiệu doanh nghiệp và sản phẩm lên nền tảng')}
-              >
-                <i className="ti ti-id-badge-2" />
-                <span>“Tôi muốn giới thiệu doanh nghiệp”</span>
-              </button>
-            </div>
-
-            <div style={{ textAlign: 'center' }}>
-              <Link to="/ai-chat" className="hy-btn-primary" style={{ display: 'inline-flex' }}>
-                <i className="ti ti-messages" />
-                <span>Mở Trợ lý AI Hưng Yên chuyên sâu</span>
+                <span>Xem tất cả sản phẩm & đặc sản Hưng Yên</span>
+                <i className="ti ti-arrow-right" />
               </Link>
             </div>
+          </div>
+        </section>
 
-            <div className="hy-ai-notice">
-              💡 <strong>Lưu ý:</strong> Trợ lý AI hỗ trợ tìm thông tin và gợi ý theo dữ liệu được cung cấp. Thông tin quan trọng về pháp lý, quy hoạch và thủ tục đầu tư cần được kiểm tra qua nguồn chính thức và các đầu mối liên quan.
-            </div>
-          </section>
-
-          {/* =========================================================================
-              KHU VỰC 10: BANNER GIẢI PHÁP AI CỦA ADT (MỤC 3 BẮT BUỘC THEO TÀI LIỆU)
-              ========================================================================= */}
-          <section className="hy-adt-banner-section">
-            <div className="hy-adt-title-banner">
-              <span className="hy-section-badge">Hệ sinh thái Công nghệ ADT Group</span>
-              <h2 className="hy-adt-heading">LÀM CHỦ AI – BỨT PHÁ TƯƠNG LAI</h2>
-              <p className="hy-adt-subheading">
-                Các giải pháp trí tuệ nhân tạo chuyên biệt được phát triển bởi Công ty Cổ phần ADT Quốc tế đồng hành cùng chính quyền, doanh nghiệp và giáo dục.
-              </p>
-            </div>
-
-            <div className="hy-adt-grid-3">
-              {/* Thẻ 1: Trợ lý AI phường xã */}
-              <div className="hy-adt-card">
-                <div className="hy-adt-thumb-169">
-                  <img
-                    src="https://images.unsplash.com/photo-1577495508048-b635879837f1?auto=format&fit=crop&w=800&q=80"
-                    alt="Bộ đôi Trợ lý AI phường xã đạt giải Nhì Hà Nội 2025"
-                    loading="lazy"
-                  />
-                  <span className="hy-adt-badge-source">Nguồn: ADT Group</span>
-                  <span className="hy-adt-badge-sector">Chính quyền & Cơ sở</span>
-                </div>
-                <div className="hy-adt-body">
-                  <h3 className="hy-adt-card-title">Trợ lý AI phường xã</h3>
-                  <p className="hy-adt-card-desc">
-                    Hỗ trợ cán bộ tra cứu, soạn thảo và xử lý công việc; hỗ trợ người dân tiếp cận thông tin thủ tục theo dữ liệu chuyên biệt được cung cấp.
-                  </p>
-                  <a
-                    href="https://www.adtgroup.net/bo-doi-tro-ly-ai-phuong-xa-dat-giai-nhi-ha-noi-2025"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hy-adt-btn"
-                    aria-label="Tìm hiểu giải pháp Trợ lý AI phường xã (mở tab mới)"
-                  >
-                    <span>Tìm hiểu giải pháp</span>
-                    <i className="ti ti-external-link" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Thẻ 2: ORION */}
-              <div className="hy-adt-card">
-                <div className="hy-adt-thumb-169">
-                  <img
-                    src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80"
-                    alt="Nền tảng ORION AI Agent quản trị doanh nghiệp"
-                    loading="lazy"
-                  />
-                  <span className="hy-adt-badge-source">Nguồn: ADT Group</span>
-                  <span className="hy-adt-badge-sector">Quản trị Doanh nghiệp</span>
-                </div>
-                <div className="hy-adt-body">
-                  <h3 className="hy-adt-card-title">ORION</h3>
-                  <p className="hy-adt-card-desc">
-                    Nền tảng quản trị doanh nghiệp tích hợp AI, kết nối hoạt động bán hàng, AI Auto Marketing, AI Center và quản lý theo phạm vi giải pháp triển khai.
-                  </p>
-                  <a
-                    href="https://www.adtgroup.net/orion-nen-tang-ai-agent-quan-tri-doanh-nghiep"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hy-adt-btn"
-                    aria-label="Tìm hiểu giải pháp Nền tảng ORION (mở tab mới)"
-                  >
-                    <span>Tìm hiểu giải pháp</span>
-                    <i className="ti ti-external-link" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Thẻ 3: Edunow.AI */}
-              <div className="hy-adt-card">
-                <div className="hy-adt-thumb-169">
-                  <img
-                    src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80"
-                    alt="Edunow.AI giải pháp ứng dụng AI cho việc tuyển sinh"
-                    loading="lazy"
-                  />
-                  <span className="hy-adt-badge-source">Nguồn: ADT Group</span>
-                  <span className="hy-adt-badge-sector">Giáo dục & Tuyển sinh</span>
-                </div>
-                <div className="hy-adt-body">
-                  <h3 className="hy-adt-card-title">Edunow.AI</h3>
-                  <p className="hy-adt-card-desc">
-                    Giải pháp ứng dụng AI hỗ trợ tư vấn tuyển sinh, cung cấp thông tin chương trình học và tiếp nhận nhu cầu của người học theo dữ liệu nhà trường.
-                  </p>
-                  <a
-                    href="https://www.adtgroup.net/edunow-ai-giai-phap-ung-dung-ai-cho-viec-tuyen-sinh"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hy-adt-btn"
-                    aria-label="Tìm hiểu giải pháp Edunow.AI (mở tab mới)"
-                  >
-                    <span>Tìm hiểu giải pháp</span>
-                    <i className="ti ti-external-link" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* =========================================================================
-              KHU VỰC 11: CỘNG ĐỒNG HƯNG YÊN
-              ========================================================================= */}
-          <section className="hy-section">
+        {/* =========================================================================
+            SỰ KIỆN & DIỄN ĐÀN TIÊU ĐIỂM (EVENTS SPOTLIGHT)
+            Được nâng cấp thành khối độc lập, nổi bật rực rỡ như phần bài viết
+            ========================================================================= */}
+        <section id="su-kien" className="hy-section" style={{ background: '#FAF8F3' }}>
+          <div className="hy-container">
             <div className="hy-section-header">
-              <span className="hy-section-badge">Kết nối nguồn lực</span>
-              <h2 className="hy-section-title">Cùng Xây Dựng Một Hưng Yên Kết Nối</h2>
+              <span className="hy-section-badge">Lễ hội & Giao thương</span>
+              <h2 className="hy-section-title">Sự kiện & Diễn đàn tiêu điểm</h2>
               <p className="hy-section-desc">
-                Chào đón các tổ chức, doanh nghiệp, chuyên gia và người Hưng Yên cùng đóng góp và phát triển mạng lưới.
+                Khám phá nhịp sống lễ hội văn hóa dân gian Phố Hiến và các diễn đàn xúc tiến đầu tư, kinh tế số trọng điểm tại Hưng Yên.
               </p>
             </div>
 
-            <div className="hy-community-grid">
-              <div className="hy-community-card">
-                <div className="hy-community-icon"><i className="ti ti-building" /></div>
-                <h3 className="hy-community-title">Doanh nghiệp & HTX</h3>
-                <p className="hy-community-desc">
-                  Mở showroom số, quảng bá năng lực sản xuất, kết nối chuỗi cung ứng và tham gia các phiên giao thương định kỳ.
-                </p>
-                <Link to="/register" className="hy-dest-btn">Đăng ký tham gia →</Link>
-              </div>
+            <div className="hy-events-bento">
+              {/* Cột trái: 1 Sự kiện tiêu điểm lớn */}
+              {featuredEvent && (
+                <Link
+                  to={featuredEvent.slug ? `/events/${featuredEvent.slug}` : '/events'}
+                  className="hy-event-spotlight-card"
+                >
+                  <img
+                    src={featuredEvent.image_url || '/images/hungyen/hungyen_chua_chuong.jpg'}
+                    alt={featuredEvent.title}
+                    className="hy-event-spotlight-img"
+                    loading="lazy"
+                  />
+                  <div className="hy-event-spotlight-overlay" />
+                  <div className="hy-event-spotlight-content">
+                    <div className="hy-event-date-pill">
+                      <i className="ti ti-calendar" />
+                      <span>{featuredEvent.event_date ? new Date(featuredEvent.event_date).toLocaleDateString('vi-VN') : 'Sắp diễn ra'}</span>
+                    </div>
+                    <h3 className="hy-event-spotlight-title">{featuredEvent.title}</h3>
+                    <p className="hy-event-spotlight-desc">
+                      {featuredEvent.short_desc || featuredEvent.desc}
+                    </p>
+                    <div className="hy-event-spotlight-meta">
+                      <span><i className="ti ti-map-pin" /> {featuredEvent.location}</span>
+                      <span style={{ fontWeight: 750 }}>
+                        {featuredEvent.is_paid ? `${featuredEvent.price?.toLocaleString()}đ` : 'Miễn phí'} • Đăng ký vé →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              )}
 
-              <div className="hy-community-card">
-                <div className="hy-community-icon"><i className="ti ti-school" /></div>
-                <h3 className="hy-community-title">Chuyên gia & Cố vấn</h3>
-                <p className="hy-community-desc">
-                  Chia sẻ kiến thức chuyên môn, đồng hành tư vấn đổi mới sáng tạo, chuyển đổi số và nâng cao năng lực địa phương.
-                </p>
-                <a href="#dang-ky-mang-luoi" className="hy-dest-btn">Gửi đề xuất cố vấn →</a>
-              </div>
-
-              <div className="hy-community-card">
-                <div className="hy-community-icon"><i className="ti ti-world" /></div>
-                <h3 className="hy-community-title">Người Hưng Yên xa quê</h3>
-                <p className="hy-community-desc">
-                  Cầu nối thị trường, kết nối cơ hội thương mại, đóng góp sáng kiến và cùng chăm sóc các giá trị di sản quê hương.
-                </p>
-                <a href="#dang-ky-mang-luoi" className="hy-dest-btn">Tham gia mạng lưới →</a>
-              </div>
-
-              <div className="hy-community-card">
-                <div className="hy-community-icon"><i className="ti ti-edit" /></div>
-                <h3 className="hy-community-title">Cộng tác viên nội dung</h3>
-                <p className="hy-community-desc">
-                  Cùng chia sẻ câu chuyện di sản, hình ảnh văn hóa, sản vật làng nghề và lan tỏa thông tin tích cực về Hưng Yên.
-                </p>
-                <a href="#dang-ky-mang-luoi" className="hy-dest-btn">Đăng ký cộng tác →</a>
+              {/* Cột phải: 3 Sự kiện tiếp theo dạng thẻ ngang */}
+              <div className="hy-events-side-stack">
+                {nextEvents.map((evt, idx) => {
+                  const evtDate = evt.event_date ? new Date(evt.event_date) : null;
+                  const day = evtDate ? evtDate.getDate() : '15';
+                  const month = evtDate ? `T${evtDate.getMonth() + 1}` : 'T11';
+                  return (
+                    <Link
+                      key={evt.id || idx}
+                      to={evt.slug ? `/events/${evt.slug}` : '/events'}
+                      className="hy-event-side-card"
+                    >
+                      <div className="hy-event-date-box">
+                        <span className="hy-event-date-day">{day}</span>
+                        <span className="hy-event-date-mo">{month}</span>
+                      </div>
+                      <div className="hy-event-side-body">
+                        <span className="hy-tag-pill" style={{ alignSelf: 'flex-start', fontSize: '10px', padding: '2px 8px' }}>
+                          {evt.is_paid ? 'Sự kiện có phí' : 'Miễn phí tham gia'}
+                        </span>
+                        <h4 className="hy-event-side-title">{evt.title}</h4>
+                        <div className="hy-event-side-loc">
+                          <i className="ti ti-map-pin" /> {evt.location}
+                        </div>
+                      </div>
+                    </Link>
+                  );
+                })}
               </div>
             </div>
-          </section>
 
-          {/* =========================================================================
-              KHU VỰC 12: ĐĂNG KÝ THAM GIA / FORM LEADS TIẾP NHẬN (ANCHOR #dang-ky-mang-luoi)
-              ========================================================================= */}
-          <section id="dang-ky-mang-luoi" className="hy-section" style={{ paddingTop: '2rem', paddingBottom: '5rem' }}>
+            <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
+              <Link to="/events" className="hy-link-arrow">
+                <span>Xem toàn bộ lịch sự kiện & diễn đàn Hưng Yên</span>
+                <i className="ti ti-arrow-right" />
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            H. BẢNG TIN KẾT NỐI (GOM NHU CẦU HỢP TÁC, CUNG ỨNG & ĐẦU TƯ)
+            ========================================================================= */}
+        <section id="bang-tin-ket-noi" className="hy-section">
+          <div className="hy-container">
             <div className="hy-section-header">
-              <span className="hy-section-badge">Gửi thông tin kết nối</span>
-              <h2 className="hy-section-title">Đăng Ký Tham Gia & Gửi Nhu Cầu Hợp Tác</h2>
+              <span className="hy-section-badge">Giao thương & Đầu tư</span>
+              <h2 className="hy-section-title">Bảng tin kết nối hợp tác</h2>
               <p className="hy-section-desc">
-                Điền thông tin để được bộ phận điều phối liên hệ và kết nối đến đúng nguồn lực phù hợp trong 24 giờ.
+                Cập nhật các nhu cầu tìm nhà cung ứng, mời gọi liên danh phát triển dự án và cơ hội liên kết kinh doanh tại Hưng Yên.
               </p>
             </div>
 
-            <div className="hy-form-card">
+            <div className="hy-board-list">
+              {CONNECTION_OPPORTUNITIES.map((item) => (
+                <div key={item.id} className="hy-board-item">
+                  <div className="hy-board-item-main">
+                    <div className="hy-board-item-meta">
+                      <span className={`hy-tag-pill ${item.tagClass}`}>
+                        {item.category}
+                      </span>
+                      <span style={{ fontSize: '12.5px', color: '#556B67' }}>
+                        <i className="ti ti-building" /> {item.unit}
+                      </span>
+                      <span style={{ fontSize: '12.5px', color: '#8C9F9B' }}>
+                        • {item.time}
+                      </span>
+                    </div>
+                    <h3 className="hy-board-item-title">{item.title}</h3>
+                    <p className="hy-board-item-desc">{item.desc}</p>
+                  </div>
+                  <div className="hy-board-item-action">
+                    <a href="#dang-ky-mang-luoi" className="hy-link-arrow">
+                      <span>Gửi phản hồi kết nối</span>
+                      <i className="ti ti-arrow-right" />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            G. TIỆN ÍCH AI (LÀM RÕ NGƯỜI DÙNG CÓ THỂ LÀM GÌ, HÀNH ĐỘNG THẬT)
+            ========================================================================= */}
+        <section className="hy-section" style={{ background: '#FFFFFF' }}>
+          <div className="hy-container">
+            <div className="hy-section-header">
+              <span className="hy-section-badge">Trợ lý số địa phương</span>
+              <h2 className="hy-section-title">Tiện ích AI Hưng Yên</h2>
+              <p className="hy-section-desc">
+                Ứng dụng trí tuệ nhân tạo hỗ trợ tra cứu thông tin địa phương, gợi ý kết nối kinh doanh và giải đáp tức thì 24/7.
+              </p>
+            </div>
+
+            <div className="hy-ai-grid">
+              <div className="hy-ai-card">
+                <div className="hy-ai-card-icon">
+                  <i className="ti ti-compass" />
+                </div>
+                <h3 className="hy-ai-card-title">Tra cứu di sản & văn hóa</h3>
+                <p className="hy-ai-card-desc">
+                  Tìm hiểu nguồn gốc lịch sử của hơn 1.800 di tích, huyền tích Phố Hiến, lộ trình tham quan làng nghề và đặc sản ẩm thực có nguồn gốc xác thực.
+                </p>
+                <a href="#theo-dau-di-san" className="hy-ai-card-btn">
+                  <span>Khám phá di sản</span>
+                  <i className="ti ti-arrow-right" />
+                </a>
+              </div>
+
+              <div className="hy-ai-card">
+                <div className="hy-ai-card-icon">
+                  <i className="ti ti-building" />
+                </div>
+                <h3 className="hy-ai-card-title">Gợi ý kết nối doanh nghiệp & OCOP</h3>
+                <p className="hy-ai-card-desc">
+                  Hỗ trợ tìm kiếm cơ sở sản xuất đạt chuẩn VietGAP, kết nối đối tác công nghiệp phụ trợ tại các KCN và thông tin đầu mối tiếp nhận hợp tác.
+                </p>
+                <a href="#kcn-hung-yen" className="hy-ai-card-btn">
+                  <span>Tìm đối tác phù hợp</span>
+                  <i className="ti ti-arrow-right" />
+                </a>
+              </div>
+
+              <div className="hy-ai-card">
+                <div className="hy-ai-card-icon">
+                  <i className="ti ti-messages" />
+                </div>
+                <h3 className="hy-ai-card-title">Hỏi đáp trực tiếp cùng Trợ lý AI</h3>
+                <p className="hy-ai-card-desc">
+                  Hỏi đáp nhanh mọi thông tin về thủ tục đăng ký thành viên, lịch lễ hội, cẩm nang du lịch và thông tin kết nối bất kỳ lúc nào.
+                </p>
+                <button
+                  type="button"
+                  className="hy-ai-card-btn"
+                  onClick={() => {
+                    const aiBtn = document.querySelector('.floating-ai-trigger, #floating-ai-button, [aria-label*="AI"]');
+                    if (aiBtn) aiBtn.click();
+                    else window.dispatchEvent(new CustomEvent('open-ai-chat'));
+                  }}
+                >
+                  <i className="ti ti-sparkles" />
+                  <span>Mở Trợ lý AI ngay</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* =========================================================================
+            H. THAM GIA CÙNG HƯNG YÊN TODAY (SINGLE CONVERSION HUB)
+            Gộp các khối kêu gọi thành một điểm chuyển đổi rõ ràng cuối trang
+            ========================================================================= */}
+        <section id="dang-ky-mang-luoi" className="hy-join-section">
+          <div className="hy-container">
+            <div className="hy-join-box">
+              <div className="hy-join-header">
+                <span className="hy-section-badge">Mở rộng mạng lưới</span>
+                <h2 className="hy-section-title">Tham gia cùng Hưng Yên Today</h2>
+                <p className="hy-section-desc">
+                  Dù bạn là doanh nghiệp, cơ sở sản xuất, người làm nghề hay muốn đóng góp nội dung — chúng tôi luôn sẵn sàng đồng hành và phản hồi nhanh chóng.
+                </p>
+              </div>
+
+              {/* Bộ chọn nhu cầu tham gia */}
+              <div className="hy-needs-selector">
+                {Object.entries(NEED_LABELS).map(([key, label]) => (
+                  <button
+                    key={key}
+                    type="button"
+                    className={`hy-need-pill ${activeNeed === key ? 'active' : ''}`}
+                    onClick={() => setActiveNeed(key)}
+                  >
+                    <i className={
+                      key === 'enterprise' ? 'ti ti-building' :
+                      key === 'product' ? 'ti ti-package' :
+                      key === 'partner' ? 'ti ti-handshake' : 'ti ti-news'
+                    } />
+                    <span>{label}</span>
+                  </button>
+                ))}
+              </div>
+
               {formSuccess ? (
-                <div className="hy-form-success">
-                  <div style={{ fontSize: '32px', marginBottom: '8px' }}>✅</div>
-                  <h3 style={{ fontSize: '20px', marginBottom: '6px' }}>Đã tiếp nhận thông tin kết nối thành công!</h3>
-                  <p style={{ margin: 0 }}>
-                    Hệ thống HungYen.today đã chuyển yêu cầu đến bộ phận chuyên trách. Chúng tôi sẽ liên hệ lại với quý vị theo kênh thông tin đã cung cấp.
+                <div className="hy-success-banner">
+                  <i className="ti ti-circle-check" />
+                  <h3 style={{ fontSize: '18px', fontWeight: 800, margin: '0 0 8px 0' }}>
+                    Gửi thông tin thành công!
+                  </h3>
+                  <p style={{ margin: 0, fontSize: '14px', lineHeight: 1.6 }}>
+                    Cảm ơn bạn đã quan tâm. Bộ phận điều phối Hưng Yên Today đã tiếp nhận yêu cầu <strong>{NEED_LABELS[activeNeed]}</strong> và sẽ liên hệ hỗ trợ bạn trong thời gian sớm nhất.
                   </p>
                   <button
                     type="button"
                     onClick={() => setFormSuccess(false)}
                     className="hy-btn-primary"
-                    style={{ marginTop: '1.25rem', padding: '10px 24px', fontSize: '14px' }}
+                    style={{ marginTop: '1.25rem' }}
                   >
-                    Gửi yêu cầu khác
+                    Gửi thêm thông tin khác
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleLeadSubmit}>
-                  <div className="hy-form-grid">
+                <form onSubmit={handleLeadSubmit} className="hy-join-form">
+                  <div className="hy-form-grid-2">
                     <div className="hy-form-group">
-                      <label className="hy-form-label">Họ và tên người liên hệ <span>*</span></label>
+                      <label className="hy-form-label">
+                        Họ và tên người liên hệ <span>*</span>
+                      </label>
                       <input
                         type="text"
                         required
-                        className="hy-form-control"
-                        placeholder="Nguyễn Văn A"
                         value={formData.fullName}
                         onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
+                        placeholder="Ví dụ: Nguyễn Văn An"
+                        className="hy-form-input"
                       />
                     </div>
 
                     <div className="hy-form-group">
-                      <label className="hy-form-label">Tên tổ chức / Doanh nghiệp <span>*</span></label>
-                      <input
-                        type="text"
-                        required
-                        className="hy-form-control"
-                        placeholder="Công ty TNHH / HTX..."
-                        value={formData.companyName}
-                        onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
-                      />
-                    </div>
-
-                    <div className="hy-form-group">
-                      <label className="hy-form-label">Số điện thoại liên hệ <span>*</span></label>
+                      <label className="hy-form-label">
+                        Số điện thoại liên hệ <span>*</span>
+                      </label>
                       <input
                         type="tel"
                         required
-                        className="hy-form-control"
-                        placeholder="0986 xxx xxx"
                         value={formData.phone}
                         onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        placeholder="Ví dụ: 0912 345 678"
+                        className="hy-form-input"
                       />
                     </div>
 
                     <div className="hy-form-group">
-                      <label className="hy-form-label">Địa chỉ Email</label>
-                      <input
-                        type="email"
-                        className="hy-form-control"
-                        placeholder="lienhe@domain.com"
-                        value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      />
-                    </div>
-
-                    <div className="hy-form-group">
-                      <label className="hy-form-label">Tỉnh / Thành phố</label>
+                      <label className="hy-form-label">
+                        Tên tổ chức / Doanh nghiệp / Cơ sở <span>*</span>
+                      </label>
                       <input
                         type="text"
-                        className="hy-form-control"
-                        placeholder="Hưng Yên, Hà Nội..."
-                        value={formData.city}
-                        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                        required
+                        value={formData.companyName}
+                        onChange={(e) => setFormData({ ...formData, companyName: e.target.value })}
+                        placeholder="Ví dụ: HTX Nhãn lồng Phố Hiến"
+                        className="hy-form-input"
                       />
                     </div>
 
                     <div className="hy-form-group">
-                      <label className="hy-form-label">Nhóm nhu cầu kết nối <span>*</span></label>
-                      <select
-                        className="hy-form-control"
-                        value={formData.serviceNeed}
-                        onChange={(e) => setFormData({ ...formData, serviceNeed: e.target.value })}
-                      >
-                        <option value="Tìm đối tác phù hợp">Tìm đối tác phù hợp</option>
-                        <option value="Tìm nhà cung cấp">Tìm nhà cung cấp</option>
-                        <option value="Đăng ký hồ sơ doanh nghiệp">Đăng ký hồ sơ doanh nghiệp</option>
-                        <option value="Tìm hiểu môi trường đầu tư">Tìm hiểu môi trường đầu tư</option>
-                        <option value="Đóng góp chuyên môn & Cộng đồng">Đóng góp chuyên môn & Cộng đồng</option>
-                        <option value="Trải nghiệm du lịch & Di sản">Trải nghiệm du lịch & Di sản</option>
-                      </select>
+                      <label className="hy-form-label">
+                        Địa chỉ Email (nếu có)
+                      </label>
+                      <input
+                        type="email"
+                        value={formData.email}
+                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        placeholder="email@doanhnghiep.vn"
+                        className="hy-form-input"
+                      />
                     </div>
 
                     <div className="hy-form-group full">
-                      <label className="hy-form-label">Mô tả ngắn gọn nhu cầu hoặc câu hỏi</label>
+                      <label className="hy-form-label">
+                        Địa bàn hoạt động
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.city}
+                        onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                        placeholder="Ví dụ: TP. Hưng Yên / Khoái Châu / Mỹ Hào / Tỉnh khác"
+                        className="hy-form-input"
+                      />
+                    </div>
+
+                    <div className="hy-form-group full">
+                      <label className="hy-form-label">
+                        Mô tả nhu cầu hợp tác hoặc thông tin cần giới thiệu <span>*</span>
+                      </label>
                       <textarea
-                        className="hy-form-control"
-                        placeholder="Vui lòng nêu rõ lĩnh vực quan tâm, quy mô dự kiến hoặc nội dung cần phối hợp..."
+                        rows={3}
+                        required
                         value={formData.notes}
                         onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                        placeholder="Mô tả tóm tắt về sản phẩm, lĩnh vực hoạt động hoặc nhu cầu kết nối cụ thể của bạn..."
+                        className="hy-form-textarea"
                       />
                     </div>
                   </div>
 
-                  <div className="hy-form-checkbox-group">
-                    <label className="hy-form-checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={formData.agreeProcess}
-                        onChange={(e) => setFormData({ ...formData, agreeProcess: e.target.checked })}
-                        required
-                      />
-                      <span>
-                        Tôi đồng ý để HungYen.today xử lý thông tin trên nhằm mục đích liên hệ phản hồi và hỗ trợ kết nối. <span>*</span>
-                      </span>
-                    </label>
+                  <label className="hy-form-checkbox">
+                    <input
+                      type="checkbox"
+                      checked={formData.agreeProcess}
+                      onChange={(e) => setFormData({ ...formData, agreeProcess: e.target.checked })}
+                    />
+                    <span>
+                      Tôi xác nhận thông tin cung cấp là chính xác và đồng ý để bộ phận điều phối Hưng Yên Today liên hệ hỗ trợ.
+                    </span>
+                  </label>
 
-                    <label className="hy-form-checkbox-label">
-                      <input
-                        type="checkbox"
-                        checked={formData.subscribeNewsletter}
-                        onChange={(e) => setFormData({ ...formData, subscribeNewsletter: e.target.checked })}
-                      />
-                      <span>
-                        Đăng ký nhận bản tin tổng hợp cơ hội đầu tư, sự kiện và tin tức Hưng Yên định kỳ qua Email.
-                      </span>
-                    </label>
-                  </div>
-
-                  <div style={{ textAlign: 'center', marginTop: '1.5rem' }}>
+                  <div style={{ textAlign: 'center' }}>
                     <button
                       type="submit"
                       disabled={formLoading}
                       className="hy-btn-primary"
-                      style={{ padding: '14px 42px', fontSize: '16px' }}
+                      style={{ padding: '13px 36px', fontSize: '15.5px' }}
                     >
                       {formLoading ? (
                         <>
@@ -1290,7 +1252,7 @@ export const Home = () => {
                       ) : (
                         <>
                           <i className="ti ti-send" />
-                          <span>Gửi đăng ký kết nối</span>
+                          <span>Gửi yêu cầu tham gia</span>
                         </>
                       )}
                     </button>
@@ -1298,8 +1260,8 @@ export const Home = () => {
                 </form>
               )}
             </div>
-          </section>
-        </div>
+          </div>
+        </section>
       </main>
 
       <Footer />

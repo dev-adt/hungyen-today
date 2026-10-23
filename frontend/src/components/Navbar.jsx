@@ -187,10 +187,10 @@ export const Navbar = () => {
           left: 0 !important;
           right: 0 !important;
           z-index: 99999 !important;
-          background: #123B46 !important;
-          background-image: linear-gradient(180deg, #164450 0%, #0F323C 100%) !important;
-          border-bottom: 2px solid rgba(207, 163, 74, 0.4) !important;
-          box-shadow: 0 4px 20px rgba(8, 29, 35, 0.65) !important;
+          background: #103D3B !important;
+          background-image: linear-gradient(180deg, #134B49 0%, #082927 100%) !important;
+          border-bottom: 2px solid rgba(214, 168, 70, 0.45) !important;
+          box-shadow: 0 4px 20px rgba(8, 41, 39, 0.5) !important;
           width: 100% !important;
           max-width: 100vw !important;
           box-sizing: border-box !important;
@@ -338,12 +338,12 @@ export const Navbar = () => {
           left: 50% !important;
           transform: translateX(-50%) !important;
           min-width: 250px !important;
-          background-color: #0F323C !important;
-          background-image: linear-gradient(180deg, #164450 0%, #0F323C 100%) !important;
-          border: 1px solid rgba(207, 163, 74, 0.35) !important;
+          background-color: #082927 !important;
+          background-image: linear-gradient(180deg, #103D3B 0%, #082927 100%) !important;
+          border: 1px solid rgba(214, 168, 70, 0.35) !important;
           border-radius: 10px !important;
           padding: 8px 0 !important;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(207, 163, 74, 0.2) !important;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8), 0 0 20px rgba(214, 168, 70, 0.2) !important;
           z-index: 999999 !important;
           animation: dnvnFadeIn 0.15s ease-out !important;
         }
@@ -687,27 +687,20 @@ export const Navbar = () => {
               )}
             </div>
 
-            {/* Nút "Tham gia mạng lưới" (Theo tài liệu mục 2 Thanh đầu trang) */}
-            <a
-              href="#dang-ky-mang-luoi"
-              onClick={(e) => {
-                if (location.pathname === '/') {
-                  e.preventDefault();
-                  const el = document.getElementById('dang-ky-mang-luoi');
-                  if (el) el.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
+            {/* Nút "Đăng ký" (Dẫn đến trang /register) */}
+            <Link
+              to="/register"
               className="dnvn-btn-join-desktop"
               style={{
-                backgroundColor: '#CFA34A',
-                backgroundImage: 'linear-gradient(135deg, #DFBA6B 0%, #CFA34A 100%)',
-                color: '#123B46',
+                backgroundColor: '#D6A846',
+                backgroundImage: 'linear-gradient(135deg, #E4BF68 0%, #D6A846 100%)',
+                color: '#082927',
                 fontSize: '12px',
                 fontWeight: '800',
-                padding: '6px 13px',
+                padding: '6px 14px',
                 borderRadius: '8px',
                 textDecoration: 'none',
-                boxShadow: '0 2px 10px rgba(207, 163, 74, 0.35)',
+                boxShadow: '0 2px 10px rgba(214, 168, 70, 0.35)',
                 border: '1px solid rgba(255, 255, 255, 0.4)',
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -718,16 +711,16 @@ export const Navbar = () => {
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 4px 14px rgba(207, 163, 74, 0.55)';
+                e.currentTarget.style.boxShadow = '0 4px 14px rgba(214, 168, 70, 0.55)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'none';
-                e.currentTarget.style.boxShadow = '0 2px 10px rgba(207, 163, 74, 0.35)';
+                e.currentTarget.style.boxShadow = '0 2px 10px rgba(214, 168, 70, 0.35)';
               }}
             >
-              <i className="ti ti-users-group" style={{ fontSize: '14px' }}></i>
-              <span>{currentLang === 'en' ? 'Join Network' : 'Tham gia mạng lưới'}</span>
-            </a>
+              <i className="ti ti-user-plus" style={{ fontSize: '14px' }}></i>
+              <span>{currentLang === 'en' ? 'Register' : 'Đăng ký'}</span>
+            </Link>
 
             {/* Trạng thái Người dùng / Đăng nhập */}
             {role === 'guest' ? (
@@ -890,17 +883,13 @@ export const Navbar = () => {
               </div>
             </div>
 
-            {/* Nút Tham gia mạng lưới trên Mobile */}
-            <a
-              href="#dang-ky-mang-luoi"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                const el = document.getElementById('dang-ky-mang-luoi');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
+            {/* Nút Đăng ký trên Mobile */}
+            <Link
+              to="/register"
+              onClick={() => setMobileMenuOpen(false)}
               style={{
-                backgroundColor: '#CFA34A',
-                color: '#123B46',
+                backgroundColor: '#D6A846',
+                color: '#082927',
                 padding: '10px 14px',
                 borderRadius: '8px',
                 textDecoration: 'none',
@@ -913,9 +902,9 @@ export const Navbar = () => {
                 marginBottom: '4px'
               }}
             >
-              <i className="ti ti-users-group" style={{ fontSize: '16px' }} />
-              <span>{currentLang === 'en' ? 'Join Network' : 'Tham gia mạng lưới'}</span>
-            </a>
+              <i className="ti ti-user-plus" style={{ fontSize: '16px' }} />
+              <span>{currentLang === 'en' ? 'Register' : 'Đăng ký'}</span>
+            </Link>
 
             {/* Nút Trợ lý AI trên Mobile */}
             <Link
