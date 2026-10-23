@@ -10,41 +10,35 @@ import brandConfig from '../brand.config';
 import { fetchJsonWithTimeout, FALLBACK_POSTS, FALLBACK_EVENTS } from '../utils/api';
 import './HomeHungYen.css';
 
-// TOP 9 KHU CÔNG NGHIỆP TIÊU BIỂU HƯNG YÊN (TOP 3 NỔI BẬT HƠN)
+// TOP 9 KHU CÔNG NGHIỆP TIÊU BIỂU HƯNG YÊN (THUẦN THÔNG TIN, TOP 3 NỔI BẬT HƠN)
 const TOP_INDUSTRIAL_PARKS = [
   {
     id: 'kcn-thang-long-2',
-    rank: 1,
     name: 'Khu Công Nghiệp Thăng Long II (TLIP II)',
     location: 'Thị xã Mỹ Hào & Huyện Yên Mỹ (Trục QL5)',
     acreage: '525 ha',
     occupancy: 'Lấp đầy >85%',
-    badge: 'TOP 1 • CHUẨN SINH THÁI NHẬT BẢN',
-    badgeClass: 'rank-1',
+    tag: 'Chuẩn sinh thái Tập đoàn Sumitomo Nhật Bản',
     desc: 'KCN sinh thái kiểu mẫu hàng đầu miền Bắc do Tập đoàn Sumitomo (Nhật Bản) phát triển, cứ điểm quy tụ hàng loạt tập đoàn công nghệ cao toàn cầu như Panasonic, Toto, Daikin, Canon, Kyocera.',
     focus: 'Điện tử viễn thông, linh kiện bán dẫn, cơ khí chính xác, thiết bị ô tô & công nghệ cao.'
   },
   {
     id: 'kcn-pho-noi-a',
-    rank: 2,
     name: 'Khu Công Nghiệp Phố Nối A',
     location: 'Huyện Văn Lâm & Thị xã Mỹ Hào',
     acreage: '600 ha',
     occupancy: 'Lấp đầy >90%',
-    badge: 'TOP 2 • CỬA NGÕ KINH TẾ THỦ ĐÔ',
-    badgeClass: 'rank-2',
+    tag: 'Cửa ngõ kết nối kinh tế Hà Nội - Hải Phòng',
     desc: 'Cứ điểm công nghiệp quy mô lớn nhất tỉnh, nằm ở cửa ngõ kết nối Hà Nội - Hải Phòng, hạ tầng kỹ thuật đồng bộ, trung tâm kho vận và chuỗi cung ứng liên vùng hiện đại.',
     focus: 'Cơ khí chế tạo, điện - điện tử, vật liệu mới, kho bãi logistics & bao bì thông minh.'
   },
   {
     id: 'kcn-yen-my-2',
-    rank: 3,
     name: 'Khu Công Nghiệp Yên Mỹ II & Yên Mỹ',
     location: 'Huyện Yên Mỹ (Nút giao Cao tốc HN - HP)',
     acreage: '313 ha',
     occupancy: 'Trọng điểm thu hút FDI',
-    badge: 'TOP 3 • TRỌNG ĐIỂM FDI MỚI',
-    badgeClass: 'rank-3',
+    tag: 'Nút giao cao tốc chiến lược & Quỹ đất sạch',
     desc: 'Nằm ngay nút giao chiến lược của cao tốc Hà Nội - Hải Phòng, sẵn sàng quỹ đất sạch đón đầu các dự án công nghệ phụ trợ, thiết bị y tế và năng lượng sạch thế hệ mới.',
     focus: 'Công nghiệp phụ trợ, thiết bị y tế cao cấp, năng lượng sạch & tự động hóa hiện đại.'
   }
@@ -53,39 +47,45 @@ const TOP_INDUSTRIAL_PARKS = [
 const NEXT_INDUSTRIAL_PARKS = [
   {
     id: 'kcn-sach-viet-han',
-    name: 'KCN Sạch Hưng Yên (Khu Hợp tác Kinh tế Việt - Hàn)',
-    location: 'Huyện Ân Thi & Yên Mỹ',
-    acreage: '143 ha • Tập đoàn LH Hàn Quốc'
+    name: 'KCN Sạch Hưng Yên (Khu Hợp tác Việt - Hàn)',
+    location: 'Huyện Ân Thi & Huyện Yên Mỹ',
+    scale: '143 ha',
+    industry: 'Tập đoàn LH Hàn Quốc'
   },
   {
     id: 'kcn-so-5',
     name: 'KCN Số 5 Hưng Yên',
-    location: 'Huyện Ân Thi & Kim Động',
-    acreage: '192,6 ha • Công nghiệp logistics & sinh thái'
+    location: 'Huyện Ân Thi & Huyện Kim Động',
+    scale: '192,6 ha',
+    industry: 'Logistics & Công nghiệp sinh thái'
   },
   {
     id: 'kcn-so-3',
     name: 'KCN Số 3 Hưng Yên',
-    location: 'Huyện Yên Mỹ & Khoái Châu',
-    acreage: '159 ha • Đa ngành công nghệ sạch'
+    location: 'Huyện Yên Mỹ & Huyện Khoái Châu',
+    scale: '159 ha',
+    industry: 'Đa ngành công nghệ sạch'
   },
   {
     id: 'kcn-pho-noi-b',
     name: 'KCN Dệt may Phố Nối (Phố Nối B)',
-    location: 'TX Mỹ Hào & Huyện Yên Mỹ',
-    acreage: '121 ha • Thời trang & Dệt kỹ thuật cao'
+    location: 'Thị xã Mỹ Hào & Huyện Yên Mỹ',
+    scale: '121 ha',
+    industry: 'Thời trang & Dệt kỹ thuật cao'
   },
   {
     id: 'kcn-minh-duc',
     name: 'KCN Minh Đức',
-    location: 'Phường Minh Đức, TX Mỹ Hào',
-    acreage: '198 ha • Cơ khí lắp ráp & Vật liệu mới'
+    location: 'Phường Minh Đức, Thị xã Mỹ Hào',
+    scale: '198 ha',
+    industry: 'Cơ khí lắp ráp & Vật liệu mới'
   },
   {
     id: 'kcn-kim-dong',
     name: 'KCN Kim Động',
     location: 'Huyện Kim Động',
-    acreage: '100 ha • Chế biến sạch & Kho vận liên vùng'
+    scale: '100 ha',
+    industry: 'Chế biến sạch & Kho vận liên vùng'
   }
 ];
 
@@ -466,11 +466,11 @@ export const Home = () => {
                 <i className="ti ti-map-pin" /> Sông Hồng & Đất bãi Phố Hiến trù phú
               </div>
               <h1 className="hy-hero-title">
-                Dấu xưa còn đó.
-                <span>Nhịp sống đang lên.</span>
+                Khám phá Hưng Yên.
+                <span>Kết nối cơ hội phát triển.</span>
               </h1>
               <p className="hy-hero-desc">
-                Khám phá di sản, trải nghiệm đời sống và kết nối những giá trị mới của Hưng Yên.
+                Nền tảng thông tin văn hóa, đời sống di sản, kết nối doanh nghiệp và xúc tiến đầu tư tại Hưng Yên.
               </p>
               <div className="hy-hero-actions">
                 <a href="#theo-dau-di-san" className="hy-btn-primary">
@@ -631,23 +631,24 @@ export const Home = () => {
               </p>
             </div>
 
-            {/* Hàng 1: TOP 3 KHU CÔNG NGHIỆP NỔI BẬT NHẤT */}
+            {/* Hàng 1: TOP 3 KHU CÔNG NGHIỆP TRỌNG ĐIỂM (THUẦN THÔNG TIN, THIẾT KẾ ĐẸP NHƯ ĐẮK LẮK) */}
             <div className="hy-kcn-top3-grid">
               {TOP_INDUSTRIAL_PARKS.map((kcn) => (
-                <Link
-                  key={kcn.id}
-                  to={`/posts?search=${encodeURIComponent(kcn.name)}`}
-                  className={`hy-kcn-card-top ${kcn.badgeClass}`}
-                >
-                  <span className={`hy-kcn-badge-top ${kcn.badgeClass}`}>
-                    <i className="ti ti-award" /> {kcn.badge}
-                  </span>
-                  <h3 className="hy-kcn-top-title">{kcn.name}</h3>
-                  <div className="hy-kcn-top-loc">
-                    <i className="ti ti-map-pin" /> {kcn.location}
+                <div key={kcn.id} className="hy-kcn-card-top">
+                  <div className="hy-kcn-top-header">
+                    <div className="hy-kcn-top-icon">
+                      <i className="ti ti-building-factory-2" />
+                    </div>
+                    <div>
+                      <h3 className="hy-kcn-top-title">{kcn.name}</h3>
+                      <div className="hy-kcn-top-loc">
+                        <i className="ti ti-map-pin" /> {kcn.location}
+                      </div>
+                    </div>
                   </div>
+                  
                   <div className="hy-kcn-metrics-box">
-                    <span><i className="ti ti-maximize" /> {kcn.acreage}</span>
+                    <span><i className="ti ti-maximize" /> Quy mô {kcn.acreage}</span>
                     <span>•</span>
                     <span style={{ color: '#A6533D' }}><i className="ti ti-chart-pie" /> {kcn.occupancy}</span>
                   </div>
@@ -655,42 +656,31 @@ export const Home = () => {
                   <div className="hy-kcn-focus-box">
                     <strong>Ngành mũi nhọn:</strong> {kcn.focus}
                   </div>
-                </Link>
+                </div>
               ))}
             </div>
 
-            {/* Hàng 2: 6 KHU CÔNG NGHIỆP TIÊU BIỂU TIẾP THEO (Gọn gàng kiểu Đắk Lắk) */}
+            {/* Hàng 2: 6 KHU CÔNG NGHIỆP TIÊU BIỂU TIẾP THEO (KHÔNG BỊ KHUẤT CHỮ TRÊN CẢ DESKTOP & MOBILE) */}
             <div className="hy-kcn-next-grid">
               {NEXT_INDUSTRIAL_PARKS.map((item) => (
-                <Link
-                  key={item.id}
-                  to={`/posts?search=${encodeURIComponent(item.name)}`}
-                  className="hy-kcn-mini-card"
-                >
-                  <div className="hy-kcn-mini-left">
+                <div key={item.id} className="hy-kcn-mini-card">
+                  <div className="hy-kcn-mini-main">
                     <div className="hy-kcn-mini-icon">
                       <i className="ti ti-building-factory-2" />
                     </div>
-                    <div>
+                    <div className="hy-kcn-mini-text">
                       <h4 className="hy-kcn-mini-title">{item.name}</h4>
                       <div className="hy-kcn-mini-meta">
                         <i className="ti ti-map-pin" /> {item.location}
                       </div>
                     </div>
                   </div>
-                  <span className="hy-kcn-mini-badge">{item.acreage}</span>
-                </Link>
+                  <div className="hy-kcn-mini-details">
+                    <span className="hy-kcn-mini-scale">{item.scale}</span>
+                    <span className="hy-kcn-mini-ind">{item.industry}</span>
+                  </div>
+                </div>
               ))}
-            </div>
-
-            <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
-              <Link
-                to="/posts?category=Giao thương và Đầu tư&subCategory=Khu & Cụm công nghiệp"
-                className="hy-link-arrow"
-              >
-                <span>Xem quy hoạch toàn bộ các KCN & Cụm công nghiệp Hưng Yên</span>
-                <i className="ti ti-arrow-right" />
-              </Link>
             </div>
           </div>
         </section>

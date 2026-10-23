@@ -1259,64 +1259,51 @@
 
 .hy-kcn-card-top {
   background: #FFFFFF;
-  border: 1px solid var(--hy-border-subtle);
+  border: 1px solid rgba(214, 168, 70, 0.35);
   border-radius: var(--hy-radius-md);
   padding: 1.6rem 1.4rem;
   display: flex;
   flex-direction: column;
   box-shadow: var(--hy-shadow-sm);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
-  text-decoration: none;
   color: var(--hy-text-main);
+  cursor: default;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .hy-kcn-card-top:hover {
-  transform: translateY(-4px);
   border-color: var(--hy-gold);
-  box-shadow: 0 12px 28px -4px rgba(8, 41, 39, 0.12), 0 0 16px rgba(214, 168, 70, 0.15);
+  box-shadow: 0 10px 24px -4px rgba(8, 41, 39, 0.1), 0 0 12px rgba(214, 168, 70, 0.12);
 }
 
-.hy-kcn-card-top.rank-1 {
-  border: 2px solid var(--hy-gold);
-  background: linear-gradient(180deg, #FFFFFF 0%, #FCFBF7 100%);
-  box-shadow: 0 8px 24px -2px rgba(214, 168, 70, 0.2);
-}
-
-.hy-kcn-badge-top {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  align-self: flex-start;
-  padding: 4px 10px;
-  border-radius: 6px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
+.hy-kcn-top-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
   margin-bottom: 12px;
 }
 
-.hy-kcn-badge-top.rank-1 {
-  background: rgba(214, 168, 70, 0.22);
-  color: #8C6514;
-  border: 1px solid rgba(214, 168, 70, 0.45);
-}
-
-.hy-kcn-badge-top.rank-2,
-.hy-kcn-badge-top.rank-3 {
-  background: var(--hy-primary-light);
+.hy-kcn-top-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--hy-primary-light) 0%, rgba(214, 168, 70, 0.15) 100%);
   color: var(--hy-primary);
-  border: 1px solid rgba(16, 61, 59, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+  border: 1px solid rgba(214, 168, 70, 0.25);
 }
 
 .hy-kcn-top-title {
   font-family: 'Be Vietnam Pro', serif;
-  font-size: 18px;
+  font-size: 17.5px;
   font-weight: 800;
   color: var(--hy-primary-dark);
   line-height: 1.35;
-  margin: 0 0 6px 0;
+  margin: 0 0 4px 0;
 }
 
 .hy-kcn-top-loc {
@@ -1325,7 +1312,7 @@
   display: flex;
   align-items: center;
   gap: 4px;
-  margin-bottom: 12px;
+  line-height: 1.4;
 }
 
 .hy-kcn-metrics-box {
@@ -1336,10 +1323,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   font-size: 12.5px;
   font-weight: 700;
   color: var(--hy-primary);
   margin-bottom: 12px;
+  flex-wrap: wrap;
 }
 
 .hy-kcn-top-desc {
@@ -1361,38 +1350,38 @@
   margin-top: auto;
 }
 
-/* 6 KCN TIẾP THEO (GỌN GÀNG KIỂU ĐẮK LẮK) */
+/* 6 KCN TIẾP THEO (GỌN GÀNG, KHÔNG KHUẤT CHỮ TRÊN CẢ DESKTOP & MOBILE) */
 .hy-kcn-next-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 12px;
+  gap: 14px;
 }
 
 .hy-kcn-mini-card {
   background: #FFFFFF;
   border: 1px solid var(--hy-border-subtle);
   border-radius: var(--hy-radius-sm);
-  padding: 12px 16px;
+  padding: 14px 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  text-decoration: none;
+  gap: 16px;
   color: var(--hy-text-main);
-  transition: all 0.2s ease;
   box-shadow: var(--hy-shadow-sm);
+  cursor: default;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .hy-kcn-mini-card:hover {
   border-color: var(--hy-border-gold);
-  transform: translateX(3px);
-  background: #FFFFFF;
+  box-shadow: var(--hy-shadow-md);
 }
 
-.hy-kcn-mini-left {
+.hy-kcn-mini-main {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 12px;
+  flex: 1;
   min-width: 0;
 }
 
@@ -1407,31 +1396,59 @@
   justify-content: center;
   font-size: 18px;
   flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.hy-kcn-mini-text {
+  flex: 1;
+  min-width: 0;
 }
 
 .hy-kcn-mini-title {
   font-size: 14px;
   font-weight: 750;
   color: var(--hy-primary-dark);
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin: 0 0 3px 0;
+  line-height: 1.4;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .hy-kcn-mini-meta {
-  font-size: 11.5px;
+  font-size: 12px;
   color: var(--hy-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  line-height: 1.4;
+  white-space: normal;
 }
 
-.hy-kcn-mini-badge {
+.hy-kcn-mini-details {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.hy-kcn-mini-scale {
   background: #F0F4F4;
   color: var(--hy-primary);
-  font-size: 11.5px;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 750;
   padding: 3px 10px;
-  border-radius: 14px;
-  flex-shrink: 0;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+
+.hy-kcn-mini-ind {
+  font-size: 11.5px;
+  color: var(--hy-text-muted);
+  line-height: 1.35;
+  white-space: normal;
+  max-width: 180px;
 }
 
 /* ==============================================================================
@@ -1700,6 +1717,28 @@
   }
   .hy-topics-grid {
     grid-template-columns: 1fr;
+  }
+  .hy-kcn-mini-card {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 14px;
+    gap: 12px;
+  }
+  .hy-kcn-mini-main {
+    width: 100%;
+  }
+  .hy-kcn-mini-details {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(16, 61, 59, 0.1);
+    text-align: left;
+  }
+  .hy-kcn-mini-ind {
+    max-width: none;
+    text-align: right;
   }
   .hy-products-grid {
     grid-template-columns: 1fr;
