@@ -1,14 +1,14 @@
 {
-  "name": "DakLak.today — Cổng thông tin, dữ liệu và kết nối đầu tư Đắk Lắk",
-  "short_name": "DakLak.today",
-  "description": "Nền tảng số kết nối con người, doanh nghiệp, sản phẩm, du lịch, dữ liệu và cơ hội đầu tư của tỉnh Đắk Lắk bằng nền tảng số và trí tuệ nhân tạo.",
+  "name": "HungYen.today — Cổng thông tin, kinh tế số và xúc tiến đầu tư Hưng Yên",
+  "short_name": "HungYen.today",
+  "description": "Nền tảng số kết nối kinh tế, công nghiệp công nghệ cao, nông sản OCOP, di sản văn hóa Phố Hiến và xúc tiến đầu tư tỉnh Hưng Yên.",
   "id": "/",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
-  "background_color": "#26160E",
-  "theme_color": "#3B2417",
+  "background_color": "#FAF8F3",
+  "theme_color": "#123B46",
   "categories": ["business", "news", "travel", "investment"],
   "icons": [
     {
@@ -50,22 +50,22 @@
   ],
   "shortcuts": [
     {
-      "name": "Cà phê & Nông sản Đắk Lắk",
-      "short_name": "Cà phê",
-      "description": "Khám phá chuỗi giá trị và thương hiệu cà phê",
-      "url": "/posts?category=Cà%20phê%20Đắk%20Lắk",
+      "name": "Cơ hội Đầu tư & KCN",
+      "short_name": "Đầu tư",
+      "description": "Khám phá danh mục dự án và KCN Thăng Long II",
+      "url": "/posts?category=%C4%90%E1%BA%A7u%20t%C6%B0%20%26%20D%E1%BB%B1%20%C3%A1n",
       "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Trợ lý AI Đắk Lắk",
+      "name": "Trợ lý AI Hưng Yên",
       "short_name": "AI Assistant",
       "description": "Hỏi đáp đầu tư và dữ liệu cùng Trợ lý AI",
       "url": "/ai-chat",
       "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]
     },
     {
-      "name": "Cơ hội Đầu tư & Doanh nghiệp",
-      "short_name": "Đầu tư",
+      "name": "Doanh nghiệp & OCOP",
+      "short_name": "Doanh nghiệp",
       "description": "Tra cứu dự án và danh bạ doanh nghiệp",
       "url": "/members",
       "icons": [{ "src": "/pwa-192x192.png", "sizes": "192x192" }]

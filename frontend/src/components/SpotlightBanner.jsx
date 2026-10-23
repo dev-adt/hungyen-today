@@ -3,12 +3,12 @@ import brandConfig from '../brand.config';
 
 /**
  * High-Impact Spotlight Banner
- * Styled with Central Highlands Deep Coffee, Bazan Earth, and Gong Bronze Gold theme.
+ * Styled with Hung Yen Deep Teal, Kem Trắng & Gold theme.
  */
 export const SpotlightBanner = ({
-  badgeText = 'SỨ MỆNH CHIẾN LƯỢC • DAKLAK.TODAY',
-  title = 'DakLak.today — Từ đất bazan đến cơ hội toàn cầu',
-  subtitle = 'Nền tảng số kết nối con người, doanh nghiệp, sản phẩm, du lịch, dữ liệu và cơ hội đầu tư của tỉnh Đắk Lắk.',
+  badgeText = 'SỨ MỆNH CHIẾN LƯỢC • HUNGYEN.TODAY',
+  title = 'HungYen.today — Hội tụ phù sa, kết nối tương lai',
+  subtitle = 'Nền tảng số kết nối kinh tế, công nghiệp công nghệ cao, nông sản OCOP, du lịch văn hóa Phố Hiến và xúc tiến đầu tư tỉnh Hưng Yên.',
   buttonText = 'Khám phá Hệ sinh thái',
   link = '/posts',
   variant = 'primary'
@@ -17,10 +17,10 @@ export const SpotlightBanner = ({
     <div style={{
       width: '100%',
       position: 'relative',
-      background: 'linear-gradient(135deg, #1C0F08 0%, #3B2417 50%, #7A3E1D 100%)',
+      background: 'linear-gradient(135deg, #091D23 0%, #123B46 50%, #1B4D5C 100%)',
       color: '#FFFFFF',
-      borderBottom: '2px solid rgba(213, 163, 63, 0.4)',
-      boxShadow: '0 8px 30px rgba(28, 15, 8, 0.45), inset 0 1px 0 rgba(213, 163, 63, 0.25)',
+      borderBottom: '2px solid rgba(207, 163, 74, 0.4)',
+      boxShadow: '0 8px 30px rgba(9, 29, 35, 0.45), inset 0 1px 0 rgba(207, 163, 74, 0.25)',
       overflow: 'hidden',
       zIndex: 10
     }}>

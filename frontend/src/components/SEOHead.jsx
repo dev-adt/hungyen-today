@@ -19,7 +19,7 @@ const SEOHead = ({
 }) => {
   useEffect(() => {
     const defaultSiteName = `${brandConfig.brandName} — ${brandConfig.slogan}`;
-    const siteUrl = brandConfig.baseUrl || 'https://daklak.today';
+    const siteUrl = brandConfig.baseUrl || 'https://hungyen.today';
 
     // 1. Set Document Title
     const fullTitle = title ? (title.includes(brandConfig.brandName) ? title : `${title} | ${brandConfig.brandName}`) : defaultSiteName;
@@ -50,7 +50,7 @@ const SEOHead = ({
 
     // 2. Standard Meta Tags
     const pageDesc = description || brandConfig.description;
-    const pageKeywords = keywords || `${brandConfig.brandName}, ${brandConfig.brandShortName}, Đắk Lắk, Buôn Ma Thuột, cà phê Đắk Lắk, doanh nghiệp Đắk Lắk, đầu tư Đắk Lắk, du lịch Tây Nguyên, AI Matching`;
+    const pageKeywords = keywords || `${brandConfig.brandName}, ${brandConfig.brandShortName}, Hưng Yên, Phố Hiến, xúc tiến đầu tư Hưng Yên, KCN Thăng Long II, nhãn lồng Phố Hiến, doanh nghiệp Hưng Yên, AI Matching`;
     const canonicalUrl = url ? (url.startsWith('http') ? url : `${siteUrl}${url}`) : window.location.href;
     const ogImage = image || `${siteUrl}/assets/og-image.jpg`;
 

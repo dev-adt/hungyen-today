@@ -193,7 +193,7 @@ app.use((err, req, res, next) => {
 // Helper sinh tệp sitemap.xml và robots.txt thực tế vào thư mục public/
 async function generateSitemapFiles() {
   try {
-    const baseUrl = process.env.SITE_URL || 'https://daklak.today';
+    const baseUrl = process.env.SITE_URL || 'https://hungyen.today';
     const staticPages = ['', '/posts', '/members', '/events', '/guide', '/register'];
 
     const [approvedPosts] = await db.query(
@@ -254,7 +254,7 @@ app.get('/sitemap.xml', async (req, res) => {
 });
 
 app.get('/robots.txt', (req, res) => {
-  const baseUrl = process.env.SITE_URL || 'https://daklak.today';
+  const baseUrl = process.env.SITE_URL || 'https://hungyen.today';
   const content = `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /dashboard\nDisallow: /api/\n\nSitemap: ${baseUrl}/sitemap.xml\n`;
   res.setHeader('Content-Type', 'text/plain; charset=utf-8');
   res.setHeader('X-Content-Type-Options', 'nosniff');
@@ -868,7 +868,7 @@ db.query(`
     const [hasOldCategories] = await db.query("SELECT COUNT(*) as count FROM categories WHERE name LIKE '%Đồ Sơn%' OR name LIKE '%Văn hóa – Du lịch%'");
 
     if (catCount[0].count === 0 || hasOldCategories[0].count > 0) {
-      console.log('🌱 Đang khởi tạo/đồng bộ dữ liệu Chuyên mục & Lĩnh vực DakLak.today...');
+      console.log('🌱 Đang khởi tạo/đồng bộ dữ liệu Chuyên mục & Lĩnh vực HungYen.today...');
       if (hasOldCategories[0].count > 0) {
         await db.query('DELETE FROM categories WHERE name LIKE "%Đồ Sơn%" OR name LIKE "%Văn hóa – Du lịch%"');
       }
@@ -965,7 +965,7 @@ db.query(`
           }
         }
       }
-      console.log('✅ Khởi tạo/đồng bộ 7 Chuyên mục & Lĩnh vực DakLak.today hoàn tất!');
+      console.log('✅ Khởi tạo/đồng bộ 7 Chuyên mục & Lĩnh vực HungYen.today hoàn tất!');
     }
 
     // Tạo thư mục kiến thức
@@ -2460,7 +2460,7 @@ app.get('/api/posts', async (req, res) => {
       ? 'p.*'
       : 'p.id, p.member_id, p.creator_id, p.title, p.slug, p.category, p.sub_category, p.summary, p.image_url, p.author_name, p.author_pos, p.contact_info, p.source_url, p.tags, p.deadline, p.type, p.status, p.is_featured, p.published_at, p.views, p.likes, p.created_at, p.updated_at';
 
-    let sql = `SELECT ${selectCols}, COALESCE(c.name, m.name, p.author_name, 'Ban Biên tập DakLak.today') AS company_name, COALESCE(m.tier, 'Standard') AS company_tier
+    let sql = `SELECT ${selectCols}, COALESCE(c.name, m.name, p.author_name, 'Ban Biên tập HungYen.today') AS company_name, COALESCE(m.tier, 'Standard') AS company_tier
                FROM posts p 
                LEFT JOIN members m ON p.member_id = m.id 
                LEFT JOIN content_creators c ON p.creator_id = c.id
@@ -2589,7 +2589,7 @@ app.get('/api/posts/:id', async (req, res) => {
 
     const [rows] = await db.query(
       `SELECT p.*, 
-              COALESCE(c.name, m.name, 'Ban Biên tập DakLak.today') AS company_name, 
+              COALESCE(c.name, m.name, 'Ban Biên tập HungYen.today') AS company_name, 
               COALESCE(m.tier, 'Standard') AS company_tier 
        FROM posts p 
        LEFT JOIN members m ON p.member_id = m.id 
@@ -3036,7 +3036,7 @@ app.delete('/api/admin/organizers/:id', authMiddleware, async (req, res) => {
 // ════════════════════════════════════════════
 app.get('/sitemap.xml', async (req, res) => {
   try {
-    const baseUrl = process.env.SITE_URL || 'https://daklak.today';
+    const baseUrl = process.env.SITE_URL || 'https://hungyen.today';
     const staticPages = ['', '/posts', '/members', '/events', '/guide', '/register'];
 
     const [approvedPosts] = await db.query(
@@ -3075,7 +3075,7 @@ app.get('/sitemap.xml', async (req, res) => {
 });
 
 app.get('/robots.txt', (req, res) => {
-  const baseUrl = process.env.SITE_URL || 'https://daklak.today';
+  const baseUrl = process.env.SITE_URL || 'https://hungyen.today';
   const content = `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /dashboard\nDisallow: /api/\n\nSitemap: ${baseUrl}/sitemap.xml\n`;
   res.header('Content-Type', 'text/plain');
   res.send(content);
@@ -3207,7 +3207,7 @@ app.post('/api/admin/posts', authMiddleware, async (req, res) => {
 
     const finalStatus = status || 'approved';
     const finalFeatured = is_featured ? 1 : 0;
-    const finalAuthor = author_name || 'Ban Quản trị DakLak.today';
+    const finalAuthor = author_name || 'Ban Quản trị HungYen.today';
     const slug = await generateUniquePostSlug(title);
     const publishedAt = finalStatus === 'approved' ? new Date() : null;
 
@@ -3865,7 +3865,7 @@ ${knowledgeText ? `\n${knowledgeText}` : ''}`;
       if (!activeKey) throw new Error('Chưa cấu hình API Key cho Anthropic.');
       const r = await fetch('https://api.anthropic.com/v1/messages', {
         method : 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-api-key': activeKey, 'anthropic-version': '2023-06-01', 'User-Agent': 'DakLakToday/1.0' },
+        headers: { 'Content-Type': 'application/json', 'x-api-key': activeKey, 'anthropic-version': '2023-06-01', 'User-Agent': 'HungYenToday/1.0' },
         body   : JSON.stringify({ model: effectiveModel, max_tokens: 1024, system: memberContext, messages }),
       });
       const d = await safeParseApiResponse(r, 'Anthropic');
@@ -3877,7 +3877,7 @@ ${knowledgeText ? `\n${knowledgeText}` : ''}`;
       const msgs = [{ role: 'system', content: memberContext }, ...messages];
       const r = await fetch('https://api.openai.com/v1/chat/completions', {
         method : 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + activeKey, 'User-Agent': 'DakLakToday/1.0' },
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + activeKey, 'User-Agent': 'HungYenToday/1.0' },
         body   : JSON.stringify({ model: effectiveModel, max_tokens: 1024, messages: msgs }),
       });
       const d = await safeParseApiResponse(r, 'OpenAI');
@@ -3889,7 +3889,7 @@ ${knowledgeText ? `\n${knowledgeText}` : ''}`;
       const contents = messages.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }));
       const r = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${effectiveModel}:generateContent?key=${activeKey}`, {
         method : 'POST',
-        headers: { 'Content-Type': 'application/json', 'User-Agent': 'DakLakToday/1.0' },
+        headers: { 'Content-Type': 'application/json', 'User-Agent': 'HungYenToday/1.0' },
         body   : JSON.stringify({ system_instruction: { parts: [{ text: memberContext }] }, contents, generationConfig: { maxOutputTokens: 1024 } }),
       });
       const d = await safeParseApiResponse(r, 'Gemini');
@@ -3901,7 +3901,7 @@ ${knowledgeText ? `\n${knowledgeText}` : ''}`;
       const msgs = [{ role: 'system', content: memberContext }, ...messages];
       const r = await fetch('https://api.deepseek.com/v1/chat/completions', {
         method : 'POST',
-        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + activeKey, 'User-Agent': 'DakLakToday/1.0' },
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + activeKey, 'User-Agent': 'HungYenToday/1.0' },
         body   : JSON.stringify({ model: effectiveModel, max_tokens: 1024, messages: msgs }),
       });
       const d = await safeParseApiResponse(r, 'DeepSeek');
@@ -3917,9 +3917,9 @@ ${knowledgeText ? `\n${knowledgeText}` : ''}`;
         headers: { 
           'Content-Type': 'application/json', 
           Authorization: 'Bearer ' + activeKey, 
-          'HTTP-Referer': process.env.SITE_URL || 'https://dev.daklak.today', 
-          'X-Title': 'DakLak Today AI',
-          'User-Agent': 'DakLakToday/1.0'
+          'HTTP-Referer': process.env.SITE_URL || 'https://hungyen.today', 
+          'X-Title': 'HungYen Today AI',
+          'User-Agent': 'HungYenToday/1.0'
         },
         body   : JSON.stringify({ model: effectiveModel, max_tokens: 1024, messages: msgs }),
         signal : fetchSignal
@@ -4513,7 +4513,7 @@ app.post('/api/events/:id/register', async (req, res) => {
         // Tạo tài khoản mới
         const hash = await bcrypt.hash(pass, 10);
         const isEmail = loginUser.includes('@');
-        const regEmail = isEmail ? loginUser : (cleanEmail || `${cleanPhone}@daklak.today`);
+        const regEmail = isEmail ? loginUser : (cleanEmail || `${cleanPhone}@hungyen.today`);
         const regPhone = !isEmail ? loginUser : cleanPhone;
         const orgName = (company && company.trim()) ? company.trim() : (full_name.trim() || 'Hội viên mới');
 
@@ -4570,7 +4570,7 @@ app.post('/api/events/:id/register', async (req, res) => {
     );
 
     // URL mã QR check-in tiện lợi
-    const qrData = `https://daklak.today/checkin?code=${encodeURIComponent(ticketCode)}`;
+    const qrData = `https://hungyen.today/checkin?code=${encodeURIComponent(ticketCode)}`;
     const qrImage = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(ticketCode)}`;
 
     // Tạo mã VietQR chuẩn nếu có thu phí
@@ -4645,7 +4645,7 @@ app.get('/api/member/events', memberAuthMiddleware, async (req, res) => {
 
     const formatted = rows.map(item => {
       const isPaidOrFree = item.payment_status === 'paid' || item.payment_status === 'free';
-      const qrData = isPaidOrFree ? `https://daklak.today/checkin?code=${encodeURIComponent(item.ticket_code)}` : null;
+      const qrData = isPaidOrFree ? `https://hungyen.today/checkin?code=${encodeURIComponent(item.ticket_code)}` : null;
       const qrImage = isPaidOrFree ? `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(item.ticket_code)}` : null;
       let vietqrUrl = null;
       if (item.payment_status === 'pending' && Number(item.total_amount) > 0) {
@@ -5040,7 +5040,7 @@ app.post('/api/leads', async (req, res) => {
     res.json({
       success: true,
       id: result.insertId,
-      message: 'Đăng ký thành công! Đội ngũ phát triển DakLak.today sẽ liên hệ với bạn trong thời gian sớm nhất.'
+      message: 'Đăng ký thành công! Đội ngũ phát triển HungYen.today sẽ liên hệ với bạn trong thời gian sớm nhất.'
     });
   } catch (err) {
     console.error('Lỗi lưu lead /api/leads:', err.message);
@@ -5229,7 +5229,7 @@ function cleanDescription(summary, body, fallback) {
     text = body.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
   }
   if (!text) {
-    text = fallback || 'DakLak.today kết nối con người, doanh nghiệp, sản phẩm, du lịch, dữ liệu và cơ hội đầu tư của tỉnh Đắk Lắk bằng nền tảng số và trí tuệ nhân tạo.';
+    text = fallback || 'HungYen.today kết nối con người, doanh nghiệp, sản phẩm, du lịch, dữ liệu và cơ hội đầu tư của tỉnh Hưng Yên bằng nền tảng số và trí tuệ nhân tạo.';
   }
   text = text.replace(/[\r\n\t]+/g, ' ').trim();
   if (text.length > 220) {
@@ -5239,7 +5239,7 @@ function cleanDescription(summary, body, fallback) {
 }
 
 function getBaseUrl(req) {
-  const host = req.headers['x-forwarded-host'] || req.get('host') || 'dev.daklak.today';
+  const host = req.headers['x-forwarded-host'] || req.get('host') || 'hungyen.today';
   if (process.env.SITE_URL && (host.includes('localhost') || host.includes('127.0.0.1'))) {
     return process.env.SITE_URL.replace(/\/+$/, '');
   }
@@ -5259,7 +5259,7 @@ function resolveImageUrl(imgUrl, baseUrl) {
   }
   // External image: proxy through our server to guarantee accessibility to Zalo/FB crawlers
   if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
-    if (trimmed.includes(baseUrl.replace(/^https?:\/\//, '')) || trimmed.includes('daklak.today')) {
+    if (trimmed.includes(baseUrl.replace(/^https?:\/\//, '')) || trimmed.includes('hungyen.today')) {
       return trimmed;
     }
     return `${baseUrl}/api/og-image?url=${encodeURIComponent(trimmed)}`;
@@ -5286,7 +5286,7 @@ function injectMetaTags(html, { title, description, image, url, type = 'website'
 
   let newMeta = `    <meta name="description" content="${escapeHtml(description)}" />\n`;
   newMeta += `    <link rel="canonical" href="${escapeHtml(url)}" />\n`;
-  newMeta += `    <meta property="og:site_name" content="DakLak.today" />\n`;
+  newMeta += `    <meta property="og:site_name" content="HungYen.today" />\n`;
   newMeta += `    <meta property="og:locale" content="vi_VN" />\n`;
   newMeta += `    <meta property="og:type" content="${escapeHtml(type)}" />\n`;
   newMeta += `    <meta property="og:url" content="${escapeHtml(url)}" />\n`;

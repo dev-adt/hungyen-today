@@ -105,14 +105,16 @@ export const Posts = () => {
   const [activeSlide, setActiveSlide] = useState(0);
 
   const demoImages = [
-    '/images/daklak/daklak_doi_ca_phe.jpg',
-    '/images/daklak/daklak_dau_tu_logistics.jpg',
-    '/images/daklak/daklak_cong_chieng.jpg',
-    '/images/daklak/daklak_thac_dray_nur.jpg',
-    '/images/daklak/daklak_ca_phe.jpg',
-    '/images/daklak/daklak_le_hoi_nha_rong.jpg',
-    '/images/daklak/daklak_nha_rong_ede.jpg',
-    '/images/daklak/daklak_bien_ganh_da_dia.jpg'
+    '/images/hungyen/hungyen_kcn_thang_long.jpg',
+    '/images/hungyen/hungyen_den_mau.jpg',
+    '/images/hungyen/hungyen_chua_chuong.jpg',
+    '/images/hungyen/hungyen_nhan_long.jpg',
+    '/images/hungyen/hungyen_lang_dan_do.jpg',
+    '/images/hungyen/hungyen_lang_huong.jpg',
+    '/images/hungyen/hungyen_ecopark.jpg',
+    '/images/hungyen/hungyen_lang_hoa_vangiang.jpg',
+    '/images/hungyen/hungyen_chua_keo.jpg',
+    '/images/hungyen/hungyen_ga_dong_tao.jpg'
   ];
 
   const isGenericOrPlaceholder = (url) => {

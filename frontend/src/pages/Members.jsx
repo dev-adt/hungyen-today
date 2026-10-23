@@ -181,8 +181,8 @@ export const Members = () => {
     <div className="public-body">
       <SEOHead 
         title="Danh bạ Hội viên Doanh nghiệp"
-        description="Tra cứu và kết nối danh bạ các doanh nghiệp, đối tác uy tín hệ sinh thái DakLak.today. Phân loại theo hạng Platinum, Gold, Silver."
-        keywords="danh bạ doanh nghiệp, hội viên DakLak.today, tạp chí doanh nghiệp việt nam, đối tác uy tín"
+        description="Tra cứu và kết nối danh bạ các doanh nghiệp, đối tác uy tín hệ sinh thái HungYen.today. Phân loại theo hạng Platinum, Gold, Silver."
+        keywords="danh bạ doanh nghiệp, hội viên HungYen.today, đối tác uy tín, xúc tiến đầu tư Hưng Yên"
         url="/members"
       />
       <Navbar />

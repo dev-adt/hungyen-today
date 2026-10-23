@@ -35,10 +35,10 @@ export const AdminPosts = () => {
     title: '',
     summary: '',
     body: '',
-    category: CATEGORIES_DATA[0]?.name || 'Khám phá Đắk Lắk',
+    category: CATEGORIES_DATA[0]?.name || 'Khám phá Hưng Yên',
     sub_category: CATEGORIES_DATA[0]?.subcategories?.[0] || 'Điểm đến & Thắng cảnh',
     type: 'Tin tức',
-    author_name: 'Ban Quản trị DakLak.today',
+    author_name: 'Ban Quản trị HungYen.today',
     contact_info: '',
     source_url: '',
     tags: '',
@@ -108,10 +108,10 @@ export const AdminPosts = () => {
       title: '',
       summary: '',
       body: '',
-      category: firstCat?.name || 'Khám phá Đắk Lắk',
+      category: firstCat?.name || 'Khám phá Hưng Yên',
       sub_category: firstCat?.subcategories?.[0] || 'Điểm đến & Thắng cảnh',
       type: 'Tin tức',
-      author_name: 'Ban Quản trị DakLak.today',
+      author_name: 'Ban Quản trị HungYen.today',
       contact_info: '',
       source_url: '',
       tags: '',
@@ -155,10 +155,10 @@ export const AdminPosts = () => {
       title: fullPost.title || '',
       summary: fullPost.summary || '',
       body: fullPost.body || '',
-      category: fullPost.category || (categoriesList[0]?.name || 'Khám phá Đắk Lắk'),
+      category: fullPost.category || (categoriesList[0]?.name || 'Khám phá Hưng Yên'),
       sub_category: fullPost.sub_category || '',
       type: fullPost.type || 'Tin tức',
-      author_name: fullPost.author_name || fullPost.company_name || 'Ban Quản trị DakLak.today',
+      author_name: fullPost.author_name || fullPost.company_name || 'Ban Quản trị HungYen.today',
       contact_info: fullPost.contact_info || '',
       source_url: fullPost.source_url || '',
       tags: tagsStr,
@@ -836,7 +836,7 @@ export const AdminPosts = () => {
                 <p style={{ margin: '4px 0 0 0', fontSize: '12px', color: '#64748B' }}>
                   {editingPostId 
                     ? 'Bạn có toàn quyền thay đổi tiêu đề, nội dung chi tiết, trạng thái và hình ảnh của bài viết này.' 
-                    : 'Tạo bài viết và xuất bản ngay lên hệ thống DakLak.today mà không cần qua xét duyệt.'}
+                    : 'Tạo bài viết và xuất bản ngay lên hệ thống HungYen.today mà không cần qua xét duyệt.'}
                 </p>
               </div>
               <button 
@@ -952,7 +952,7 @@ export const AdminPosts = () => {
                     type="text" 
                     value={postForm.author_name} 
                     onChange={(e) => setPostForm(prev => ({ ...prev, author_name: e.target.value }))}
-                    placeholder="Ban Quản trị DakLak.today..." 
+                    placeholder="Ban Quản trị HungYen.today..." 
                     style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', outline: 'none', boxSizing: 'border-box' }}
                   />
                 </div>
@@ -1069,7 +1069,7 @@ export const AdminPosts = () => {
                     type="text" 
                     value={postForm.tags} 
                     onChange={(e) => setPostForm(prev => ({ ...prev, tags: e.target.value }))}
-                    placeholder="daklak, dautu, nongnghiep..." 
+                    placeholder="hungyen, dautu, kcn, ocop..." 
                     style={{ width: '100%', padding: '8px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '12.5px', outline: 'none', boxSizing: 'border-box' }}
                   />
                 </div>

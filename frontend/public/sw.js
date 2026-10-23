@@ -1,9 +1,9 @@
 /**
- * Service Worker cho DoanhNghiepVN.today PWA
+ * Service Worker cho HungYen.today PWA
  * Cung cấp khả năng tải nhanh và hoạt động offline cơ bản
  */
 
-const CACHE_NAME = 'daklak-cache-v2';
+const CACHE_NAME = 'hungyen-cache-v1';
 const PRECACHE_ASSETS = [
   '/manifest.json',
   '/favicon.png',
