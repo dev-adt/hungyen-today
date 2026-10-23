@@ -101,6 +101,36 @@ export const FALLBACK_POSTS = [
     created_at: new Date(Date.now() - 3600000 * 36).toISOString(),
     views: 1650,
     is_featured: 0
+  },
+  {
+    id: 'fb-post-5',
+    title: 'Đột phá quy hoạch hạ tầng: Dự án tuyến đường kết nối di sản ven sông Hồng và đường Vành đai 4',
+    slug: 'dot-pha-quy-hoach-ha-tang-ket-noi-di-san-ven-song-hong',
+    category: 'Đầu tư & Dự án',
+    sub_category: 'Hạ tầng Giao thông',
+    summary: 'Tuyến đường di sản ven sông Hồng mở ra không gian phát triển kinh tế du lịch và logistics mới, kết nối thông suốt Hưng Yên với Hà Nội và vùng đồng bằng Bắc Bộ.',
+    image_url: '/images/hungyen/hungyen_giao_thong.jpg',
+    author_name: 'Ban Quản lý Dự án Giao thông',
+    company_name: 'Sở Giao thông Vận tải Hưng Yên',
+    company_tier: 'Diamond',
+    created_at: new Date(Date.now() - 3600000 * 48).toISOString(),
+    views: 1420,
+    is_featured: 0
+  },
+  {
+    id: 'fb-post-6',
+    title: 'Đô thị sinh thái Ecopark và Văn Giang: Điểm sáng không gian xanh chuẩn mực và kinh tế dịch vụ',
+    slug: 'do-thi-sinh-thai-ecopark-va-van-giang-diem-sang-khong-gian-xanh',
+    category: 'Du lịch & Trải nghiệm',
+    sub_category: 'Đô thị Sinh thái',
+    summary: 'Văn Giang khẳng định vị thế đô thị sinh thái xanh hàng đầu miền Bắc với mô hình hài hòa giữa thiên nhiên, bất động sản cao cấp và kinh tế du lịch dịch vụ ven đô.',
+    image_url: '/images/hungyen/hungyen_ecopark.jpg',
+    author_name: 'Nhịp sống Đô thị Hưng Yên',
+    company_name: 'Khu đô thị Ecopark Hưng Yên',
+    company_tier: 'Diamond',
+    created_at: new Date(Date.now() - 3600000 * 60).toISOString(),
+    views: 2150,
+    is_featured: 0
   }
 ];
 

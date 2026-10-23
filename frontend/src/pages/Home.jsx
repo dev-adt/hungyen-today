@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import FloatingAIBot from '../components/FloatingAIBot';
 import SEOHead from '../components/SEOHead';
 import brandConfig from '../brand.config';
-import { fetchJsonWithTimeout } from '../utils/api';
+import { fetchJsonWithTimeout, FALLBACK_POSTS } from '../utils/api';
 import './HomeHungYen.css';
 
 // 6 Trụ cột phát triển Hưng Yên (Theo Phần III Chương 8 & Phụ lục)
@@ -15,60 +15,60 @@ const SIX_PILLARS = [
   {
     id: 'pillar-industry',
     title: 'Công nghiệp và chuỗi cung ứng',
-    desc: 'Phát triển công nghiệp công nghệ cao, chuỗi cung ứng cơ khí, linh kiện điện tử và hệ sinh thái các KCN hiện đại.',
+    desc: 'Phát triển công nghiệp công nghệ cao, chuỗi cung ứng cơ khí, linh kiện điện tử và hệ sinh thái KCN Thăng Long II hiện đại.',
     tag: 'Trụ cột Công nghiệp',
-    img: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80',
+    img: '/images/hungyen/hungyen_kcn_thang_long.jpg',
     category: 'Giao thương và Đầu tư',
     subCategory: 'Khu & Cụm công nghiệp'
   },
   {
     id: 'pillar-agriculture',
     title: 'Nông nghiệp và sản phẩm địa phương',
-    desc: 'Nông nghiệp giá trị cao, sản vật OCOP tiêu biểu (Nhãn lồng Phố Hiến, Tương Bần...) và vùng nguyên liệu hữu cơ.',
+    desc: 'Nông nghiệp giá trị cao, sản vật OCOP tiêu biểu (Nhãn lồng Phố Hiến, Tương Bần...) và vùng nguyên liệu hữu cơ đạt chuẩn VietGAP.',
     tag: 'Trụ cột Nông nghiệp',
-    img: 'https://images.unsplash.com/photo-1592982537447-7440770cbfc9?auto=format&fit=crop&w=800&q=80',
+    img: '/images/hungyen/hungyen_nhan_long.jpg',
     category: 'Doanh nghiệp & Sản phẩm',
     subCategory: 'Sản phẩm OCOP & Nông sản'
   },
   {
     id: 'pillar-marine-logistics',
-    title: 'Kinh tế biển và logistics',
-    desc: 'Kết nối trục hành lang kinh tế ven biển, cảng thủy nội địa, trung tâm kho vận hiện đại và công nghiệp phụ trợ.',
+    title: 'Kinh tế kết nối và logistics',
+    desc: 'Kết nối trục hành lang kinh tế liên vùng, vành đai giao thông trọng điểm, trung tâm kho vận hiện đại và công nghiệp phụ trợ.',
     tag: 'Trụ cột Logistics',
-    img: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80',
+    img: '/images/hungyen/hungyen_giao_thong.jpg',
     category: 'Giao thương và Đầu tư',
     subCategory: 'Cảng biển & Logistics liên vùng'
   },
   {
     id: 'pillar-heritage-tourism',
     title: 'Di sản và du lịch',
-    desc: 'Bảo tồn không gian văn hóa Phố Hiến, Chùa Keo, Chùa Chuông, các làng nghề cổ truyền và du lịch sinh thái.',
+    desc: 'Bảo tồn không gian văn hóa Phố Hiến, Đền Mẫu, Chùa Keo, Chùa Chuông, các làng nghề cổ truyền và du lịch sinh thái sông Hồng.',
     tag: 'Trụ cột Di sản',
-    img: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&q=80',
+    img: '/images/hungyen/hungyen_den_mau.jpg',
     category: 'Khám phá Hưng Yên',
     subCategory: 'Di sản Phố Hiến'
   },
   {
     id: 'pillar-innovation',
-    title: 'Nhân lực và đổi mới sáng tạo',
-    desc: 'Đào tạo nhân lực kỹ thuật chất lượng cao, thúc đẩy chuyển đổi số và ứng dụng công nghệ trí tuệ nhân tạo vào sản xuất.',
+    title: 'Đô thị sinh thái & Đổi mới sáng tạo',
+    desc: 'Đại đô thị xanh Ecopark, thúc đẩy chuyển đổi số, thu hút nhân lực chất lượng cao và ứng dụng trí tuệ nhân tạo AI vào quản trị.',
     tag: 'Trụ cột Đổi mới',
-    img: 'https://images.unsplash.com/photo-1531482615713-2afd69097998?auto=format&fit=crop&w=800&q=80',
+    img: '/images/hungyen/hungyen_ecopark.jpg',
     category: 'Doanh nghiệp & Sản phẩm',
     subCategory: 'Đổi mới sáng tạo & Khởi nghiệp'
   },
   {
     id: 'pillar-community',
-    title: 'Cộng đồng Hưng Yên toàn cầu',
-    desc: 'Mạng lưới kết nối doanh nhân, trí thức, nghệ nhân và kiều bào xa quê cùng đồng hành phát triển quê hương.',
+    title: 'Làng nghề & Cộng đồng toàn cầu',
+    desc: 'Gìn giữ hồn quê qua các làng nghề trăm năm (Thủ Sỹ, Thôn Cao) và mạng lưới kết nối doanh nhân, kiều bào Hưng Yên khắp năm châu.',
     tag: 'Trụ cột Cộng đồng',
-    img: 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=800&q=80',
+    img: '/images/hungyen/hungyen_lang_dan_do.jpg',
     category: 'Cộng đồng',
     subCategory: 'Người Hưng Yên Toàn cầu'
   }
 ];
 
-// Khám phá Hưng Yên (Lưới biên tập 8 điểm đến chuẩn địa bàn hiện hành)
+// Khám phá Hưng Yên (Lưới biên tập 8 điểm đến chuẩn địa bàn Hưng Yên)
 const EXPLORE_DESTINATIONS = [
   {
     id: 'pho-hien',
@@ -76,8 +76,17 @@ const EXPLORE_DESTINATIONS = [
     type: 'heritage',
     typeLabel: 'Di sản Lịch sử',
     location: 'TP. Hưng Yên',
-    desc: 'Thương cảng cổ phồn hoa “Thứ nhất Kinh kỳ, thứ nhì Phố Hiến”, nơi lưu giữ hàng chục di tích văn hóa, kiến trúc độc đáo.',
-    img: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&q=80'
+    desc: 'Thương cảng cổ phồn hoa “Thứ nhất Kinh kỳ, thứ nhì Phố Hiến”, nơi lưu giữ Đền Mẫu, hồ Bán Nguyệt và hàng chục di tích độc đáo.',
+    img: '/images/hungyen/hungyen_den_mau.jpg'
+  },
+  {
+    id: 'chua-chuong',
+    title: 'Chùa Chuông — Phố Hiến đệ nhất danh thắng',
+    type: 'heritage',
+    typeLabel: 'Di sản & Tâm linh',
+    location: 'Phường Hiến Nam, TP. Hưng Yên',
+    desc: 'Ngôi cổ tự linh thiêng bậc nhất xứ nhãn với tam quan cổ kính, cầu đá xanh và hệ thống tượng Phật thời Hậu Lê quý giá.',
+    img: '/images/hungyen/hungyen_chua_chuong.jpg'
   },
   {
     id: 'lang-thu-sy',
@@ -85,17 +94,17 @@ const EXPLORE_DESTINATIONS = [
     type: 'craft',
     typeLabel: 'Làng nghề truyền thống',
     location: 'Huyện Tiên Lữ',
-    desc: 'Không gian làng quê Bắc Bộ thanh bình với nghề đan đó thủ công hơn hai thế kỷ, tạo nên bức tranh văn hóa sinh động.',
-    img: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=800&q=80'
+    desc: 'Không gian làng quê Bắc Bộ thanh bình với nghề đan đó thủ công hơn hai thế kỷ, những đóa hoa tre nở rộ giữa sân gạch cổ.',
+    img: '/images/hungyen/hungyen_lang_dan_do.jpg'
   },
   {
     id: 'chua-keo',
-    title: 'Chùa Keo — Di sản kiến trúc gỗ cổ kính',
+    title: 'Chùa Keo — Di sản kiến trúc gỗ lim cổ kính',
     type: 'heritage',
-    typeLabel: 'Di sản & Tâm linh',
+    typeLabel: 'Di sản Kiến trúc',
     location: 'Không gian Văn hóa Hưng Yên',
-    desc: 'Kiệt tác kiến trúc cổ Việt Nam với gác chuông bằng gỗ lim độc nhất vô nhị, gắn liền với lễ hội truyền thống đặc sắc.',
-    img: 'https://images.unsplash.com/photo-1548013146-72479768bada?auto=format&fit=crop&w=800&q=80'
+    desc: 'Kiệt tác kiến trúc cổ Việt Nam với gác chuông 3 tầng bằng gỗ lim độc nhất vô nhị, gắn liền với lễ hội truyền thống đặc sắc.',
+    img: '/images/hungyen/hungyen_chua_keo.jpg'
   },
   {
     id: 'lang-huong-cao',
@@ -103,8 +112,8 @@ const EXPLORE_DESTINATIONS = [
     type: 'craft',
     typeLabel: 'Làng nghề truyền thống',
     location: 'Huyện Ân Thi',
-    desc: 'Nổi tiếng khắp cả nước với hương thơm thảo mộc tự nhiên tinh tế, lưu giữ bí quyết gia truyền từ thế kỷ 18.',
-    img: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80'
+    desc: 'Nổi tiếng khắp cả nước với hương thơm thảo mộc tự nhiên tinh tế, sắc đỏ rực rỡ và bí quyết thảo dược gia truyền từ thế kỷ 18.',
+    img: '/images/hungyen/hungyen_lang_huong.jpg'
   },
   {
     id: 'nhan-long',
@@ -113,74 +122,65 @@ const EXPLORE_DESTINATIONS = [
     typeLabel: 'Ẩm thực & Đặc sản',
     location: 'TP. Hưng Yên & Khoái Châu',
     desc: 'Vương giả chi quả tiến vua nức tiếng với cùi dày, giòn ngọt, hương thơm thanh khiết của vùng phù sa châu thổ sông Hồng.',
-    img: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'tuong-ban',
-    title: 'Làng nghề Tương Bần truyền thống',
-    type: 'cuisine',
-    typeLabel: 'Ẩm thực & Đặc sản',
-    location: 'Thị xã Mỹ Hào',
-    desc: 'Món nước chấm trứ danh làm từ gạo nếp cái hoa vàng, đỗ tương và mốc men gia truyền ngọt bùi đậm đà.',
-    img: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80'
+    img: '/images/hungyen/hungyen_nhan_long.jpg'
   },
   {
     id: 'lang-hoa-xuan-quan',
-    title: 'Làng hoa & cây cảnh sinh thái Phụng Công - Xuân Quan',
+    title: 'Làng hoa & cây cảnh Phụng Công - Xuân Quan',
     type: 'eco',
     typeLabel: 'Sinh thái & Trải nghiệm',
     location: 'Huyện Văn Giang',
-    desc: 'Thủ phủ hoa cây cảnh hiện đại ven đô, cung cấp hàng ngàn giống hoa rực rỡ và mô hình nông nghiệp sinh thái xanh.',
-    img: 'https://images.unsplash.com/photo-1508615039623-a25605d2b022?auto=format&fit=crop&w=800&q=80'
+    desc: 'Thủ phủ hoa cây cảnh và vựa quất cảnh trù phú ven sông Hồng, cung cấp hoa kiểng cho toàn miền Bắc và du lịch sinh thái.',
+    img: '/images/hungyen/hungyen_lang_hoa_vangiang.jpg'
   },
   {
-    id: 'kinh-te-bien-con-vanh',
-    title: 'Khu sinh thái & Không gian kinh tế biển',
-    type: 'eco',
-    typeLabel: 'Sinh thái & Ven biển',
-    location: 'Vùng ven biển Hưng Yên mở rộng',
-    desc: 'Rừng ngập mặn trù phú, cồn cát ven biển thoáng đãng và tiềm năng phát triển du lịch sinh thái gắn với kinh tế biển.',
-    img: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'
+    id: 'den-da-hoa',
+    title: 'Đền Đa Hòa — Huyền tích Chử Đồng Tử Tiên Dung',
+    type: 'heritage',
+    typeLabel: 'Di sản & Tâm linh',
+    location: 'Huyện Khoái Châu',
+    desc: 'Ngôi đền cổ kính tuyệt mỹ soi bóng sông Hồng, tôn vinh mối tình bất tử trong Tứ bất tử văn hóa dân gian Việt Nam.',
+    img: '/images/hungyen/hungyen_den_da_hoa.jpg'
   }
 ];
 
 // 6 Sản phẩm OCOP & Đặc sản tiêu biểu Hưng Yên
 const OCOP_PRODUCTS = [
   {
-    name: 'Nhãn lồng sấy dẻo Phố Hiến',
-    category: 'OCOP 4 Sao • Nông sản chế biến',
-    desc: 'Công nghệ sấy nhiệt độ thấp giữ nguyên vị ngọt đậm và dinh dưỡng tự nhiên.',
-    img: 'https://images.unsplash.com/photo-1615485290382-441e4d049cb5?auto=format&fit=crop&w=600&q=80'
+    name: 'Nhãn lồng tiến vua Phố Hiến',
+    category: 'OCOP 5 Sao • Đặc sản Tiến Vua',
+    desc: 'Trái to, cùi dày giòn ngọt nước, hương thơm quý phái được bảo hộ chỉ dẫn địa lý toàn cầu.',
+    img: '/images/hungyen/hungyen_nhan_long.jpg'
   },
   {
-    name: 'Tương Bần Hảo Hạng',
+    name: 'Gà Đông Tảo thuần chủng Khoái Châu',
+    category: 'Đặc sản Tiến Vua • Nông nghiệp quý hiếm',
+    desc: 'Đôi chân to vảy rồng đặc trưng, thịt chắc thơm ngọt đậm đà, quà biếu thượng hạng xứ nhãn.',
+    img: '/images/hungyen/hungyen_ga_dong_tao.jpg'
+  },
+  {
+    name: 'Tương Bần Mỹ Hào hảo hạng',
     category: 'OCOP 4 Sao • Gia vị truyền thống',
-    desc: 'Sản xuất theo quy trình cổ truyền lên men tự nhiên từ nếp cái hoa vàng.',
-    img: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80'
+    desc: 'Lên men tự nhiên từ gạo nếp cái hoa vàng và đỗ tương thơm ngon, nước chấm trứ danh xứ Bắc.',
+    img: '/images/hungyen/hungyen_den_da_hoa.jpg'
   },
   {
-    name: 'Mật ong hoa nhãn nguyên chất',
-    category: 'OCOP 3 Sao • Nông sản sạch',
-    desc: 'Thu hoạch từ các vườn nhãn hữu cơ nở rộ ven sông Hồng, màu vàng óng sánh mịn.',
-    img: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?auto=format&fit=crop&w=600&q=80'
+    name: 'Mật ong hoa nhãn nguyên chất Hưng Yên',
+    category: 'OCOP 4 Sao • Nông sản sạch',
+    desc: 'Thu hoạch từ những vườn nhãn bạt ngàn nở rộ ven đê sông Hồng, sánh mịn vàng óng tự nhiên.',
+    img: '/images/hungyen/hungyen_lang_hoa_vangiang.jpg'
   },
   {
-    name: 'Gà Đông Tảo thuần chủng',
-    category: 'Đặc sản Tiến Vua • Khoái Châu',
-    desc: 'Giống gà quý hiếm với đôi chân to đặc trưng, thịt chắc ngọt giàu giá trị dinh dưỡng.',
-    img: 'https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?auto=format&fit=crop&w=600&q=80'
+    name: 'Hoa kiểng & Bonsai Văn Giang',
+    category: 'Nông nghiệp sinh thái đô thị',
+    desc: 'Nghệ thuật cây cảnh thế và hoa rực rỡ phục vụ lễ hội, đô thị sinh thái Vùng Thủ đô.',
+    img: '/images/hungyen/hungyen_lang_huong.jpg'
   },
   {
-    name: 'Bánh răng bừa (bánh tẻ) Văn Giang',
-    category: 'Ẩm thực truyền thống địa phương',
-    desc: 'Làm từ bột gạo tẻ xay nước, nhân thịt mộc nhĩ thơm ngậy, gói lá dong thơm mát.',
-    img: 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?auto=format&fit=crop&w=600&q=80'
-  },
-  {
-    name: 'Chuối tiêu hồng Khoái Châu',
-    category: 'OCOP 3 Sao • Trái cây xuất khẩu',
-    desc: 'Quả vàng bóng, thịt dẻo thơm ngát, đạt tiêu chuẩn VietGAP xuất khẩu quốc tế.',
-    img: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?auto=format&fit=crop&w=600&q=80'
+    name: 'Sản phẩm mây tre đan đó Thủ Sỹ',
+    category: 'OCOP 3 Sao • Thủ công mỹ nghệ',
+    desc: 'Những chiếc đó tre tinh xảo vừa là ngư cụ truyền thống vừa là tác phẩm trang trí mỹ thuật độc đáo.',
+    img: '/images/hungyen/hungyen_lang_dan_do.jpg'
   }
 ];
 
@@ -238,6 +238,34 @@ export const Home = () => {
   // State dữ liệu sự kiện từ backend
   const [eventsList, setEventsList] = useState([]);
   const [eventsLoading, setEventsLoading] = useState(true);
+
+  // State danh sách bài viết & bộ lọc chuyên mục
+  const [postsList, setPostsList] = useState([]);
+  const [postsLoading, setPostsLoading] = useState(true);
+  const [activePostCategory, setActivePostCategory] = useState('all');
+
+  // Nạp bài viết từ backend hoặc fallback Hưng Yên
+  useEffect(() => {
+    let isMounted = true;
+    const fetchPosts = async () => {
+      try {
+        const res = await fetchJsonWithTimeout('/api/posts?limit=8');
+        if (isMounted) {
+          if (res?.data && Array.isArray(res.data) && res.data.length > 0) {
+            setPostsList(res.data);
+          } else {
+            setPostsList(FALLBACK_POSTS);
+          }
+        }
+      } catch (err) {
+        if (isMounted) setPostsList(FALLBACK_POSTS);
+      } finally {
+        if (isMounted) setPostsLoading(false);
+      }
+    };
+    fetchPosts();
+    return () => { isMounted = false; };
+  }, []);
 
   // State Form tiếp nhận nhu cầu kết nối (Gửi đến /api/leads)
   const [formData, setFormData] = useState({
@@ -334,6 +362,26 @@ export const Home = () => {
   const filteredDestinations = exploreFilter === 'all' 
     ? EXPLORE_DESTINATIONS 
     : EXPLORE_DESTINATIONS.filter(d => d.type === exploreFilter);
+
+  // Lọc danh sách bài viết theo chuyên mục
+  const filteredPosts = postsList.filter((post) => {
+    if (activePostCategory === 'all') return true;
+    const cat = `${post.category || ''} ${post.sub_category || ''} ${post.title || ''}`.toLowerCase();
+    if (activePostCategory === 'kinh-te') {
+      return cat.includes('đầu tư') || cat.includes('kinh tế') || cat.includes('công nghiệp') || cat.includes('kcn') || cat.includes('doanh nghiệp');
+    }
+    if (activePostCategory === 'di-san') {
+      return cat.includes('di sản') || cat.includes('văn hóa') || cat.includes('du lịch') || cat.includes('phố hiến') || cat.includes('làng nghề');
+    }
+    if (activePostCategory === 'ocop') {
+      return cat.includes('ocop') || cat.includes('nông sản') || cat.includes('sản phẩm') || cat.includes('đặc sản') || cat.includes('nhãn');
+    }
+    return true;
+  });
+
+  const featuredPost = filteredPosts[0] || postsList[0];
+  const sidePosts = filteredPosts.length > 1 ? filteredPosts.slice(1, 4) : postsList.slice(1, 4);
+  const bottomPosts = filteredPosts.length > 4 ? filteredPosts.slice(4, 7) : (postsList.length > 4 ? postsList.slice(4, 7) : []);
 
   return (
     <div className="hy-home-wrapper">
@@ -507,7 +555,176 @@ export const Home = () => {
               ))}
             </div>
           </section>
+        </div>
 
+        {/* =========================================================================
+            KHU VỰC BÀI VIẾT TIÊU ĐIỂM & ĐIỂM TIN MỚI (BENTO SPOTLIGHT)
+            Nổi bật bài viết mới, phong cách hiện đại Bento Box Magazine
+            ========================================================================= */}
+        <section className="hy-posts-section">
+          <div className="hy-container">
+            <div className="hy-posts-header">
+              <div>
+                <span className="hy-section-badge">Bản tin & Tiêu điểm</span>
+                <h2 className="hy-section-title">Điểm Tin Mới & Bài Viết Nổi Bật</h2>
+                <p className="hy-section-desc">
+                  Cập nhật chuyển động kinh tế, xúc tiến đầu tư, nhịp sống di sản và nông sản đặc sắc Hưng Yên.
+                </p>
+                <div className="hy-posts-filter-tabs">
+                  <button
+                    type="button"
+                    className={`hy-post-pill-btn ${activePostCategory === 'all' ? 'active' : ''}`}
+                    onClick={() => setActivePostCategory('all')}
+                  >
+                    <i className="ti ti-layout-grid" /> Tất cả bài viết
+                  </button>
+                  <button
+                    type="button"
+                    className={`hy-post-pill-btn ${activePostCategory === 'kinh-te' ? 'active' : ''}`}
+                    onClick={() => setActivePostCategory('kinh-te')}
+                  >
+                    <i className="ti ti-chart-line" /> Kinh tế & Đầu tư
+                  </button>
+                  <button
+                    type="button"
+                    className={`hy-post-pill-btn ${activePostCategory === 'di-san' ? 'active' : ''}`}
+                    onClick={() => setActivePostCategory('di-san')}
+                  >
+                    <i className="ti ti-building-monument" /> Di sản & Văn hóa
+                  </button>
+                  <button
+                    type="button"
+                    className={`hy-post-pill-btn ${activePostCategory === 'ocop' ? 'active' : ''}`}
+                    onClick={() => setActivePostCategory('ocop')}
+                  >
+                    <i className="ti ti-leaf" /> Nông sản & OCOP
+                  </button>
+                </div>
+              </div>
+
+              <Link to="/posts" className="hy-posts-view-all-btn">
+                <span>Xem toàn bộ bài viết</span>
+                <i className="ti ti-arrow-right" />
+              </Link>
+            </div>
+
+            {/* Bento Grid */}
+            {featuredPost && (
+              <div className="hy-posts-bento-grid">
+                {/* Cột Trái: Spotlight Hero Card */}
+                <Link 
+                  to={featuredPost.slug ? `/posts/${featuredPost.slug}` : `/posts/${featuredPost.id || featuredPost._id || ''}`} 
+                  className="hy-post-spotlight-card"
+                >
+                  <div className="hy-post-spotlight-img-wrap">
+                    <img 
+                      src={featuredPost.image_url || featuredPost.cover_image || featuredPost.img || featuredPost.image || '/images/hungyen/hungyen_kcn_thang_long.jpg'} 
+                      alt={featuredPost.title} 
+                      className="hy-post-spotlight-img"
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className="hy-post-spotlight-overlay" />
+                  <div className="hy-post-spotlight-content">
+                    <div className="hy-post-spotlight-badges">
+                      <span className="hy-post-cat-badge">
+                        {featuredPost.sub_category || featuredPost.category || 'Tiêu Điểm'}
+                      </span>
+                      <span className="hy-post-trending-badge">
+                        <i className="ti ti-flame" /> MỚI NHẤT
+                      </span>
+                    </div>
+                    <h3 className="hy-post-spotlight-title">{featuredPost.title}</h3>
+                    <p className="hy-post-spotlight-desc">
+                      {featuredPost.summary || featuredPost.excerpt || featuredPost.desc}
+                    </p>
+                    <div className="hy-post-spotlight-footer">
+                      <span>
+                        <i className="ti ti-user" /> {featuredPost.author_name || featuredPost.author || 'Ban Biên Tập'} • {featuredPost.created_at ? new Date(featuredPost.created_at).toLocaleDateString('vi-VN') : 'Mới cập nhật'}
+                      </span>
+                      <span className="hy-post-read-cta">
+                        Đọc bài viết <i className="ti ti-arrow-right" />
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+
+                {/* Cột Phải: Side Stack */}
+                <div className="hy-posts-side-stack">
+                  {sidePosts.map((post, idx) => (
+                    <Link 
+                      key={post.id || post._id || idx} 
+                      to={post.slug ? `/posts/${post.slug}` : `/posts/${post.id || post._id || idx}`} 
+                      className="hy-post-side-card"
+                    >
+                      <div className="hy-post-side-thumb">
+                        <img 
+                          src={post.image_url || post.cover_image || post.img || post.image || '/images/hungyen/hungyen_nhan_long.jpg'} 
+                          alt={post.title} 
+                          loading="lazy"
+                        />
+                      </div>
+                      <div className="hy-post-side-info">
+                        <span className="hy-post-side-cat">
+                          {post.sub_category || post.category || 'Tin tức'}
+                        </span>
+                        <h4 className="hy-post-side-title">{post.title}</h4>
+                        <div className="hy-post-side-meta">
+                          <span>
+                            <i className="ti ti-calendar" /> {post.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : 'Hôm nay'}
+                          </span>
+                          <span>
+                            <i className="ti ti-eye" /> {post.views ? post.views.toLocaleString() : '1,200'} xem
+                          </span>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Hàng Dưới: Mini Cards */}
+            {bottomPosts.length > 0 && (
+              <div className="hy-posts-bottom-row">
+                {bottomPosts.map((post, idx) => (
+                  <Link 
+                    key={post.id || post._id || idx} 
+                    to={post.slug ? `/posts/${post.slug}` : `/posts/${post.id || post._id || idx}`} 
+                    className="hy-post-mini-card"
+                  >
+                    <div className="hy-post-mini-thumb">
+                      <img 
+                        src={post.image_url || post.cover_image || post.img || post.image || '/images/hungyen/hungyen_den_mau.jpg'} 
+                        alt={post.title} 
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className="hy-post-mini-body">
+                      <span className="hy-post-side-cat">
+                        {post.sub_category || post.category || 'Khám phá'}
+                      </span>
+                      <h4 className="hy-post-mini-title">{post.title}</h4>
+                      <p className="hy-post-mini-desc">
+                        {post.summary || post.excerpt || post.desc}
+                      </p>
+                      <div className="hy-post-side-meta" style={{ marginTop: 'auto' }}>
+                        <span>
+                          <i className="ti ti-calendar" /> {post.created_at ? new Date(post.created_at).toLocaleDateString('vi-VN') : 'Gần đây'}
+                        </span>
+                        <span>
+                          <i className="ti ti-eye" /> {post.views ? post.views.toLocaleString() : '850'} xem
+                        </span>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+
+        <div className="hy-container">
           {/* =========================================================================
               KHU VỰC 5: KHÁM PHÁ HƯNG YÊN (DI SẢN, LÀNG NGHỀ, ẨM THỰC, SINH THÁI)
               ========================================================================= */}

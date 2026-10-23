@@ -52,8 +52,8 @@
   justify-content: center;
   background-color: #081D23;
   background-image: 
-    linear-gradient(180deg, rgba(8, 29, 35, 0.72) 0%, rgba(18, 59, 70, 0.85) 60%, rgba(8, 29, 35, 0.95) 100%),
-    url('https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1920&q=85');
+    linear-gradient(180deg, rgba(8, 29, 35, 0.65) 0%, rgba(18, 59, 70, 0.76) 50%, rgba(8, 29, 35, 0.94) 100%),
+    url('/images/hungyen/hungyen_hero_banner.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: scroll;
@@ -1323,6 +1323,425 @@ textarea.hy-form-control {
   font-size: 16px;
   font-weight: 600;
   line-height: 1.6;
+}
+
+/* ==============================================================================
+   BLOCK BÀI VIẾT TIÊU ĐIỂM & BẢNG TIN MỚI (POSTS SPOTLIGHT SECTION)
+   Thiết kế sáng tạo Bento Box: Cột trái Spotlight lớn + Cột phải Trending Stack
+   ============================================================================== */
+.hy-posts-section {
+  padding: 4.5rem 0 3rem;
+  background: linear-gradient(180deg, #FAF8F3 0%, #F5F1E8 100%);
+  border-top: 1px solid rgba(18, 59, 70, 0.08);
+  border-bottom: 1px solid rgba(18, 59, 70, 0.08);
+}
+
+.hy-posts-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.hy-posts-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 1rem;
+}
+
+.hy-post-pill-btn {
+  background: #FFFFFF;
+  border: 1px solid rgba(18, 59, 70, 0.15);
+  color: var(--hy-text-main);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hy-post-pill-btn:hover {
+  background: rgba(18, 59, 70, 0.06);
+  border-color: var(--hy-primary);
+  color: var(--hy-primary);
+}
+
+.hy-post-pill-btn.active {
+  background: var(--hy-primary);
+  border-color: var(--hy-primary);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(18, 59, 70, 0.25);
+}
+
+.hy-posts-view-all-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--hy-primary);
+  font-weight: 700;
+  font-size: 13.5px;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: rgba(18, 59, 70, 0.06);
+  border: 1px solid rgba(18, 59, 70, 0.12);
+  transition: all 0.2s ease;
+}
+
+.hy-posts-view-all-btn:hover {
+  background: var(--hy-primary);
+  color: #FFFFFF;
+  transform: translateX(3px);
+}
+
+/* Bento Grid 2 Columns */
+.hy-posts-bento-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* Cột Trái: Spotlight Hero Card */
+.hy-post-spotlight-card {
+  position: relative;
+  background: #081D23;
+  border-radius: 18px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: 460px;
+  text-decoration: none;
+  color: #FFFFFF;
+  box-shadow: 0 16px 36px -4px rgba(8, 29, 35, 0.2);
+  border: 1px solid rgba(207, 163, 74, 0.35);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hy-post-spotlight-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--hy-gold);
+  box-shadow: 0 24px 48px -6px rgba(8, 29, 35, 0.35), 0 0 20px rgba(207, 163, 74, 0.25);
+}
+
+.hy-post-spotlight-img-wrap {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hy-post-spotlight-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.hy-post-spotlight-card:hover .hy-post-spotlight-img {
+  transform: scale(1.05);
+}
+
+.hy-post-spotlight-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(8, 29, 35, 0.1) 0%, rgba(8, 29, 35, 0.6) 45%, rgba(8, 29, 35, 0.96) 100%);
+  pointer-events: none;
+}
+
+.hy-post-spotlight-content {
+  position: relative;
+  z-index: 2;
+  padding: 2.25rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.hy-post-spotlight-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hy-post-cat-badge {
+  background: rgba(207, 163, 74, 0.9);
+  color: #081D23;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hy-post-trending-badge {
+  background: rgba(239, 68, 68, 0.85);
+  color: #FFFFFF;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hy-post-spotlight-title {
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: clamp(1.25rem, 2.2vw, 1.7rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  line-height: 1.35;
+  margin: 0;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  transition: color 0.2s;
+}
+
+.hy-post-spotlight-card:hover .hy-post-spotlight-title {
+  color: #F2D794;
+}
+
+.hy-post-spotlight-desc {
+  font-size: 13.5px;
+  color: #D1E0E5;
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.hy-post-spotlight-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 6px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  font-size: 12px;
+  color: #B5C4C9;
+}
+
+.hy-post-read-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #F2D794;
+  font-weight: 700;
+  font-size: 12.5px;
+}
+
+/* Cột Phải: Side Stack */
+.hy-posts-side-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  justify-content: space-between;
+}
+
+.hy-post-side-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: #FFFFFF;
+  padding: 14px 16px;
+  border-radius: 14px;
+  text-decoration: none;
+  color: var(--hy-text-main);
+  border: 1px solid rgba(18, 59, 70, 0.1);
+  box-shadow: 0 4px 14px -2px rgba(18, 59, 70, 0.05);
+  transition: all 0.25s ease;
+  flex: 1;
+}
+
+.hy-post-side-card:hover {
+  transform: translateX(4px);
+  border-color: rgba(207, 163, 74, 0.6);
+  box-shadow: 0 8px 24px -2px rgba(18, 59, 70, 0.1), 0 0 12px rgba(207, 163, 74, 0.15);
+  background: #FCFBF7;
+}
+
+.hy-post-side-thumb {
+  width: 110px;
+  height: 85px;
+  border-radius: 10px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #E7EEF0;
+}
+
+.hy-post-side-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.hy-post-side-card:hover .hy-post-side-thumb img {
+  transform: scale(1.08);
+}
+
+.hy-post-side-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.hy-post-side-cat {
+  font-size: 11px;
+  font-weight: 700;
+  color: #123B46;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.hy-post-side-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #172D36;
+  line-height: 1.4;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.2s;
+}
+
+.hy-post-side-card:hover .hy-post-side-title {
+  color: #CFA34A;
+}
+
+.hy-post-side-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 11.5px;
+  color: #7E959E;
+  margin-top: 2px;
+}
+
+/* Hàng 3 Card Bổ Sung Bên Dưới */
+.hy-posts-bottom-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 24px;
+}
+
+.hy-post-mini-card {
+  background: #FFFFFF;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(18, 59, 70, 0.08);
+  box-shadow: 0 4px 16px -2px rgba(18, 59, 70, 0.05);
+  text-decoration: none;
+  color: var(--hy-text-main);
+  display: flex;
+  flex-direction: column;
+  transition: all 0.25s ease;
+}
+
+.hy-post-mini-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(207, 163, 74, 0.5);
+  box-shadow: 0 12px 28px -4px rgba(18, 59, 70, 0.1);
+}
+
+.hy-post-mini-thumb {
+  width: 100%;
+  height: 160px;
+  position: relative;
+  overflow: hidden;
+  background: #E7EEF0;
+}
+
+.hy-post-mini-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.hy-post-mini-card:hover .hy-post-mini-thumb img {
+  transform: scale(1.06);
+}
+
+.hy-post-mini-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.hy-post-mini-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #172D36;
+  line-height: 1.4;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 0.2s;
+}
+
+.hy-post-mini-card:hover .hy-post-mini-title {
+  color: #CFA34A;
+}
+
+.hy-post-mini-desc {
+  font-size: 12.5px;
+  color: #536D77;
+  line-height: 1.55;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* RESPONSIVE POSTS */
+@media (max-width: 1024px) {
+  .hy-posts-bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .hy-post-spotlight-card {
+    min-height: 380px;
+  }
+  .hy-posts-bottom-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .hy-posts-bottom-row {
+    grid-template-columns: 1fr;
+  }
+  .hy-post-side-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .hy-post-side-thumb {
+    width: 100%;
+    height: 140px;
+  }
 }
 
 /* RESPONSIVE RULES */
