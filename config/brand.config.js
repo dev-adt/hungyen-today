@@ -8,16 +8,16 @@
 require('dotenv').config();
 
 const brandConfig = {
-  appName: process.env.APP_NAME || 'DakLak.today Platform',
-  brandName: process.env.BRAND_NAME || 'DakLak.today',
-  brandShortName: process.env.BRAND_SHORT_NAME || 'DakLak',
-  siteUrl: process.env.SITE_URL || 'https://daklak.today',
-  demoSiteUrl: 'https://demo.daklak.today',
+  appName: process.env.APP_NAME || 'HungYen.today Platform',
+  brandName: process.env.BRAND_NAME || 'HungYen.today',
+  brandShortName: process.env.BRAND_SHORT_NAME || 'Hưng Yên Today',
+  siteUrl: process.env.SITE_URL || 'https://hungyen.today',
+  demoSiteUrl: 'https://hungyen.today',
   
   // Nhận diện logo thương hiệu
   logo: {
-    primary: '/logo_daklak.png',
-    dark: '/logo_daklak_dark.png',
+    primary: '/logo_icon.svg',
+    dark: '/logo_icon.svg',
     icon: '/logo_icon.svg',
     favicon: '/favicon.svg'
   },
@@ -25,35 +25,34 @@ const brandConfig = {
   // Thông tin thanh toán ngân hàng (VietQR)
   bankAccount: {
     bankName: 'Techcombank',
-    bankBranch: 'PGD Buôn Ma Thuột / PGD Văn Quán',
+    bankBranch: 'PGD Văn Quán / Chi nhánh Hà Nội',
     accountNumber: '19036730021017',
     accountHolder: 'CONG TY CO PHAN ADT QUOC TE',
     binCode: '970407'
   },
 
-  // AI System Persona Prompt cho Đắk Lắk
+  // AI System Persona Prompt cho Hưng Yên
   ai: {
-    agentName: process.env.AI_AGENT_NAME || 'AI Đắk Lắk Assistant',
+    agentName: process.env.AI_AGENT_NAME || 'Hưng Yên AI Assistant',
     systemPrompt: process.env.AI_SYSTEM_PROMPT || 
-      "Bạn là trợ lý AI chuyên nghiệp của nền tảng DakLak.today — Cổng thông tin, dữ liệu và kết nối đầu tư Đắk Lắk. Hãy tư vấn sâu sắc, chuẩn xác, giàu thông tin và truyền cảm hứng về cơ hội đầu tư, quy hoạch vùng, chuỗi giá trị cà phê Buôn Ma Thuột, nông sản Tây Nguyên, văn hóa cồng chiêng và du lịch sinh thái."
+      "Bạn là trợ lý AI chuyên nghiệp của nền tảng HungYen.today — Nền tảng kết nối hợp tác, xúc tiến đầu tư và quảng bá tỉnh Hưng Yên tích hợp AI. Hãy tư vấn sâu sắc, chuẩn xác, giàu thông tin và truyền cảm hứng về cơ hội đầu tư, quy hoạch vùng, chuỗi cung ứng công nghiệp, nông nghiệp hữu cơ, sản vật OCOP, di sản Phố Hiến và kinh tế biển của tỉnh Hưng Yên."
   },
 
   // Email Brand Info
   email: {
-    fromName: process.env.SMTP_FROM_NAME || 'Ban Biên Tập DakLak.today',
-    fromAddress: process.env.SMTP_FROM || `"DakLak.today" <${process.env.SMTP_USER || 'no-reply@daklak.today'}>`,
-    supportEmail: process.env.SUPPORT_EMAIL || 'support@daklak.today'
+    fromName: process.env.SMTP_FROM_NAME || 'Ban Biên Tập HungYen.today',
+    fromAddress: process.env.SMTP_FROM || `"HungYen.today" <${process.env.SMTP_USER || 'no-reply@hungyen.today'}>`,
+    supportEmail: process.env.SUPPORT_EMAIL || 'support@hungyen.today'
   },
 
-  // 7 Chuyên mục mặc định Đắk Lắk theo Đặc tả kiến trúc hệ sinh thái số
+  // 6 Chuyên mục chuẩn Hưng Yên Today
   defaultCategories: [
-    { name: 'Khám phá Đắk Lắk', slug: 'kham-pha-dak-lak', icon: '🌄', description: 'Điểm đến, di tích, danh lam thắng cảnh và văn hóa Tây Nguyên' },
-    { name: 'Doanh nghiệp & Sản phẩm', slug: 'doanh-nghiep-san-pham', icon: '🏢', description: 'Hồ sơ doanh nghiệp, nông sản OCOP, showroom số và kết nối thương mại' },
-    { name: 'Đầu tư & Dự án', slug: 'dau-tu-du-an', icon: '💰', description: 'Danh mục dự án kêu gọi đầu tư, KCN, vùng nguyên liệu và chính sách' },
-    { name: 'Cà phê Đắk Lắk', slug: 'ca-phe-dak-lak', icon: '☕', description: 'Chuỗi giá trị cà phê, công nghệ chế biến sâu, thương hiệu và xuất khẩu' },
-    { name: 'Du lịch & Trải nghiệm', slug: 'du-lich-trai-nghiem', icon: '🧭', description: 'Hành trình 2N1Đ, 3N2Đ, du lịch sinh thái, homestay và lễ hội' },
-    { name: 'Dữ liệu & Báo cáo', slug: 'du-lieu-bao-cao', icon: '📊', description: 'Chỉ số kinh tế Đắk Lắk, bản đồ cơ hội và phân tích dữ liệu ngành' },
-    { name: 'Sự kiện & Diễn đàn', slug: 'su-kien-dien-dan', icon: '📅', description: 'Lễ hội cà phê, diễn đàn xúc tiến đầu tư và kết nối giao thương B2B' }
+    { name: 'Khám phá Hưng Yên', slug: 'kham-pha-hung-yen', icon: '🏯', description: 'Di sản Phố Hiến, văn hóa làng nghề, ẩm thực đặc sản và trải nghiệm sinh thái ven biển' },
+    { name: 'Doanh nghiệp & Sản phẩm', slug: 'doanh-nghiep-san-pham', icon: '🏢', description: 'Hồ sơ doanh nghiệp, sản phẩm OCOP, nông sản chất lượng cao và showroom số' },
+    { name: 'Giao thương và Đầu tư', slug: 'giao-thuong-va-dau-tu', icon: '💼', description: 'Môi trường đầu tư, KCN hiện đại, cơ hội hợp tác và chuỗi logistics liên vùng' },
+    { name: 'Sự kiện & Diễn đàn', slug: 'su-kien-dien-dan', icon: '📅', description: 'Lịch sự kiện kinh tế, hội nghị xúc tiến đầu tư và kết nối giao thương B2B' },
+    { name: 'Cộng đồng', slug: 'cong-dong', icon: '🤝', description: 'Mạng lưới doanh nghiệp, chuyên gia, người Hưng Yên toàn cầu và cộng tác viên' },
+    { name: 'AI Center', slug: 'ai-center', icon: '✨', description: 'Trợ lý AI Hưng Yên, nền tảng ORION và các giải pháp AI tiên tiến từ ADT' }
   ]
 };
 

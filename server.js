@@ -77,7 +77,7 @@ if (process.env.SMTP_HOST) {
 }
 
 const app  = express();
-const PORT = process.env.PORT || 3028;
+const PORT = process.env.PORT || 3031;
 
 // Helper tạo URL slug chuẩn SEO từ chuỗi tiếng Việt
 function slugify(text) {
@@ -5335,8 +5335,8 @@ app.get('*', async (req, res) => {
 
   // Default site metadata (hiển thị Logo của web khi share trang chủ hoặc trang chung)
   let meta = {
-    title: 'DakLak.today — Cổng thông tin, dữ liệu và kết nối đầu tư Đắk Lắk',
-    description: 'DakLak.today kết nối con người, doanh nghiệp, sản phẩm, du lịch, dữ liệu và cơ hội đầu tư của tỉnh Đắk Lắk bằng nền tảng số và trí tuệ nhân tạo.',
+    title: 'Hưng Yên Today — Khám phá và kết nối hợp tác',
+    description: 'Khám phá Hưng Yên, kết nối doanh nghiệp, sản phẩm và cơ hội hợp tác trên nền tảng tích hợp AI, với thông tin rõ nguồn và cập nhật.',
     image: `${baseUrl}/logo_icon.png`,
     url: currentUrl,
     type: 'website'
@@ -5364,7 +5364,7 @@ app.get('*', async (req, res) => {
         const [postRows] = await db.query(q, p);
         if (postRows.length) {
           const post = postRows[0];
-          meta.title = `${post.title} — DakLak.today`;
+          meta.title = `${post.title} — HungYen.today`;
           meta.description = cleanDescription(post.summary, post.body, meta.description);
           meta.image = resolveImageUrl(post.image_url, baseUrl);
           meta.url = `${baseUrl}/posts/${post.slug || post.id}`;
@@ -5382,8 +5382,8 @@ app.get('*', async (req, res) => {
         );
         if (memRows.length) {
           const m = memRows[0];
-          meta.title = `${m.company_name || m.name} — Hội viên DakLak.today`;
-          meta.description = cleanDescription(m.description, '', `Hồ sơ doanh nghiệp ${m.company_name || m.name} trên Cổng thông tin Đắk Lắk.`);
+          meta.title = `${m.company_name || m.name} — HungYen.today`;
+          meta.description = cleanDescription(m.description, '', `Hồ sơ doanh nghiệp ${m.company_name || m.name} trên Nền tảng Hưng Yên Today.`);
           meta.image = resolveImageUrl(m.logo_url || m.avatar_url, baseUrl);
           meta.url = `${baseUrl}/members/${m.id}`;
         }
@@ -5402,7 +5402,7 @@ app.get('*', async (req, res) => {
         );
         if (evRows.length) {
           const ev = evRows[0];
-          meta.title = `${ev.title} — Sự kiện DakLak.today`;
+          meta.title = `${ev.title} — Sự kiện HungYen.today`;
           meta.description = cleanDescription(ev.summary, '', meta.description);
           meta.image = resolveImageUrl(ev.image_url, baseUrl);
           meta.url = `${baseUrl}/events/${ev.slug || ev.id}`;
@@ -5411,18 +5411,18 @@ app.get('*', async (req, res) => {
     }
     // 4. Các trang danh mục chung
     else if (rawPath === '/posts') {
-      meta.title = 'Cơ hội giao thương & Tin tức — DakLak.today';
-      meta.description = 'Cập nhật tin tức, cơ hội giao thương, danh mục kêu gọi đầu tư và tiềm năng phát triển tỉnh Đắk Lắk.';
+      meta.title = 'Cơ hội giao thương & Tin tức — HungYen.today';
+      meta.description = 'Cập nhật tin tức, cơ hội giao thương, danh mục kêu gọi đầu tư và tiềm năng phát triển tỉnh Hưng Yên.';
       meta.image = `${baseUrl}/logo_icon.png`;
     }
     else if (rawPath === '/members') {
-      meta.title = 'Doanh nghiệp & Hội viên — DakLak.today';
-      meta.description = 'Danh bạ cộng đồng doanh nghiệp, nhà đầu tư, hợp tác xã và thương hiệu tiêu biểu tỉnh Đắk Lắk.';
+      meta.title = 'Doanh nghiệp & Hội viên — HungYen.today';
+      meta.description = 'Danh bạ cộng đồng doanh nghiệp, nhà đầu tư, hợp tác xã và thương hiệu tiêu biểu tỉnh Hưng Yên.';
       meta.image = `${baseUrl}/logo_icon.png`;
     }
     else if (rawPath === '/events' || rawPath === '/su-kien') {
-      meta.title = 'Sự kiện & Hội nghị xúc tiến — DakLak.today';
-      meta.description = 'Thông tin các sự kiện xúc tiến thương mại, hội nghị đầu tư, lễ hội cà phê và diễn đàn kinh tế Đắk Lắk.';
+      meta.title = 'Sự kiện & Hội nghị xúc tiến — HungYen.today';
+      meta.description = 'Thông tin các sự kiện xúc tiến thương mại, hội nghị đầu tư và diễn đàn kinh tế Hưng Yên.';
       meta.image = `${baseUrl}/logo_icon.png`;
     }
   } catch (err) {

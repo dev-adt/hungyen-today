@@ -300,48 +300,52 @@ CREATE TABLE IF NOT EXISTS chat_logs (
 ) ENGINE=InnoDB COMMENT='Lịch sử trò chuyện với AI Bot';
 
 -- ============================================
--- DỮ LIỆU KHỞI TẠO MẪU (DakLak.today)
+-- DỮ LIỆU KHỞI TẠO MẪU (HungYen.today)
 -- ============================================
 
 -- Admin mặc định (Username: admin | Password: Admin@123)
 INSERT INTO admins (username, password_hash, name, email, role) VALUES
-('admin', '$2b$10$3luJFH.EMVPnxeH8BdXn9.5tnCQ9huv13yzOzHrwYGiRhgV7dcufq', 'Ban Quản trị DakLak.today', 'admin@daklak.today', 'superadmin')
+('admin', '$2b$10$3luJFH.EMVPnxeH8BdXn9.5tnCQ9huv13yzOzHrwYGiRhgV7dcufq', 'Ban Quản trị HungYen.today', 'admin@hungyen.today', 'superadmin')
 ON DUPLICATE KEY UPDATE name=VALUES(name);
 
 -- Cấu hình AI mặc định (Google Gemini Flash qua OpenRouter / Google API)
-INSERT INTO ai_config (provider, model, is_active) VALUES ('openrouter', 'google/gemini-3-flash-preview', 1)
+INSERT INTO ai_config (provider, model, is_active) VALUES ('openrouter', 'google/gemini-2.5-flash', 1)
 ON DUPLICATE KEY UPDATE model=VALUES(model);
 
--- Khởi tạo 7 Chuyên mục chính Đắk Lắk
+-- Khởi tạo 6 Chuyên mục chính Hưng Yên
 INSERT INTO categories (name, name_en, slug, order_index, status) VALUES
-('Khám phá Đắk Lắk', 'Discover Dak Lak', 'kham-pha-dak-lak', 1, 'active'),
+('Khám phá Hưng Yên', 'Discover Hung Yen', 'kham-pha-hung-yen', 1, 'active'),
 ('Doanh nghiệp & Sản phẩm', 'Enterprises & Products', 'doanh-nghiep-san-pham', 2, 'active'),
-('Đầu tư & Dự án', 'Investment & Projects', 'dau-tu-du-an', 3, 'active'),
-('Cà phê Đắk Lắk', 'Dak Lak Coffee', 'ca-phe-dak-lak', 4, 'active'),
-('Du lịch & Trải nghiệm', 'Tourism & Experiences', 'du-lich-trai-nghiem', 5, 'active'),
-('Dữ liệu & Báo cáo', 'Data & Reports', 'du-lieu-bao-cao', 6, 'active'),
-('Sự kiện & Diễn đàn', 'Events & Forums', 'su-kien-dien-dan', 7, 'active')
+('Giao thương và Đầu tư', 'Trade & Investment', 'giao-thuong-va-dau-tu', 3, 'active'),
+('Sự kiện & Diễn đàn', 'Events & Forums', 'su-kien-dien-dan', 4, 'active'),
+('Cộng đồng', 'Community', 'cong-dong', 5, 'active'),
+('AI Center', 'AI Center', 'ai-center', 6, 'active')
 ON DUPLICATE KEY UPDATE name=VALUES(name);
 
 -- Khởi tạo Lĩnh vực con tương ứng
 INSERT INTO sub_categories (category_id, name, name_en, slug, order_index, status) VALUES
-(1, 'Điểm đến & Thắng cảnh', 'Destinations & Landscapes', 'diem-den-thang-canh', 1, 'active'),
-(1, 'Văn hóa Cồng chiêng', 'Gong Culture', 'van-hoa-cong-chieng', 2, 'active'),
-(1, 'Ẩm thực Tây Nguyên', 'Central Highlands Cuisine', 'am-thuc-tay-nguyen', 3, 'active'),
+(1, 'Di sản Phố Hiến', 'Pho Hien Heritage', 'di-san-pho-hien', 1, 'active'),
+(1, 'Văn hóa & Làng nghề', 'Culture & Craft Villages', 'van-hoa-lang-nghe', 2, 'active'),
+(1, 'Ẩm thực & Đặc sản', 'Cuisine & Specialties', 'am-thuc-dac-san', 3, 'active'),
+(1, 'Sinh thái & Ven biển', 'Ecology & Coast', 'sinh-thai-ven-bien', 4, 'active'),
 (2, 'Danh bạ Doanh nghiệp', 'Business Directory', 'danh-ba-doanh-nghiep', 1, 'active'),
 (2, 'Sản phẩm OCOP & Nông sản', 'OCOP & Agro-products', 'san-pham-ocop-nong-san', 2, 'active'),
-(2, 'Showroom số', 'Digital Showroom', 'showroom-so', 3, 'active'),
-(3, 'Danh mục Dự án Kêu gọi', 'Invited Projects', 'danh-muc-du-an-keu-goi', 1, 'active'),
+(2, 'Showroom số & Chuỗi cung ứng', 'Digital Showroom & Supply Chain', 'showroom-so-chuoi-cung-ung', 3, 'active'),
+(2, 'Đổi mới sáng tạo & Khởi nghiệp', 'Innovation & Startups', 'doi-moi-sang-tao-khoi-nghiep', 4, 'active'),
+(3, 'Môi trường & Chính sách Đầu tư', 'Investment Policy & Climate', 'moi-truong-chinh-sach-dau-tu', 1, 'active'),
 (3, 'Khu & Cụm công nghiệp', 'Industrial Parks', 'khu-cum-cong-nghiep', 2, 'active'),
-(3, 'Chính sách & Ưu đãi Đầu tư', 'Incentive Policies', 'chinh-sach-uu-dai-dau-tu', 3, 'active'),
-(4, 'Chuỗi giá trị Cà phê', 'Coffee Value Chain', 'chuoi-gia-tri-ca-phe', 1, 'active'),
-(4, 'Công nghệ Chế biến sâu', 'Deep Processing Tech', 'cong-nghe-che-bien-sau', 2, 'active'),
-(4, 'Thương hiệu & Thị trường', 'Brand & Markets', 'thuong-hieu-thi-truong', 3, 'active'),
-(5, 'Hành trình 2N1Đ & 3N2Đ', '2D1N & 3D2N Itineraries', 'hanh-trinh-2n1d-3n2d', 1, 'active'),
-(5, 'Du lịch Sinh thái & Bản làng', 'Ecotourism & Villages', 'du-lich-sinh-thai-ban-lang', 2, 'active'),
-(6, 'Chỉ số Kinh tế - Xã hội', 'Socio-economic Indicators', 'chi-so-kinh-te-xa-hoi', 1, 'active'),
-(6, 'Bản đồ Cơ hội Đắk Lắk', 'Opportunity Map', 'ban-do-co-hoi-dak-lak', 2, 'active'),
-(7, 'Lễ hội Cà phê Buôn Ma Thuột', 'Buon Ma Thuot Coffee Festival', 'le-hoi-ca-phe-buon-ma-thuot', 1, 'active'),
-(7, 'Diễn đàn Xúc tiến Đầu tư', 'Investment Forum', 'dien-dan-xuc-tien-dau-tu', 2, 'active')
+(3, 'Cơ hội Hợp tác Kinh doanh', 'Business Cooperation Opportunities', 'co-hoi-hop-tac-kinh-doanh', 3, 'active'),
+(3, 'Cảng biển & Logistics liên vùng', 'Seaports & Regional Logistics', 'cang-bien-logistics-lien-vung', 4, 'active'),
+(4, 'Hội nghị Xúc tiến Đầu tư', 'Investment Promotion Conference', 'hoi-nghi-xuc-tien-dau-tu', 1, 'active'),
+(4, 'Sự kiện Kết nối Giao thương', 'Trade Matchmaking Events', 'su-kien-ket-noi-giao-thuong', 2, 'active'),
+(4, 'Lễ hội Văn hóa & Du lịch', 'Cultural & Tourism Festivals', 'le-hoi-van-hoa-du-lich', 3, 'active'),
+(5, 'Mạng lưới Doanh nghiệp', 'Enterprise Network', 'mang-luoi-doanh-nghiep', 1, 'active'),
+(5, 'Chuyên gia & Cố vấn', 'Experts & Advisors', 'chuyen-gia-co-van', 2, 'active'),
+(5, 'Người Hưng Yên Toàn cầu', 'Global Hung Yen Community', 'nguoi-hung-yen-toan-cau', 3, 'active'),
+(5, 'Cộng tác viên Nội dung', 'Content Contributors', 'cong-tac-vien-noi-dung', 4, 'active'),
+(6, 'Trợ lý AI Hưng Yên', 'Hung Yen AI Assistant', 'tro-ly-ai-hung-yen', 1, 'active'),
+(6, 'Nền tảng ORION ADT', 'ORION ADT Platform', 'nen-tang-orion-adt', 2, 'active'),
+(6, 'Bộ đôi Trợ lý AI Phường xã', 'Commune & Ward AI Assistant Duo', 'bo-doi-tro-ly-ai-phuong-xa', 3, 'active'),
+(6, 'Giải pháp Edunow.AI', 'Edunow.AI Solution', 'giai-phap-edunow-ai', 4, 'active')
 ON DUPLICATE KEY UPDATE name=VALUES(name);
 

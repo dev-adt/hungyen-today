@@ -1,96 +1,93 @@
 /**
  * BRAND CONFIGURATION (CẤU HÌNH THƯƠNG HIỆU TẬP TRUNG)
  * -------------------------------------------------------------
- * File này quản lý toàn bộ thông tin nhận diện thương hiệu của nền tảng DakLak.today.
- * Định vị: Cổng thông tin, dữ liệu và kết nối đầu tư Đắk Lắk
- * Triết lý: "Từ đất bazan đến cơ hội toàn cầu" (Media + Data + Platform + AI)
+ * File quản lý toàn bộ thông tin nhận diện thương hiệu nền tảng HungYen.today.
+ * Định vị: Nền tảng kết nối hợp tác, xúc tiến đầu tư và quảng bá tỉnh Hưng Yên tích hợp AI
+ * Thông điệp: "Hội tụ phù sa, kết nối tương lai"
  */
 
 export const brandConfig = {
   // Thông tin định danh thương hiệu
-  brandName: 'DakLak.today',         // Tên thương hiệu hiển thị chính
-  brandShortName: 'DakLak',          // Tên viết tắt ngắn gọn (tránh trùng .today)
-  platformName: 'DakLak.today Digital Platform',
-  companyLegalName: 'Cổng thông tin, Dữ liệu & Xúc tiến Đầu tư Đắk Lắk',
+  brandName: 'HungYen.today',
+  brandShortName: 'Hưng Yên Today',
+  platformName: 'HungYen.today Digital Platform',
+  companyLegalName: 'Nền tảng kết nối hợp tác, xúc tiến đầu tư & quảng bá Hưng Yên',
   partnerLegalName: 'Công ty Cổ phần ADT Quốc tế',
   
-  // Slogan & Định vị theo tài liệu thiết kế mới
-  slogan: 'Khám phá • Kết nối • Phát triển',
-  tagline: 'Đắk Lắk – Từ đại ngàn đến biển xanh',
-  description: 'Nền tảng thông tin, khám phá địa phương và kết nối cơ hội kinh doanh Đắk Lắk.',
+  // Slogan & Định vị theo tài liệu Hưng Yên Today
+  slogan: 'Hội tụ phù sa, kết nối tương lai',
+  tagline: 'Khám phá di sản, kết nối doanh nghiệp và mở rộng cơ hội hợp tác tại Hưng Yên trên nền tảng tích hợp AI',
+  description: 'HungYen.today kết nối câu chuyện địa phương với doanh nghiệp, sản phẩm, sự kiện và những người đang tìm cơ hội hợp tác. Dữ liệu được tổ chức để dễ tìm kiếm; AI hỗ trợ gợi ý, còn mỗi kết nối quan trọng đều có đầu mối tiếp nhận.',
   
   // Tên miền & Đường dẫn
-  domain: 'daklak.today',
-  demoDomain: 'dev.daklak.today',
-  baseUrl: 'https://daklak.today',
-  demoUrl: 'https://dev.daklak.today',
+  domain: 'hungyen.today',
+  baseUrl: 'https://hungyen.today',
+  demoUrl: 'https://hungyen.today',
   apiBaseUrl: '/api',
 
   // Nhận diện hình ảnh & Logo
   logo: {
-    primary: '/logo_daklak.png',
-    dark: '/logo_daklak_dark.png',
+    primary: '/logo_icon.svg',
+    dark: '/logo_icon.svg',
     icon: '/logo_icon.svg',
-    alt: 'DakLak.today Logo',
+    alt: 'HungYen.today Logo',
     favicon: '/favicon.svg',
-    defaultThumbnail: '/images/daklak/daklak_doi_ca_phe.jpg',
-    fallbackCompanyLogo: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=400&q=80'
+    defaultThumbnail: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=1200&q=80',
+    fallbackCompanyLogo: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=400&q=80'
   },
 
-  // Hệ màu chuẩn theo tài liệu Thiết kế giao diện Daklak.docx
+  // Bảng màu chuẩn theo tài liệu Định hướng thiết kế Hưng Yên Today
   colors: {
-    forestGreen: '#16734A',   // Xanh đại ngàn (Màu chủ đạo, nút hành động)
-    coffeeOrange: '#E99035',  // Cam cà phê (Điểm nhấn, nội dung nổi bật)
-    oceanBlue: '#168BC3',     // Xanh biển (Du lịch, kinh tế biển)
-    creamBg: '#FAF8F2',       // Trắng kem (Nền trang, tạo cảm giác thoáng)
-    charcoalDark: '#25312D',  // Than đậm (Tiêu đề và nội dung)
-    primary: '#16734A',
-    primaryHover: '#125C3A',
-    primaryDark: '#0E462C',
-    primaryLight: '#FAF8F2',
-    secondary: '#168BC3',
-    accent: '#E99035',
-    accentGlow: 'rgba(233, 144, 53, 0.4)',
-    gold: '#E99035',
-    bazanBrown: '#7A3E1D',
-    coffee: '#3B2417',
-    cream: '#FAF8F2',
-    darkBg: '#1C2421',
-    darkCard: '#25312D'
+    primary: '#123B46',          // Xanh đậm chủ đạo
+    primaryHover: '#0D2B33',
+    primaryDark: '#081D23',
+    primaryLight: '#E7EEF0',
+    creamBg: '#FAF8F3',          // Nền trắng ấm
+    charcoalDark: '#172D36',     // Màu chữ chính
+    gold: '#CFA34A',             // Điểm nhấn vàng
+    goldLight: '#DFBA6B',
+    goldGlow: 'rgba(207, 163, 74, 0.35)',
+    accent: '#CFA34A',
+    accentGlow: 'rgba(207, 163, 74, 0.4)',
+    border: 'rgba(18, 59, 70, 0.12)',
+    borderStrong: 'rgba(18, 59, 70, 0.22)',
+    darkBg: '#0F262D',
+    darkCard: '#163640'
   },
 
   // Trợ lý Trí tuệ Nhân tạo (AI Assistant)
   aiAssistant: {
-    name: 'AI Đắk Lắk Assistant',
-    shortName: 'Đắk Lắk AI',
-    title: 'Trợ lý AI Cố vấn Đầu tư & Điểm đến Đắk Lắk',
+    name: 'Hưng Yên AI Assistant',
+    shortName: 'Trợ lý AI Hưng Yên',
+    title: 'Trợ lý AI Cố vấn Dữ liệu & Kết nối Đầu tư Hưng Yên',
     avatar: '/ai_robot_avatar-removebg.png',
-    welcomeMessage: 'Xin chào! Tôi là Trợ lý AI của DakLak.today. Tôi có thể hỗ trợ quý vị tra cứu cơ hội đầu tư, chuỗi giá trị cà phê, doanh nghiệp địa phương, nông nghiệp công nghệ cao và hành trình khám phá Đắk Lắk 24/7.',
-    systemRole: 'Bạn là trợ lý AI chuyên nghiệp của nền tảng DakLak.today — Cổng thông tin, dữ liệu và kết nối đầu tư Đắk Lắk. Hãy tư vấn sâu sắc, chuẩn xác, giàu thông tin và truyền cảm hứng về cơ hội đầu tư, quy hoạch vùng, chuỗi giá trị cà phê Buôn Ma Thuột, nông sản Tây Nguyên, văn hóa cồng chiêng và du lịch sinh thái.',
+    welcomeMessage: 'Xin chào! Tôi là Trợ lý AI của HungYen.today. Tôi có thể hỗ trợ quý vị tra cứu thông tin di sản Phố Hiến, làng nghề truyền thống, kết nối doanh nghiệp, tìm kiếm nhà cung cấp, cơ hội đầu tư và chính sách ưu đãi tại Hưng Yên 24/7.',
+    systemRole: 'Bạn là trợ lý AI chuyên nghiệp của nền tảng HungYen.today — Nền tảng kết nối hợp tác, xúc tiến đầu tư và quảng bá tỉnh Hưng Yên tích hợp AI. Hãy tư vấn sâu sắc, chuẩn xác, giàu thông tin và truyền cảm hứng về cơ hội đầu tư, quy hoạch vùng, chuỗi cung ứng công nghiệp, nông nghiệp hữu cơ, sản vật OCOP, di sản Phố Hiến và kinh tế biển của tỉnh Hưng Yên.',
     quickSuggestions: [
-      'Tìm doanh nghiệp chế biến sâu cà phê tại Đắk Lắk',
-      'Các dự án nông nghiệp công nghệ cao đang kêu gọi đầu tư',
-      'Gợi ý hành trình du lịch sinh thái & văn hóa 2 ngày 1 đêm',
-      'Chính sách ưu đãi và thủ tục đầu tư vào cụm công nghiệp Đắk Lắk'
+      'Tôi muốn khám phá Hưng Yên cuối tuần',
+      'Tôi cần tìm nhà cung cấp phù hợp tại Hưng Yên',
+      'Tôi muốn giới thiệu doanh nghiệp và đưa sản phẩm lên nền tảng',
+      'Tìm hiểu các khu công nghiệp và chính sách thu hút đầu tư tại Hưng Yên'
     ]
   },
 
-  // Thông tin liên hệ & Văn phòng
+  // Thông tin liên hệ & Đơn vị vận hành
   contact: {
-    hotline: '0262 3888 999',
+    hotline: '0986 354 152',
     techHotline: '0986 354 152',
-    email: 'contact@daklak.today',
-    supportEmail: 'support@daklak.today',
-    address: 'Số 01 Lê Duẩn, Phường Tự An, TP. Buôn Ma Thuột, Tỉnh Đắk Lắk',
-    techAddress: '26 TT23 Khu đô thị Văn Phú, P. Kiến Hưng, Hà Nội',
+    email: 'banbientap@hungyen.today',
+    supportEmail: 'contact@hungyen.today',
+    adtWebsite: 'https://www.adtgroup.net/',
+    address: 'Tỉnh Hưng Yên, Việt Nam',
+    techAddress: 'Công ty Cổ phần ADT Quốc Tế — https://www.adtgroup.net/',
     workingHours: '08:00 - 17:30 (Thứ 2 - Thứ 6)',
-    copyright: '© 2026 DakLak.today — Nền tảng phát triển & vận hành bởi ADT Quốc tế.'
+    copyright: '© 2026 HungYen.today — Nền tảng kết nối hợp tác, xúc tiến đầu tư & quảng bá Hưng Yên tích hợp AI. Phát triển bởi ADT Quốc tế.'
   },
 
-  // Thông tin thanh toán / Chuyển khoản sự kiện (VietQR)
+  // Thông tin thanh toán ngân hàng VietQR
   bankAccount: {
     bankName: 'Techcombank',
-    bankBranch: 'PGD Buôn Ma Thuột / PGD Văn Quán',
+    bankBranch: 'PGD Văn Quán / Chi nhánh Hà Nội',
     accountNumber: '19036730021017',
     accountHolder: 'CONG TY CO PHAN ADT QUOC TE',
     binCode: '970407'
@@ -98,16 +95,16 @@ export const brandConfig = {
 
   // Mạng xã hội
   socials: {
-    facebook: 'https://facebook.com/daklak.today',
-    youtube: 'https://youtube.com/@daklak.today',
-    zalo: 'https://zalo.me/daklaktoday',
-    linkedin: 'https://linkedin.com/company/daklak-today'
+    facebook: 'https://facebook.com/adtgroup.net',
+    youtube: 'https://youtube.com/@adtgroup',
+    zalo: 'https://zalo.me/0986354152',
+    website: 'https://www.adtgroup.net/'
   },
 
-  // Thông tin Đăng ký Hội viên & Gói dịch vụ
+  // Quyền lợi Hội viên & Doanh nghiệp
   membership: {
-    benefitsTitle: 'Quyền lợi Hội viên DakLak.today',
-    badgeText: 'Mạng lưới kết nối doanh nghiệp & nhà đầu tư Đắk Lắk',
+    benefitsTitle: 'Quyền lợi Hội viên HungYen.today',
+    badgeText: 'Mạng lưới kết nối doanh nghiệp & nhà đầu tư Hưng Yên',
     tiers: [
       { id: 'Standard', name: 'Khám phá (Cơ bản)', badge: 'Thành viên Khám phá' },
       { id: 'Silver', name: 'Doanh nghiệp Kết nối', badge: 'Đối tác Bạc' },

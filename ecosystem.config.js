@@ -1,13 +1,13 @@
-// PM2 Ecosystem Config cho DakLak.today
+// PM2 Ecosystem Config cho HungYen.today
 // Chạy: pm2 start ecosystem.config.js
-// Xem log: pm2 logs daklak-today
-// Reload: pm2 reload daklak-today
+// Xem log: pm2 logs hungyen-today
+// Reload: pm2 reload hungyen-today
 // Auto-start khi reboot: pm2 startup && pm2 save
 
 module.exports = {
   apps: [
     {
-      name        : 'daklak-today',
+      name        : 'hungyen-today',
       script      : 'server.js',
       instances   : 1,           // tăng lên 'max' nếu muốn cluster
       exec_mode   : 'fork',
@@ -16,7 +16,7 @@ module.exports = {
 
       env: {
         NODE_ENV : 'production',
-        PORT     : 3028,
+        PORT     : 3031,
       },
 
       // Log

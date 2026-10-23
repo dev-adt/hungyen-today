@@ -45,67 +45,69 @@ html, body {
 
 :root {
   /* Fonts */
-  --font-title: 'Plus Jakarta Sans', 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
-  --font-body: 'Plus Jakarta Sans', 'Be Vietnam Pro', system-ui, -apple-system, sans-serif;
+  --font-title: 'Be Vietnam Pro', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-body: 'Be Vietnam Pro', 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
 
-  /* DakLak Bazan, Coffee & Gong Gold Tokens */
-  --primary-coffee: #3B2417;
-  --bazan-brown: #7A3E1D;
-  --bazan-red: #A84524;
-  --forest-green: #1F5A3A;
-  --gong-gold: #D5A33F;
-  --light-cream: #F7F1E8;
-  --text-dark: #2C221E;
+  /* Hung Yen Today - Deep Teal, Gold & Warm Cream Tokens */
+  --primary-teal: #123B46;
+  --teal-dark: #081D23;
+  --teal-hover: #0D2B33;
+  --teal-light: #E7EEF0;
+  --gold-accent: #CFA34A;
+  --gold-light: #DFBA6B;
+  --gold-dark: #9C7323;
+  --warm-cream: #FAF8F3;
+  --text-charcoal: #172D36;
 
   /* Color Tokens */
-  --primary: #7A3E1D;
-  --primary-glow: rgba(122, 62, 29, 0.35);
-  --primary-dark: #3B2417;
-  --primary-light: #A84524;
+  --primary: #123B46;
+  --primary-glow: rgba(18, 59, 70, 0.35);
+  --primary-dark: #081D23;
+  --primary-light: #E7EEF0;
   
-  --neon-cyan: #D5A33F;
-  --neon-glow: rgba(213, 163, 63, 0.4);
+  --neon-cyan: #CFA34A;
+  --neon-glow: rgba(207, 163, 74, 0.4);
 
   --emerald: #1F5A3A;
   --emerald-bg: rgba(31, 90, 58, 0.12);
   --emerald-dark: #16432B;
 
-  --amber: #D5A33F;
-  --amber-bg: rgba(213, 163, 63, 0.15);
-  --amber-dark: #B3832B;
-  --gold: #D5A33F;
-  --gold-light: #F3C562;
-  --gold-glow: rgba(213, 163, 63, 0.35);
+  --amber: #CFA34A;
+  --amber-bg: rgba(207, 163, 74, 0.15);
+  --amber-dark: #9C7323;
+  --gold: #CFA34A;
+  --gold-light: #DFBA6B;
+  --gold-glow: rgba(207, 163, 74, 0.35);
 
-  --rose: #A84524;
-  --rose-bg: rgba(168, 69, 36, 0.12);
-  --rose-dark: #8A341A;
+  --rose: #C0432B;
+  --rose-bg: rgba(192, 67, 43, 0.12);
+  --rose-dark: #962F1C;
 
   /* Default Theme: Warm Cream & Crisp Canvas */
-  --bg-base: #F7F1E8;
+  --bg-base: #FAF8F3;
   --surface-2: #FFFFFF;
-  --surface-0: #EFE6D8;
-  --surface-1: #E4D7C3;
+  --surface-0: #F3EFE6;
+  --surface-1: #EAE4D7;
   
-  --text-primary: #2C221E;
-  --text-secondary: #5D4336;
-  --text-muted: #7A6960;
+  --text-primary: #172D36;
+  --text-secondary: #425B64;
+  --text-muted: #6B828B;
   
-  --border: rgba(122, 62, 29, 0.12);
-  --border-strong: rgba(122, 62, 29, 0.22);
+  --border: rgba(18, 59, 70, 0.12);
+  --border-strong: rgba(18, 59, 70, 0.22);
 
   /* Glassmorphism Parameters */
-  --glass-bg: rgba(255, 255, 255, 0.88);
-  --glass-border: rgba(122, 62, 29, 0.14);
-  --glass-glow: rgba(213, 163, 63, 0.18);
+  --glass-bg: rgba(255, 255, 255, 0.92);
+  --glass-border: rgba(18, 59, 70, 0.14);
+  --glass-glow: rgba(207, 163, 74, 0.2);
 
   /* Shared parameters */
   --radius: 12px;
   --radius-lg: 20px;
   --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  --shadow: 0 10px 30px -10px rgba(59, 36, 23, 0.08);
-  --shadow-lg: 0 20px 40px -15px rgba(59, 36, 23, 0.16);
-  --shadow-light: 0 8px 24px -8px rgba(59, 36, 23, 0.05);
+  --shadow: 0 10px 30px -10px rgba(18, 59, 70, 0.08);
+  --shadow-lg: 0 20px 40px -15px rgba(18, 59, 70, 0.16);
+  --shadow-light: 0 8px 24px -8px rgba(18, 59, 70, 0.05);
 }
 
 /* Card Hover Micro-animations */
