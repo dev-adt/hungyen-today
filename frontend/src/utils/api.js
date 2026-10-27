@@ -196,32 +196,74 @@ export const FALLBACK_EVENTS = [
 export const FALLBACK_MEMBERS = [
   {
     id: 1,
-    name: 'Công ty Cổ phần Khu Công nghiệp Thăng Long II (Hưng Yên)',
+    name: 'Công ty Cổ phần Khu Công nghiệp Thăng Long II (Sumitomo)',
     company_name: 'Công ty Cổ phần Khu Công nghiệp Thăng Long II (Hưng Yên)',
     tier: 'Platinum',
-    industry: 'Hạ tầng Khu công nghiệp sinh thái & Thu hút FDI',
+    is_featured: 1,
+    industry: 'Hạ tầng KCN sinh thái & Thu hút đầu tư FDI công nghệ cao',
     address: 'Thị xã Mỹ Hào & Huyện Yên Mỹ, Tỉnh Hưng Yên',
+    city: 'Hưng Yên',
     logo_url: '/images/hungyen/hungyen_kcn_thang_long.jpg',
-    bio: 'Đơn vị quản lý và phát triển KCN sạch chuẩn Nhật Bản kiểu mẫu miền Bắc, thu hút hàng tỷ USD vốn đầu tư công nghệ cao từ các tập đoàn toàn cầu.'
+    bio: 'KCN sinh thái kiểu mẫu chuẩn Nhật Bản do Tập đoàn Sumitomo phát triển, cứ điểm thu hút hàng chục tập đoàn toàn cầu như Panasonic, Daikin, Canon, Toto.'
   },
   {
     id: 2,
-    name: 'Hợp tác xã Đặc sản Nhãn lồng & Nông sản Phố Hiến',
-    company_name: 'Hợp tác xã Đặc sản Nhãn lồng & Nông sản Phố Hiến',
-    tier: 'Gold',
-    industry: 'Nông nghiệp sạch VietGAP, Nhãn tiến vua & OCOP',
-    address: 'Xã Hồng Nam, TP. Hưng Yên, Tỉnh Hưng Yên',
-    logo_url: '/images/hungyen/hungyen_nhan_long.jpg',
-    bio: 'Sở hữu vùng trồng nhãn hương chi cùi dày hạt tiêu đạt chuẩn VietGAP, tiên phong đưa nông sản xứ nhãn lên sàn số và xuất khẩu quốc tế.'
+    name: 'Công ty TNHH Toto Việt Nam — Chi nhánh Hưng Yên',
+    company_name: 'Công ty TNHH Toto Việt Nam — Nhà máy Hưng Yên',
+    tier: 'Platinum',
+    is_featured: 1,
+    industry: 'Cơ khí chính xác, Thiết bị vệ sinh công nghệ cao & Tiết kiệm năng lượng',
+    address: 'KCN Thăng Long II, Thị xã Mỹ Hào, Tỉnh Hưng Yên',
+    city: 'Hưng Yên',
+    logo_url: '/images/hungyen/hungyen_kcn_thang_long.jpg',
+    bio: 'Thương hiệu hàng đầu Nhật Bản với dây chuyền tự động hóa thế hệ mới, tiên phong bảo vệ môi trường và đóng góp lớn cho chuỗi cung ứng công nghiệp tỉnh Hưng Yên.'
   },
   {
     id: 3,
-    name: 'Công ty Cổ phần ADT Quốc tế',
-    company_name: 'Công ty Cổ phần ADT Quốc tế (ADT Group)',
+    name: 'Hợp tác xã Đặc sản Nhãn lồng & Nông sản Phố Hiến',
+    company_name: 'Hợp tác xã Đặc sản Nhãn lồng & Nông sản Phố Hiến',
     tier: 'Platinum',
-    industry: 'Công nghệ số, AI Agent & Nền tảng Đô thị thông minh',
-    address: 'Hà Nội & Trực thuộc Mạng lưới Xúc tiến HungYen.today',
+    is_featured: 1,
+    industry: 'Nông nghiệp sạch VietGAP, Nhãn tiến vua & Chế biến nông sản OCOP',
+    address: 'Xã Hồng Nam, TP. Hưng Yên, Tỉnh Hưng Yên',
+    city: 'TP. Hưng Yên',
+    logo_url: '/images/hungyen/hungyen_nhan_long.jpg',
+    bio: 'Vùng trồng nhãn hương chi cùi dày hạt tiêu đạt chuẩn VietGAP, tiên phong đưa nông sản xứ nhãn tiến vua lên sàn thương mại số và xuất khẩu quốc tế.'
+  },
+  {
+    id: 4,
+    name: 'Công ty Cổ phần Tập đoàn Hòa Phát (KCN Phố Nối A)',
+    company_name: 'Công ty Cổ phần Tập đoàn Hòa Phát — Chi nhánh Hưng Yên',
+    tier: 'Platinum',
+    is_featured: 1,
+    industry: 'Cơ khí chế tạo, Thép kỹ thuật cao & Hạ tầng công nghiệp',
+    address: 'KCN Phố Nối A, Huyện Văn Lâm, Tỉnh Hưng Yên',
+    city: 'Hưng Yên',
     logo_url: '/logo_icon.svg',
-    bio: 'Đơn vị kiến trúc và phát triển nền tảng số HungYen.today, cung cấp hệ thống kết nối kinh tế số thông minh và giải pháp AI toàn diện cho tỉnh Hưng Yên.'
+    bio: 'Tập đoàn công nghiệp hàng đầu quốc gia với cụm nhà máy quy mô tại Hưng Yên, dẫn dắt hạ tầng KCN Phố Nối A và hệ sinh thái cơ khí phụ trợ liên vùng.'
+  },
+  {
+    id: 5,
+    name: 'Công ty Cổ phần Dược phẩm Syntech Hưng Yên',
+    company_name: 'Công ty Cổ phần Dược phẩm Syntech',
+    tier: 'Platinum',
+    is_featured: 1,
+    industry: 'Dược phẩm sinh học & Thực phẩm bảo vệ sức khỏe chuẩn GMP-WHO',
+    address: 'CCN Lạc Đạo, Huyện Văn Lâm, Tỉnh Hưng Yên',
+    city: 'Hưng Yên',
+    logo_url: '/images/hungyen/hungyen_lang_nghe_thuoc_nam.jpg',
+    bio: 'Trung tâm nghiên cứu và chế biến sâu dược liệu bản địa Hưng Yên, ứng dụng công nghệ nano và chuẩn mực GMP quốc tế phục vụ y tế cộng đồng.'
+  },
+  {
+    id: 6,
+    name: 'Công ty Cổ phần ADT Quốc tế (ADT Group)',
+    company_name: 'Công ty Cổ phần ADT Quốc tế',
+    tier: 'Platinum',
+    is_featured: 1,
+    industry: 'Công nghệ số, AI Agent & Nền tảng Kinh tế số địa phương',
+    address: 'Hà Nội & Mạng lưới chuyển đổi số tỉnh Hưng Yên',
+    city: 'Hưng Yên & Hà Nội',
+    logo_url: '/logo_icon.svg',
+    bio: 'Đơn vị kiến trúc nền tảng số HungYen.today, cung cấp giải pháp trợ lý AI tương tác, bản đồ số di sản và hệ thống kết nối kinh tế thông minh cho tỉnh Hưng Yên.'
   }
 ];

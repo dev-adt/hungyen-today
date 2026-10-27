@@ -7,7 +7,7 @@ import Footer from '../components/Footer';
 import FloatingAIBot from '../components/FloatingAIBot';
 import SEOHead from '../components/SEOHead';
 import brandConfig from '../brand.config';
-import { fetchJsonWithTimeout, FALLBACK_POSTS, FALLBACK_EVENTS } from '../utils/api';
+import { fetchJsonWithTimeout, FALLBACK_POSTS, FALLBACK_EVENTS, FALLBACK_MEMBERS } from '../utils/api';
 import './HomeHungYen.css';
 
 // TOP 9 KHU CÔNG NGHIỆP TIÊU BIỂU HƯNG YÊN (THUẦN THÔNG TIN, TOP 3 NỔI BẬT HƠN)
@@ -251,50 +251,6 @@ const LOCAL_PRODUCTS = [
   }
 ];
 
-// Dữ liệu nhu cầu hợp tác & cơ hội đầu tư thật
-const CONNECTION_OPPORTUNITIES = [
-  {
-    id: 'conn-1',
-    title: 'Thu hút công nghiệp phụ trợ & công nghệ cao vào KCN Thăng Long II',
-    category: 'Cơ hội Đầu tư',
-    tagClass: 'brick',
-    unit: 'Ban Quản lý KCN Hưng Yên & Tập đoàn Sumitomo',
-    time: 'Cập nhật Q4/2026',
-    desc: 'Hạ tầng đồng bộ chuẩn Nhật Bản, quỹ đất sạch sẵn sàng tiếp nhận các dự án sản xuất linh kiện điện tử, cơ khí chính xác và năng lượng xanh.',
-    link: '/posts?search=Thăng Long'
-  },
-  {
-    id: 'conn-2',
-    title: 'Tìm kiếm đối tác cung ứng bao bì & bảo quản lạnh nông sản xuất khẩu',
-    category: 'Tìm Nhà cung cấp',
-    tagClass: '',
-    unit: 'Liên minh Hợp tác xã Nông sản Hưng Yên',
-    time: 'Đang mở tiếp nhận',
-    desc: 'Nhu cầu hợp tác dài hạn với các đơn vị cung cấp màng sinh học tự hủy, hộp bảo quản lạnh đạt chuẩn xuất khẩu đi Nhật Bản và EU.',
-    link: '/posts?category=Doanh nghiệp & Sản phẩm'
-  },
-  {
-    id: 'conn-3',
-    title: 'Hợp tác phát triển cụm Logistics & Kho bãi liên vùng ven sông Hồng',
-    category: 'Tìm Đối tác phát triển',
-    tagClass: '',
-    unit: 'Liên danh Hạ tầng & Cảng bến Hưng Yên',
-    time: 'Tháng 10/2026',
-    desc: 'Kêu gọi liên doanh khai thác trung tâm phân phối hàng hóa kết nối hành lang kinh tế Hà Nội - Hải Phòng - Quảng Ninh.',
-    link: '/posts?category=Giao thương và Đầu tư'
-  },
-  {
-    id: 'conn-4',
-    title: 'Chuyển giao công nghệ chế biến sâu dược liệu & trà thảo mộc OCOP',
-    category: 'Chuyển giao Công nghệ',
-    tagClass: 'brick',
-    unit: 'Hiệp hội Doanh nghiệp Tỉnh Hưng Yên',
-    time: 'Đang kết nối',
-    desc: 'Hợp tác chiết xuất tinh dầu hoa cúc, sen Hưng Yên và chế biến thực phẩm chức năng từ thảo mộc địa phương.',
-    link: '/posts?search=dược liệu'
-  }
-];
-
 export const Home = () => {
   const { currentLang } = useTranslation();
   const navigate = useNavigate();
@@ -369,6 +325,37 @@ export const Home = () => {
     loadEvents();
     return () => { isMounted = false; };
   }, []);
+
+  // State Doanh nghiệp tiêu biểu (Gắn nổi bật & Hạng Platinum)
+  const [membersList, setMembersList] = useState([]);
+  const [membersLoading, setMembersLoading] = useState(true);
+
+  // Nạp danh sách doanh nghiệp thành viên (lọc is_featured = 1 hoặc tier = Platinum)
+  useEffect(() => {
+    let isMounted = true;
+    const loadMembers = async () => {
+      try {
+        const res = await fetchJsonWithTimeout('/api/members?status=approved', {}, 4000);
+        if (isMounted) {
+          if (res?.data && Array.isArray(res.data) && res.data.length > 0) {
+            const qualified = res.data.filter(m => m.is_featured === 1 || m.is_featured === true || m.tier === 'Platinum');
+            setMembersList(qualified.length > 0 ? qualified : res.data);
+          } else {
+            setMembersList(FALLBACK_MEMBERS);
+          }
+        }
+      } catch (err) {
+        if (isMounted) setMembersList(FALLBACK_MEMBERS);
+      } finally {
+        if (isMounted) setMembersLoading(false);
+      }
+    };
+    loadMembers();
+    return () => { isMounted = false; };
+  }, []);
+
+  // Lấy tối đa 6 doanh nghiệp tiêu biểu để hiển thị
+  const displayMembers = (membersList.length > 0 ? membersList : FALLBACK_MEMBERS).slice(0, 6);
 
   // Tách bài viết nổi bật bên trái (~2/3) và danh sách 3-4 bài bên phải (KHÔNG TRÙNG NHAU)
   const featuredPost = postsList.find(p => p.is_featured === 1) || postsList[0];
@@ -793,43 +780,113 @@ export const Home = () => {
         </section>
 
         {/* =========================================================================
-            D. NGƯỜI LÀM NÊN GIÁ TRỊ (KỂ CHUYỆN BẤT ĐỐI XỨNG - NỀN XANH ĐẬM)
+            DOANH NGHIỆP TIÊU BIỂU (HỘI VIÊN GẮN NỔI BẬT & HẠNG PLATINUM)
             ========================================================================= */}
-        <section className="hy-story-section">
+        <section id="doanh-nghiep-tieu-bieu" className="hy-section" style={{ background: '#FFFFFF' }}>
           <div className="hy-container">
-            <div className="hy-story-grid">
-              <div className="hy-story-content">
-                <span className="hy-story-badge">Người làm nên giá trị</span>
-                <h2 className="hy-story-title">Giữ trọn vị tiến vua giữa nhịp đời hiện đại</h2>
-                <div>
-                  <h3 className="hy-story-entity">Hợp tác xã Đặc sản Nhãn lồng & Nông sản Phố Hiến</h3>
-                  <p className="hy-story-entity-sub">Xã Hồng Nam, TP. Hưng Yên • Vùng chỉ dẫn địa lý VietGAP</p>
-                </div>
-                <p className="hy-story-quote">
-                  “Dưới những nếp đê sông Hồng màu mỡ, người nông dân Hồng Nam đã gìn giữ từng gốc nhãn hương chi cùi dày, hạt nhỏ qua nhiều thế hệ. Không chỉ kế thừa niềm tự hào của vùng đất tiến vua, chúng tôi đã chuẩn hóa quy trình VietGAP, áp dụng mã QR truy xuất nguồn gốc để quả nhãn Hưng Yên tự tin bước vào các hệ thống siêu thị cao cấp và vươn ra thị trường quốc tế.”
+            <div className="hy-section-header-flex">
+              <div className="hy-section-header" style={{ marginBottom: 0 }}>
+                <span className="hy-section-badge">Cộng đồng & Mạng lưới thành viên</span>
+                <h2 className="hy-section-title">Doanh nghiệp tiêu biểu</h2>
+                <p className="hy-section-desc">
+                  Mạng lưới các doanh nghiệp thành viên được gắn nổi bật và hội viên hạng Platinum dẫn đầu trong sản xuất, công nghệ và xúc tiến đầu tư tại Hưng Yên.
                 </p>
-                <div className="hy-story-actions">
-                  <Link to="/members" className="hy-btn-primary">
-                    <i className="ti ti-building" />
-                    <span>Xem mạng lưới cơ sở & doanh nghiệp</span>
-                  </Link>
-                  <a href="#dang-ky-mang-luoi" className="hy-btn-secondary">
-                    <i className="ti ti-user-plus" />
-                    <span>Giới thiệu doanh nghiệp của bạn</span>
-                  </a>
-                </div>
               </div>
+              <div className="hy-section-header-actions">
+                <Link to="/members" className="hy-link-arrow">
+                  <span>Xem toàn bộ danh bạ hội viên</span>
+                  <i className="ti ti-arrow-right" />
+                </Link>
+              </div>
+            </div>
 
-              <div className="hy-story-media">
-                <img
-                  src="/images/hungyen/hungyen_nhan_long.jpg"
-                  alt="Nhãn lồng Phố Hiến Hưng Yên"
-                  loading="lazy"
-                />
-                <div className="hy-story-media-caption">
-                  Cành nhãn hương chi trĩu quả vào vụ thu hoạch tại vùng bãi sông Hồng
-                </div>
+            <div className="hy-members-featured-grid">
+              {displayMembers.map((m) => {
+                const isFeatured = m.is_featured === 1 || m.is_featured === true;
+                const isPlatinum = m.tier === 'Platinum';
+                return (
+                  <div key={m.id} className={`hy-member-featured-card ${isPlatinum ? 'platinum' : ''}`}>
+                    <div className="hy-member-card-top-row">
+                      <div className="hy-member-avatar-box">
+                        {m.logo_url ? (
+                          <img
+                            src={m.logo_url}
+                            alt={m.name}
+                            className="hy-member-avatar-img"
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
+                              if (e.currentTarget.nextElementSibling) {
+                                e.currentTarget.nextElementSibling.style.display = 'flex';
+                              }
+                            }}
+                          />
+                        ) : null}
+                        <div
+                          className="hy-member-avatar-fallback"
+                          style={{
+                            display: m.logo_url ? 'none' : 'flex',
+                            background: m.bg || 'var(--hy-primary-light)',
+                            color: m.fg || 'var(--hy-primary)'
+                          }}
+                        >
+                          {m.initials || m.name?.slice(0, 2).toUpperCase() || 'HY'}
+                        </div>
+                      </div>
+
+                      <div className="hy-member-badges-wrap">
+                        {isFeatured && (
+                          <span className="hy-member-pill featured" title="Doanh nghiệp gắn nổi bật">
+                            <i className="ti ti-star-filled" /> Nổi bật
+                          </span>
+                        )}
+                        {isPlatinum && (
+                          <span className="hy-member-pill platinum" title="Hội viên hạng Platinum">
+                            <i className="ti ti-diamond" /> Platinum
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <h3 className="hy-member-card-title">{m.company_name || m.name}</h3>
+
+                    <div className="hy-member-card-meta">
+                      <div className="hy-member-meta-line">
+                        <i className="ti ti-briefcase" />
+                        <span>{m.industry || 'Đa ngành'}</span>
+                      </div>
+                      <div className="hy-member-meta-line">
+                        <i className="ti ti-map-pin" />
+                        <span>{m.address || m.city || 'Hưng Yên'}</span>
+                      </div>
+                    </div>
+
+                    <p className="hy-member-card-desc">
+                      {m.bio || m.desc || m.description || 'Doanh nghiệp thành viên tiêu biểu trong mạng lưới xúc tiến đầu tư và thương mại Hưng Yên.'}
+                    </p>
+
+                    <div className="hy-member-card-footer">
+                      <Link to={`/members?search=${encodeURIComponent(m.name)}`} className="hy-member-btn-view">
+                        <span>Xem hồ sơ</span>
+                        <i className="ti ti-arrow-right" />
+                      </Link>
+                      <span className="hy-member-status-verified">
+                        <i className="ti ti-circle-check-filled" /> Đã xác thực
+                      </span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+
+            <div className="hy-members-footer-strip">
+              <div className="hy-members-footer-text">
+                <i className="ti ti-shield-check" />
+                <span>Doanh nghiệp của bạn đang hoạt động hoặc đầu tư tại Hưng Yên? Gia nhập mạng lưới để tăng cường hiện diện và kết nối đối tác.</span>
               </div>
+              <Link to="/register" className="hy-btn-primary" style={{ padding: '10px 24px', fontSize: '14.5px', whiteSpace: 'nowrap' }}>
+                <i className="ti ti-user-plus" />
+                <span>Đăng ký tham gia mạng lưới</span>
+              </Link>
             </div>
           </div>
         </section>
@@ -968,48 +1025,7 @@ export const Home = () => {
           </div>
         </section>
 
-        {/* =========================================================================
-            H. BẢNG TIN KẾT NỐI (GOM NHU CẦU HỢP TÁC, CUNG ỨNG & ĐẦU TƯ)
-            ========================================================================= */}
-        <section id="bang-tin-ket-noi" className="hy-section">
-          <div className="hy-container">
-            <div className="hy-section-header">
-              <span className="hy-section-badge">Giao thương & Đầu tư</span>
-              <h2 className="hy-section-title">Bảng tin kết nối hợp tác</h2>
-              <p className="hy-section-desc">
-                Cập nhật các nhu cầu tìm nhà cung ứng, mời gọi liên danh phát triển dự án và cơ hội liên kết kinh doanh tại Hưng Yên.
-              </p>
-            </div>
 
-            <div className="hy-board-list">
-              {CONNECTION_OPPORTUNITIES.map((item) => (
-                <div key={item.id} className="hy-board-item">
-                  <div className="hy-board-item-main">
-                    <div className="hy-board-item-meta">
-                      <span className={`hy-tag-pill ${item.tagClass}`}>
-                        {item.category}
-                      </span>
-                      <span style={{ fontSize: '12.5px', color: '#556B67' }}>
-                        <i className="ti ti-building" /> {item.unit}
-                      </span>
-                      <span style={{ fontSize: '12.5px', color: '#8C9F9B' }}>
-                        • {item.time}
-                      </span>
-                    </div>
-                    <h3 className="hy-board-item-title">{item.title}</h3>
-                    <p className="hy-board-item-desc">{item.desc}</p>
-                  </div>
-                  <div className="hy-board-item-action">
-                    <a href="#dang-ky-mang-luoi" className="hy-link-arrow">
-                      <span>Gửi phản hồi kết nối</span>
-                      <i className="ti ti-arrow-right" />
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
 
         {/* =========================================================================
             G. TIỆN ÍCH AI (LÀM RÕ NGƯỜI DÙNG CÓ THỂ LÀM GÌ, HÀNH ĐỘNG THẬT)
