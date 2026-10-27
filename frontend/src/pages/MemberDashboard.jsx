@@ -1144,7 +1144,7 @@ export const MemberDashboard = () => {
                           <span>·</span>
                           <button 
                             onClick={() => handleStartEditPost(p.id)}
-                            style={{ background: 'none', border: 'none', color: 'var(--primary-light)', cursor: 'pointer', padding: 0, display: 'inline-flex', alignItems: 'center', gap: '3px', fontSize: '11px', outline: 'none' }}
+                            style={{ background: 'none', border: 'none', color: '#2563EB', fontWeight: 600, cursor: 'pointer', padding: 0, display: 'inline-flex', alignItems: 'center', gap: '3px', fontSize: '11px', outline: 'none' }}
                           >
                             <i className="ti ti-edit"></i> {t('btn_edit')}
                           </button>

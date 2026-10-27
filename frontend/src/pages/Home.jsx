@@ -252,6 +252,7 @@ const LOCAL_PRODUCTS = [
 ];
 
 export const Home = () => {
+  const { role } = useAuth();
   const { currentLang } = useTranslation();
   const navigate = useNavigate();
 
@@ -883,10 +884,17 @@ export const Home = () => {
                 <i className="ti ti-shield-check" />
                 <span>Doanh nghiệp của bạn đang hoạt động hoặc đầu tư tại Hưng Yên? Gia nhập mạng lưới để tăng cường hiện diện và kết nối đối tác.</span>
               </div>
-              <Link to="/register" className="hy-btn-primary" style={{ padding: '10px 24px', fontSize: '14.5px', whiteSpace: 'nowrap' }}>
-                <i className="ti ti-user-plus" />
-                <span>Đăng ký tham gia mạng lưới</span>
-              </Link>
+              {role === 'guest' ? (
+                <Link to="/register" className="hy-btn-primary" style={{ padding: '10px 24px', fontSize: '14.5px', whiteSpace: 'nowrap' }}>
+                  <i className="ti ti-user-plus" />
+                  <span>Đăng ký tham gia mạng lưới</span>
+                </Link>
+              ) : (
+                <Link to={role === 'admin' ? '/admin' : '/member-dashboard'} className="hy-btn-primary" style={{ padding: '10px 24px', fontSize: '14.5px', whiteSpace: 'nowrap' }}>
+                  <i className="ti ti-layout-dashboard" />
+                  <span>{role === 'admin' ? 'Trang quản trị' : 'Quản lý hồ sơ doanh nghiệp'}</span>
+                </Link>
+              )}
             </div>
           </div>
         </section>

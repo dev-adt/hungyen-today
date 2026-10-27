@@ -687,40 +687,42 @@ export const Navbar = () => {
               )}
             </div>
 
-            {/* Nút "Đăng ký" (Dẫn đến trang /register) */}
-            <Link
-              to="/register"
-              className="dnvn-btn-join-desktop"
-              style={{
-                backgroundColor: '#D6A846',
-                backgroundImage: 'linear-gradient(135deg, #E4BF68 0%, #D6A846 100%)',
-                color: '#082927',
-                fontSize: '12px',
-                fontWeight: '800',
-                padding: '6px 14px',
-                borderRadius: '8px',
-                textDecoration: 'none',
-                boxShadow: '0 2px 10px rgba(214, 168, 70, 0.35)',
-                border: '1px solid rgba(255, 255, 255, 0.4)',
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '5px',
-                whiteSpace: 'nowrap',
-                transition: 'all 0.2s ease',
-                flexShrink: 0
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 4px 14px rgba(214, 168, 70, 0.55)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'none';
-                e.currentTarget.style.boxShadow = '0 2px 10px rgba(214, 168, 70, 0.35)';
-              }}
-            >
-              <i className="ti ti-user-plus" style={{ fontSize: '14px' }}></i>
-              <span>{currentLang === 'en' ? 'Register' : 'Đăng ký'}</span>
-            </Link>
+            {/* Nút "Đăng ký" (Chỉ hiển thị khi chưa đăng nhập / role === 'guest') */}
+            {role === 'guest' && (
+              <Link
+                to="/register"
+                className="dnvn-btn-join-desktop"
+                style={{
+                  backgroundColor: '#D6A846',
+                  backgroundImage: 'linear-gradient(135deg, #E4BF68 0%, #D6A846 100%)',
+                  color: '#082927',
+                  fontSize: '12px',
+                  fontWeight: '800',
+                  padding: '6px 14px',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  boxShadow: '0 2px 10px rgba(214, 168, 70, 0.35)',
+                  border: '1px solid rgba(255, 255, 255, 0.4)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  whiteSpace: 'nowrap',
+                  transition: 'all 0.2s ease',
+                  flexShrink: 0
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 4px 14px rgba(214, 168, 70, 0.55)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'none';
+                  e.currentTarget.style.boxShadow = '0 2px 10px rgba(214, 168, 70, 0.35)';
+                }}
+              >
+                <i className="ti ti-user-plus" style={{ fontSize: '14px' }}></i>
+                <span>{currentLang === 'en' ? 'Register' : 'Đăng ký'}</span>
+              </Link>
+            )}
 
             {/* Trạng thái Người dùng / Đăng nhập */}
             {role === 'guest' ? (
@@ -883,28 +885,30 @@ export const Navbar = () => {
               </div>
             </div>
 
-            {/* Nút Đăng ký trên Mobile */}
-            <Link
-              to="/register"
-              onClick={() => setMobileMenuOpen(false)}
-              style={{
-                backgroundColor: '#D6A846',
-                color: '#082927',
-                padding: '10px 14px',
-                borderRadius: '8px',
-                textDecoration: 'none',
-                fontWeight: '800',
-                fontSize: '14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
-                marginBottom: '4px'
-              }}
-            >
-              <i className="ti ti-user-plus" style={{ fontSize: '16px' }} />
-              <span>{currentLang === 'en' ? 'Register' : 'Đăng ký'}</span>
-            </Link>
+            {/* Nút Đăng ký trên Mobile (Chỉ hiển thị khi chưa đăng nhập) */}
+            {role === 'guest' && (
+              <Link
+                to="/register"
+                onClick={() => setMobileMenuOpen(false)}
+                style={{
+                  backgroundColor: '#D6A846',
+                  color: '#082927',
+                  padding: '10px 14px',
+                  borderRadius: '8px',
+                  textDecoration: 'none',
+                  fontWeight: '800',
+                  fontSize: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  marginBottom: '4px'
+                }}
+              >
+                <i className="ti ti-user-plus" style={{ fontSize: '16px' }} />
+                <span>{currentLang === 'en' ? 'Register' : 'Đăng ký'}</span>
+              </Link>
+            )}
 
             {/* Nút Trợ lý AI trên Mobile */}
             <Link
