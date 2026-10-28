@@ -76,11 +76,14 @@ export const Search = () => {
   };
 
   const handleSubmit = (e) => {
-    if (e) e.preventDefault();
+    if (e && e.preventDefault) e.preventDefault();
     const trimmed = query.trim();
     if (trimmed) {
       setSearchParams({ q: trimmed });
       handleSearch(trimmed);
+    } else {
+      setSearchParams({});
+      setResults({ posts: [], members: [], events: [] });
     }
   };
 
@@ -106,19 +109,16 @@ export const Search = () => {
         </div>
 
         {/* Search Input Bar (F-03: Enter submit & form handling) */}
-        <form onSubmit={handleSubmit} style={{ marginBottom: '2.5rem' }}>
+        <form onSubmit={handleSubmit} action="/search" method="GET" style={{ marginBottom: '2.5rem' }}>
           <div className="glass-card" style={{ padding: '1rem', display: 'flex', gap: '12px', alignItems: 'center' }}>
             <div style={{ position: 'relative', flex: 1 }}>
               <i className="ti ti-search" style={{ position: 'absolute', left: '14px', top: '50%', transform: 'translateY(-50%)', fontSize: '16px', color: 'var(--text-muted)' }}></i>
               <input 
                 type="text" 
+                name="q"
+                id="search-input"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter') {
-                    handleSubmit(e);
-                  }
-                }}
                 placeholder="Nhập từ khóa tìm kiếm trên toàn website (ví dụ: công nghệ, nông sản, xúc tiến...)"
                 style={{ width: '100%', padding: '12px 16px 12px 42px', borderRadius: '8px', border: '1px solid var(--border-strong)', background: 'var(--surface-2)', color: 'var(--text-primary)', fontSize: '14px', outline: 'none' }}
                 autoFocus

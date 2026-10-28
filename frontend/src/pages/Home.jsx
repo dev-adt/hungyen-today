@@ -815,9 +815,11 @@ export const Home = () => {
                             alt={m.name}
                             className="hy-member-avatar-img"
                             onError={(e) => {
+                              e.currentTarget.onerror = null;
                               e.currentTarget.style.display = 'none';
-                              if (e.currentTarget.nextElementSibling) {
-                                e.currentTarget.nextElementSibling.style.display = 'flex';
+                              const fallback = e.currentTarget.parentElement?.querySelector('.hy-member-avatar-fallback');
+                              if (fallback) {
+                                fallback.style.display = 'flex';
                               }
                             }}
                           />

@@ -407,9 +407,18 @@ export const Navbar = () => {
           .dnvn-nav-item-btn { font-size: 12.5px !important; font-weight: 600 !important; padding: 4px 6px !important; max-width: 110px !important; }
         }
 
+        .dnvn-mobile-toggle {
+          display: none !important;
+        }
+
         @media (max-width: 1080px) {
           .dnvn-nav-categories { display: none !important; }
           .dnvn-btn-join-desktop { display: none !important; }
+          .dnvn-mobile-toggle { 
+            display: inline-flex !important;
+            min-width: 36px !important;
+            min-height: 36px !important;
+          }
           .dnvn-navbar-header { min-height: 62px !important; }
           .dnvn-navbar-spacer { height: 62px !important; }
           .dnvn-header-container { min-height: 62px !important; padding: 4px 12px !important; }
@@ -796,7 +805,6 @@ export const Navbar = () => {
               className="dnvn-mobile-toggle"
               onClick={() => setMobileMenuOpen(prev => !prev)}
               style={{
-                display: 'none',
                 background: 'rgba(255, 255, 255, 0.08)',
                 border: '1px solid rgba(207, 163, 74, 0.35)',
                 color: '#FAF8F3',

@@ -47,7 +47,9 @@ export const Posts = () => {
   const [error, setError] = useState('');
   
   // Filters state
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState(() => {
+    return searchParams.get('search') || searchParams.get('q') || '';
+  });
   const [selectedTier, setSelectedTier] = useState('');
   const [selectedType, setSelectedType] = useState('');
   const [selectedCategory, setSelectedCategory] = useState(() => {
@@ -67,7 +69,7 @@ export const Posts = () => {
   );
   const [categoriesList, setCategoriesList] = useState(CATEGORIES_DATA);
 
-  // Lắng nghe sự thay đổi query params từ URL (hỗ trợ cả category name, slug và trường hợp dấu & chưa encode)
+  // Lắng nghe sự thay đổi query params từ URL (hỗ trợ category, sub_category, search và q)
   useEffect(() => {
     let cat = searchParams.get('category') || '';
     if (cat) {
@@ -79,8 +81,10 @@ export const Posts = () => {
       if (match) cat = typeof match === 'object' && match ? match.name : match;
     }
     const subCat = searchParams.get('sub_category') || searchParams.get('subCategory') || '';
+    const qParam = searchParams.get('search') || searchParams.get('q') || '';
     setSelectedCategory(cat);
     setSelectedSubCategory(subCat);
+    setSearchQuery(qParam);
   }, [searchParams, categoriesList]);
 
   useEffect(() => {
@@ -176,11 +180,13 @@ export const Posts = () => {
     const title = typeof p.title === 'string' ? p.title : '';
     const compName = typeof p.company_name === 'string' ? p.company_name : '';
     const summary = typeof p.summary === 'string' ? p.summary : '';
-    const q = (searchQuery || '').toLowerCase();
+    const body = typeof p.body === 'string' ? p.body : '';
+    const q = (searchQuery || '').trim().toLowerCase();
     const matchesSearch = !q || 
       title.toLowerCase().includes(q) || 
       compName.toLowerCase().includes(q) ||
-      summary.toLowerCase().includes(q);
+      summary.toLowerCase().includes(q) ||
+      body.toLowerCase().includes(q);
       
     const matchesTier = !selectedTier || p.company_tier === selectedTier;
     const matchesType = !selectedType || p.type === selectedType;
@@ -339,10 +345,23 @@ export const Posts = () => {
               <i className="ti ti-search" style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: '13px', color: 'var(--text-muted)' }}></i>
               <input 
                 type="text" 
+                name="search"
+                id="posts-search-input"
                 aria-label={currentLang === 'en' ? "Search posts by keyword" : "Tìm kiếm bài viết theo từ khóa"}
                 placeholder={t('search_posts_placeholder')} 
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  setSearchQuery(val);
+                  const newParams = new URLSearchParams(searchParams);
+                  if (val.trim()) {
+                    newParams.set('search', val);
+                  } else {
+                    newParams.delete('search');
+                    newParams.delete('q');
+                  }
+                  setSearchParams(newParams, { replace: true });
+                }}
                 style={{ padding: '7px 12px 7px 30px', width: '100%', borderRadius: '8px', border: '1px solid var(--border-strong)', fontSize: '12.5px', outline: 'none', backgroundColor: 'var(--surface-2)', color: 'var(--text-primary)', boxSizing: 'border-box' }}
               />
             </div>

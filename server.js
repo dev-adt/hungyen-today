@@ -2491,9 +2491,10 @@ app.get('/api/posts', async (req, res) => {
       sql += ' AND (p.sub_category = ? OR p.sub_category LIKE ?)';
       params.push(sub_category, `%${sub_category}%`);
     }
-    if (search)       { 
+    const keyword = (search || req.query.q || '').trim();
+    if (keyword) { 
       sql += ' AND (p.title LIKE ? OR p.summary LIKE ? OR p.body LIKE ?)'; 
-      const searchPattern = `%${search}%`;
+      const searchPattern = `%${keyword}%`;
       params.push(searchPattern, searchPattern, searchPattern);
     }
     
