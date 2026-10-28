@@ -193,63 +193,6 @@ const HERITAGE_DESTINATIONS = [
   }
 ];
 
-// Danh sách sản vật tiêu biểu Hưng Yên (OCOP & Đặc sản địa phương)
-const LOCAL_PRODUCTS = [
-  {
-    id: 'prod-nhan-long',
-    name: 'Nhãn lồng tiến vua Phố Hiến',
-    producer: 'HTX Nhãn lồng Hồng Nam',
-    location: 'TP. Hưng Yên',
-    cert: 'OCOP 5 Sao • Chỉ dẫn địa lý',
-    desc: 'Trái to, cùi dày giòn ráo nước, hạt tiêu nhỏ, hương thơm thanh khiết đặc trưng vùng đất bãi phù sa.',
-    img: '/images/hungyen/hungyen_nhan_long.jpg'
-  },
-  {
-    id: 'prod-ga-dong-tao',
-    name: 'Gà Đông Tảo thuần chủng',
-    producer: 'Hội Chăn nuôi Gà Đông Tảo',
-    location: 'Xã Đông Tảo, Khoái Châu',
-    cert: 'Đặc sản Tiến Vua • Nguồn gen quý',
-    desc: 'Đôi chân to vảy rồng đặc trưng, nuôi thả tự nhiên bằng ngô thóc, thịt chắc ngọt đậm đà danh bất hư truyền.',
-    img: '/images/hungyen/hungyen_ga_dong_tao.jpg'
-  },
-  {
-    id: 'prod-tuong-ban',
-    name: 'Tương Bần Mỹ Hào hảo hạng',
-    producer: 'Làng nghề Tương Bần truyền thống',
-    location: 'Thị xã Mỹ Hào',
-    cert: 'OCOP 4 Sao • Gia vị cổ truyền',
-    desc: 'Lên men tự nhiên từ đỗ tương rang vàng, nếp cái hoa vàng và muối sạch, sánh mịn thơm ngon nức tiếng miền Bắc.',
-    img: '/images/hungyen/hungyen_den_da_hoa.jpg'
-  },
-  {
-    id: 'prod-mat-ong-nhan',
-    name: 'Mật ong hoa nhãn nguyên chất',
-    producer: 'Vùng nuôi ong ven đê sông Hồng',
-    location: 'Tỉnh Hưng Yên',
-    cert: 'OCOP 4 Sao • Tự nhiên 100%',
-    desc: 'Thu hoạch từ những vườn nhãn bạt ngàn vào độ nở rộ tháng ba, sắc vàng óng ánh và hương thơm hoa nhãn tự nhiên.',
-    img: '/images/hungyen/hungyen_lang_hoa_vangiang.jpg'
-  },
-  {
-    id: 'prod-do-tre-thu-sy',
-    name: 'Đó tre mỹ nghệ Thủ Sỹ',
-    producer: 'Làng nghề Thủ Sỹ',
-    location: 'Xã Thủ Sỹ, TP. Hưng Yên',
-    cert: 'OCOP 3 Sao • Thủ công mỹ nghệ',
-    desc: 'Những chiếc đó tre tinh xảo đan thủ công từ nan nứa già, vừa là ngư cụ truyền thống vừa là sản phẩm trang trí nghệ thuật.',
-    img: '/images/hungyen/hungyen_lang_dan_do.jpg'
-  },
-  {
-    id: 'prod-bonsai-vangiang',
-    name: 'Hoa kiểng & Bonsai Văn Giang',
-    producer: 'Làng hoa Xuân Quan - Phụng Công',
-    location: 'Xuân Quan, Văn Giang',
-    cert: 'Nông nghiệp Sinh thái Đô thị',
-    desc: 'Nghệ thuật tạo tác cây cảnh thế và hoa rực rỡ cung ứng cho không gian sống sinh thái và các lễ hội lớn.',
-    img: '/images/hungyen/hungyen_lang_huong.jpg'
-  }
-];
 
 export const Home = () => {
   const { role } = useAuth();
@@ -268,6 +211,18 @@ export const Home = () => {
 
   // State sự kiện
   const [eventsList, setEventsList] = useState([]);
+
+  // AI Special Topic Slider (Single Card 5s infinite auto-cycle, pause on hover)
+  const [aiSlideIndex, setAiSlideIndex] = useState(0);
+  const [isAiSlideHovered, setIsAiSlideHovered] = useState(false);
+
+  useEffect(() => {
+    if (isAiSlideHovered) return;
+    const interval = setInterval(() => {
+      setAiSlideIndex((prev) => (prev + 1) % 3);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, [isAiSlideHovered]);
 
   // State Tham gia cùng Hưng Yên Today (Single Conversion Hub)
   const [activeNeed, setActiveNeed] = useState('enterprise');
@@ -893,47 +848,197 @@ export const Home = () => {
         </section>
 
         {/* =========================================================================
-            E. SẢN VẬT TỪ ĐỊA PHƯƠNG (TÁCH BIỆT KHỎI DOANH NGHIỆP, DẢI SẢN PHẨM)
+            LÀM CHỦ AI – BỨT PHÁ TƯƠNG LAI (SPECIAL AI TOPIC SLIDER)
+            Tự động cuộn vô hạn mỗi 5s, di chuột đến thì tạm dừng
             ========================================================================= */}
-        <section className="hy-section">
+        <section className="hy-section hy-ai-showcase-section" id="lam-chu-ai">
           <div className="hy-container">
-            <div className="hy-section-header">
-              <span className="hy-section-badge">Nông sản & OCOP</span>
-              <h2 className="hy-section-title">Sản vật từ địa phương</h2>
-              <p className="hy-section-desc">
-                Những đặc sản kết tinh từ phù sa trù phú, bàn tay khéo léo của người thợ và tiêu chuẩn chứng nhận OCOP rõ ràng.
+            {/* Header Chuyên đề */}
+            <div className="hy-ai-section-header">
+              <div className="hy-ai-badge-wrapper">
+                <span className="hy-ai-special-badge">
+                  <i className="ti ti-sparkles" />
+                  {currentLang === 'en' ? '« SPECIAL TOPIC • MASTERING AI FOR THE FUTURE »' : '« CHUYÊN ĐỀ ĐẶC BIỆT • LÀM CHỦ AI BỨT PHÁ TƯƠNG LAI »'}
+                </span>
+              </div>
+              <h2 className="hy-ai-section-title">
+                {currentLang === 'en' ? 'Mastering AI — ' : 'Làm Chủ AI – '}
+                <span className="hy-ai-title-gradient">
+                  {currentLang === 'en' ? 'Unlocking the Future' : 'Bứt Phá Tương Lai'}
+                </span>
+              </h2>
+              <p className="hy-ai-section-desc">
+                {currentLang === 'en'
+                  ? 'Knowledge space, digital transformation solutions, and AI technology built on 3 core pillars: Ward AI, Orion Ecosystem, and Edunow.today Digital Training.'
+                  : 'Không gian tri thức, giải pháp chuyển đổi số và công nghệ trí tuệ nhân tạo với 3 trụ cột: AI phường xã, Hệ sinh thái Orion và Đào tạo số Edunow.today.'}
               </p>
             </div>
 
-            <div className="hy-products-grid">
-              {LOCAL_PRODUCTS.slice(0, 4).map((prod) => (
-                <Link
-                  key={prod.id}
-                  to={`/posts?search=${encodeURIComponent(prod.name)}`}
-                  className="hy-product-card"
-                >
-                  <div className="hy-product-thumb">
-                    <img src={prod.img} alt={prod.name} loading="lazy" />
-                    <span className="hy-product-cert-badge">{prod.cert.split('•')[0]}</span>
-                  </div>
-                  <div className="hy-product-body">
-                    <h3 className="hy-product-name">{prod.name}</h3>
-                    <p className="hy-product-producer">
-                      <i className="ti ti-building-store" /> {prod.producer} • {prod.location}
-                    </p>
-                    <p className="hy-product-desc">{prod.desc}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+            {/* AI Showcase Single Slide Carousel (1 ô lướt mỗi 5s vô tận) */}
+            {(() => {
+              const wardAiPost = postsList.find(p => p.slug === 'tro-ly-ai-phuong-xa');
+              const orionPost = postsList.find(p => p.slug && p.slug.includes('orion-chat-loc'));
+              const edunowPost = postsList.find(p => p.slug && p.slug.includes('edunowai'));
 
-            <div style={{ marginTop: '2rem', display: 'flex', justifyContent: 'flex-end' }}>
+              const wardAiImg = wardAiPost?.image_url || wardAiPost?.cover_image || wardAiPost?.thumbnail;
+              const orionImg = orionPost?.image_url || orionPost?.cover_image || orionPost?.thumbnail;
+              const edunowImg = edunowPost?.image_url || edunowPost?.cover_image || edunowPost?.thumbnail;
+
+              const aiSlides = [
+                {
+                  id: 0,
+                  tag: currentLang === 'en' ? 'Ward AI Assistant' : 'AI phường xã',
+                  pillClass: 'hy-ai-pill-cyan',
+                  img: wardAiImg || '/images/adt_logo.svg',
+                  alt: wardAiPost?.title || 'Trợ lý AI phường xã',
+                  catClass: 'hy-ai-cat-cyan',
+                  catIcon: 'ti-robot',
+                  catTitle: currentLang === 'en' ? 'Foundation AI Technology' : 'CÔNG NGHỆ AI CƠ SỞ',
+                  title: currentLang === 'en' ? 'Ward & Commune AI Assistant' : 'Trợ lý AI phường xã',
+                  link: '/posts/tro-ly-ai-phuong-xa',
+                  summary: currentLang === 'en'
+                    ? 'Local-level AI application supporting administration, citizen inquiries 24/7, and speeding up digital governance.'
+                    : 'Trợ lý AI phường xã phục vụ công tác điều hành, hỗ trợ cán bộ và người dân tra cứu thủ tục, tiếp nhận phản ánh và số hóa dịch vụ công cơ sở 24/7.'
+                },
+                {
+                  id: 1,
+                  tag: 'Orion',
+                  pillClass: 'hy-ai-pill-gold',
+                  img: orionImg || '/images/adt_logo.svg',
+                  alt: orionPost?.title || 'Hệ sinh thái Orion ERP & AI Agent',
+                  catClass: 'hy-ai-cat-gold',
+                  catIcon: 'ti-cpu',
+                  catTitle: currentLang === 'en' ? 'Intelligent AI Platform' : 'NỀN TẢNG AI THÔNG MINH',
+                  title: currentLang === 'en'
+                    ? 'Orion: Distilling ERP, Multi-Model AI & AI Agent Platform into an Intelligent Operating System for Enterprises'
+                    : 'Orion chắt lọc tinh hoa của ERP, Multi-model AI và nền tảng xây dựng AI Agent để tạo thành một hệ điều hành quản trị thông minh dành cho doanh nghiệp',
+                  link: '/posts/orion-chat-loc-tinh-hoa-cua-erp-multimodel-ai-va-nen-tang-xay-dung-ai-agent-de-tao-thanh-mot-he-dieu-hanh-quan-tri-thong-minh-danh-cho-doanh-nghiep',
+                  summary: currentLang === 'en'
+                    ? 'Unified intelligent enterprise operating system combining ERP and multi-model AI to automate business workflows.'
+                    : 'Orion chắt lọc tinh hoa của ERP, Multi-Model AI và nền tảng xây dựng AI Agent để tạo thành một hệ điều hành quản trị thông minh dành cho doanh nghiệp.'
+                },
+                {
+                  id: 2,
+                  tag: 'Edunow.today',
+                  pillClass: 'hy-ai-pill-green',
+                  img: edunowImg || '/images/adt_logo.svg',
+                  alt: edunowPost?.title || 'EDUNOW.AI Trợ lý tuyển sinh thông minh',
+                  catClass: 'hy-ai-cat-green',
+                  catIcon: 'ti-school',
+                  catTitle: currentLang === 'en' ? 'Training & Digital Skills' : 'ĐÀO TẠO & KỸ NĂNG SỐ',
+                  title: currentLang === 'en'
+                    ? 'EDUNOW.AI: Smart Admissions AI Assistant Solution for Educational Institutions'
+                    : 'EDUNOW.AI Giải pháp Trợ lý AI tuyển sinh thông minh dành cho các cơ sở giáo dục',
+                  link: '/posts/edunowai-giai-phap-tro-ly-ai-tuyen-sinh-thong-minh-danh-cho-cac-co-so-giao-duc',
+                  summary: currentLang === 'en'
+                    ? 'Smart admissions consulting AI assistant and comprehensive digital skills training platform.'
+                    : 'EDUNOW.AI Giải pháp Trợ lý AI tuyển sinh thông minh dành cho các cơ sở giáo dục, tư vấn tuyển sinh 24/7 và chuyển đổi số đào tạo.'
+                }
+              ];
+
+              return (
+                <div 
+                  className="hy-ai-slider-container"
+                  onMouseEnter={() => setIsAiSlideHovered(true)}
+                  onMouseLeave={() => setIsAiSlideHovered(false)}
+                >
+                  <div className="hy-ai-slider-viewport">
+                    <div 
+                      className="hy-ai-slider-track"
+                      style={{ transform: `translateX(-${aiSlideIndex * 100}%)` }}
+                    >
+                      {aiSlides.map((slide, sIdx) => (
+                        <div key={sIdx} className="hy-ai-slide-card">
+                          <div className="hy-ai-card">
+                            <div className="hy-ai-card-img-wrap">
+                              <span className={`hy-ai-card-pill ${slide.pillClass}`}>
+                                <i className={`ti ${slide.catIcon}`} /> {slide.tag}
+                              </span>
+                              <div className="hy-ai-img-container">
+                                <img 
+                                  src={slide.img} 
+                                  alt={slide.alt} 
+                                  className={`hy-ai-card-img ${slide.img === '/images/adt_logo.svg' ? 'hy-ai-card-fallback-logo' : ''}`}
+                                  onError={(e) => {
+                                    e.target.onerror = null;
+                                    e.target.src = '/images/adt_logo.svg';
+                                    e.target.classList.add('hy-ai-card-fallback-logo');
+                                  }}
+                                />
+                              </div>
+                            </div>
+                            <div className="hy-ai-card-body">
+                              <div className={`hy-ai-card-category ${slide.catClass}`}>
+                                <i className={`ti ${slide.catIcon}`} /> {slide.catTitle}
+                              </div>
+                              <h3 className="hy-ai-card-title">
+                                <Link to={slide.link}>
+                                  {slide.title}
+                                </Link>
+                              </h3>
+                              <p className="hy-ai-card-summary">
+                                {slide.summary}
+                              </p>
+                              <div className="hy-ai-card-footer">
+                                <span className="hy-ai-card-author">Công ty cổ phần ADT Quốc Tế</span>
+                                <Link to={slide.link} className="hy-ai-card-link">
+                                  <span>{currentLang === 'en' ? 'Read More' : 'Đọc chi tiết'}</span>
+                                  <i className="ti ti-arrow-right" />
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Navigation Arrows & Indicators */}
+                  <div className="hy-ai-slider-nav">
+                    <button
+                      type="button"
+                      className="hy-ai-nav-arrow"
+                      onClick={() => setAiSlideIndex(prev => (prev - 1 + 3) % 3)}
+                      aria-label="Bài viết trước"
+                    >
+                      <i className="ti ti-chevron-left" />
+                    </button>
+                    <div className="hy-ai-slider-indicators">
+                      {[0, 1, 2].map((idx) => (
+                        <button
+                          key={idx}
+                          type="button"
+                          className={`hy-ai-indicator ${aiSlideIndex === idx ? 'active' : ''}`}
+                          onClick={() => setAiSlideIndex(idx)}
+                          aria-label={`Chuyển đến bài ${idx + 1}`}
+                        />
+                      ))}
+                    </div>
+                    <button
+                      type="button"
+                      className="hy-ai-nav-arrow"
+                      onClick={() => setAiSlideIndex(prev => (prev + 1) % 3)}
+                      aria-label="Bài viết tiếp theo"
+                    >
+                      <i className="ti ti-chevron-right" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Bottom Actions */}
+            <div className="hy-ai-actions">
               <Link
-                to="/posts?category=Doanh nghiệp & Sản phẩm&subCategory=Sản phẩm OCOP & Nông sản"
-                className="hy-link-arrow"
+                to="/posts?category=Doanh%20nghi%E1%BB%87p%20%26%20S%E1%BA%A3n%20ph%E1%BA%A9m&sub_category=Showroom%20s%E1%BB%91"
+                className="btn-hy-ai-category"
               >
-                <span>Xem tất cả sản phẩm & đặc sản Hưng Yên</span>
-                <i className="ti ti-arrow-right" />
+                <i className="ti ti-layout-grid" />
+                <span>{currentLang === 'en' ? 'View all AI Category Articles' : 'Xem toàn bộ bài viết chuyên mục AI'}</span>
+              </Link>
+              <Link to="/ai-chat" className="btn-hy-ai-chat">
+                <i className="ti ti-messages" />
+                <span>{currentLang === 'en' ? 'Chat with AI Assistant' : 'Trò chuyện cùng Trợ lý AI'}</span>
               </Link>
             </div>
           </div>
