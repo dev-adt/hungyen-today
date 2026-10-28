@@ -160,7 +160,7 @@ const HERITAGE_DESTINATIONS = [
     index: '03',
     title: 'Làng nghề đan đó Thủ Sỹ truyền thống',
     typeLabel: 'Làng nghề cổ truyền Bắc Bộ',
-    location: 'Huyện Tiên Lữ',
+    location: 'Xã Thủ Sỹ, TP. Hưng Yên',
     desc: 'Không gian văn hóa làng quê mộc mạc lưu giữ nghề đan đó thủ công hơn hai thế kỷ. Những chiếc đó tre xòe hoa giữa sân gạch cổ vừa là ngư cụ gắn với đời sống sông nước, vừa là tác phẩm mỹ nghệ xuất khẩu.',
     img: '/images/hungyen/hungyen_lang_dan_do.jpg'
   },
@@ -169,7 +169,7 @@ const HERITAGE_DESTINATIONS = [
     index: '04',
     title: 'Chùa Keo — Di sản kiến trúc gỗ lim cổ kính',
     typeLabel: 'Kiến trúc Cổ truyền',
-    location: 'Không gian Văn hóa Hưng Yên',
+    location: 'Không gian Di sản Hưng Yên',
     desc: 'Kiệt tác nghệ thuật kiến trúc gỗ cổ truyền Việt Nam với kỹ thuật đục mộng chuẩn xác, không dùng đinh thép, lưu giữ không gian thanh tịnh và lễ hội truyền thống đặc sắc.',
     img: '/images/hungyen/hungyen_chua_keo.jpg'
   },
@@ -178,7 +178,7 @@ const HERITAGE_DESTINATIONS = [
     index: '05',
     title: 'Làng nghề hương xạ Thôn Cao',
     typeLabel: 'Làng nghề Thảo mộc truyền thống',
-    location: 'Huyện Ân Thi',
+    location: 'Xã Bảo Khê, TP. Hưng Yên',
     desc: 'Làng nghề làm hương nức tiếng với công thức 36 vị thảo mộc thiên nhiên cổ truyền, tạo nên mùi thơm thanh khiết, tao nhã lan tỏa khắp các nếp nhà và đình chùa Việt.',
     img: '/images/hungyen/hungyen_lang_huong.jpg'
   },
@@ -187,7 +187,7 @@ const HERITAGE_DESTINATIONS = [
     index: '06',
     title: 'Đền Đa Hòa — Huyền tích Chử Đồng Tử Tiên Dung',
     typeLabel: 'Di tích Lịch sử & Tâm linh',
-    location: 'Huyện Khoái Châu',
+    location: 'Xã Bình Minh, Khoái Châu',
     desc: 'Ngôi đền cổ tuyệt mỹ soi bóng sông Hồng, tôn vinh Đức thánh Chử Đồng Tử — một trong Tứ bất tử của tín ngưỡng dân gian Việt Nam, biểu tượng của tình yêu bất diệt và khát vọng khai mở giao thương.',
     img: '/images/hungyen/hungyen_den_da_hoa.jpg'
   }
@@ -208,7 +208,7 @@ const LOCAL_PRODUCTS = [
     id: 'prod-ga-dong-tao',
     name: 'Gà Đông Tảo thuần chủng',
     producer: 'Hội Chăn nuôi Gà Đông Tảo',
-    location: 'Huyện Khoái Châu',
+    location: 'Xã Đông Tảo, Khoái Châu',
     cert: 'Đặc sản Tiến Vua • Nguồn gen quý',
     desc: 'Đôi chân to vảy rồng đặc trưng, nuôi thả tự nhiên bằng ngô thóc, thịt chắc ngọt đậm đà danh bất hư truyền.',
     img: '/images/hungyen/hungyen_ga_dong_tao.jpg'
@@ -235,7 +235,7 @@ const LOCAL_PRODUCTS = [
     id: 'prod-do-tre-thu-sy',
     name: 'Đó tre mỹ nghệ Thủ Sỹ',
     producer: 'Làng nghề Thủ Sỹ',
-    location: 'Huyện Tiên Lữ',
+    location: 'Xã Thủ Sỹ, TP. Hưng Yên',
     cert: 'OCOP 3 Sao • Thủ công mỹ nghệ',
     desc: 'Những chiếc đó tre tinh xảo đan thủ công từ nan nứa già, vừa là ngư cụ truyền thống vừa là sản phẩm trang trí nghệ thuật.',
     img: '/images/hungyen/hungyen_lang_dan_do.jpg'
@@ -244,7 +244,7 @@ const LOCAL_PRODUCTS = [
     id: 'prod-bonsai-vangiang',
     name: 'Hoa kiểng & Bonsai Văn Giang',
     producer: 'Làng hoa Xuân Quan - Phụng Công',
-    location: 'Huyện Văn Giang',
+    location: 'Xuân Quan, Văn Giang',
     cert: 'Nông nghiệp Sinh thái Đô thị',
     desc: 'Nghệ thuật tạo tác cây cảnh thế và hoa rực rỡ cung ứng cho không gian sống sinh thái và các lễ hội lớn.',
     img: '/images/hungyen/hungyen_lang_huong.jpg'
@@ -765,15 +765,6 @@ export const Home = () => {
                   </div>
                   <h3 className="hy-heritage-display-title">{selectedHeritage.title}</h3>
                   <p className="hy-heritage-display-desc">{selectedHeritage.desc}</p>
-                  <div className="hy-heritage-display-footer">
-                    <Link
-                      to={`/posts?search=${encodeURIComponent(selectedHeritage.title.split('—')[0].trim())}`}
-                      className="hy-link-arrow"
-                    >
-                      <span>Xem bài viết về địa danh này</span>
-                      <i className="ti ti-arrow-right" />
-                    </Link>
-                  </div>
                 </div>
               </div>
             </div>
