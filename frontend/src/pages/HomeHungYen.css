@@ -1927,7 +1927,7 @@
   background: linear-gradient(150deg, #071E22 0%, #0C2A2F 40%, #06181C 100%);
   position: relative;
   overflow: hidden;
-  padding: 85px 20px 90px;
+  padding: 55px 20px 60px;
 }
 
 .hy-ai-showcase-section::before {
@@ -1945,7 +1945,7 @@
 .hy-ai-section-header {
   text-align: center;
   max-width: 860px;
-  margin: 0 auto 48px;
+  margin: 0 auto 34px;
   position: relative;
   z-index: 2;
 }
@@ -1994,18 +1994,23 @@
   margin: 0 auto;
 }
 
-/* AI Showcase Single Slide Carousel */
+/* AI Showcase Single Slide Carousel với 2 mũi tên đặt 2 bên */
 .hy-ai-slider-container {
-  max-width: 680px;
-  margin: 0 auto 46px;
+  max-width: 780px;
+  margin: 0 auto;
   position: relative;
   z-index: 2;
-  padding: 0 12px;
+  padding: 0 16px;
   box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
 }
 
 .hy-ai-slider-viewport {
-  width: 100%;
+  flex: 1;
+  max-width: 640px;
   overflow: hidden;
   border-radius: 18px;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
@@ -2198,120 +2203,56 @@
   transform: translateX(3px);
 }
 
-.hy-ai-slider-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 16px;
-  margin-top: 24px;
-}
-
+/* Hai mũi tên điều hướng ở 2 bên bài viết */
 .hy-ai-nav-arrow {
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.25);
+  border: 1.5px solid rgba(255, 255, 255, 0.28);
   color: #FFFFFF;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.15rem;
+  font-size: 1.35rem;
   cursor: pointer;
   transition: all 0.25s ease;
   backdrop-filter: blur(8px);
+  flex-shrink: 0;
 }
 
 .hy-ai-nav-arrow:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: scale(1.08);
+  background: rgba(214, 168, 70, 0.25);
+  border-color: #F3C562;
+  color: #F3C562;
+  transform: scale(1.12);
+  box-shadow: 0 0 18px rgba(243, 197, 98, 0.35);
 }
 
-.hy-ai-slider-indicators {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.hy-ai-indicator {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.3);
-  border: none;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  padding: 0;
-}
-
-.hy-ai-indicator.active {
-  background: #D6A846;
-  width: 28px;
-  border-radius: 8px;
-}
-
-/* Bottom Actions */
-.hy-ai-actions {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 18px;
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 2;
-}
-
-.btn-hy-ai-category {
-  background: linear-gradient(135deg, #0284C7 0%, #0369A1 100%);
-  color: #FFFFFF !important;
-  padding: 13px 26px;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  text-decoration: none;
-  box-shadow: 0 8px 24px rgba(2, 132, 199, 0.35);
-  transition: all 0.2s ease;
-}
-
-.btn-hy-ai-category:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 12px 28px rgba(2, 132, 199, 0.55);
-}
-
-.btn-hy-ai-chat {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1.5px solid rgba(255, 255, 255, 0.25);
-  color: #FFFFFF !important;
-  padding: 13px 26px;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 0.95rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  text-decoration: none;
-  backdrop-filter: blur(8px);
-  transition: all 0.2s ease;
-}
-
-.btn-hy-ai-chat:hover {
-  background: rgba(255, 255, 255, 0.18);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
-}
-
-@media (max-width: 680px) {
-  .hy-ai-actions {
-    flex-direction: column;
-    width: 100%;
+@media (max-width: 720px) {
+  .hy-ai-slider-container {
+    padding: 0 10px;
+    gap: 0;
   }
-  .btn-hy-ai-category,
-  .btn-hy-ai-chat {
-    width: 100%;
-    justify-content: center;
+
+  .hy-ai-nav-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    font-size: 1.15rem;
+    background: rgba(7, 30, 34, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+  }
+
+  .hy-ai-arrow-prev {
+    left: 18px;
+  }
+
+  .hy-ai-arrow-next {
+    right: 18px;
   }
 }
 

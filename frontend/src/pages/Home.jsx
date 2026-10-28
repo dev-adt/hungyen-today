@@ -942,6 +942,16 @@ export const Home = () => {
                   onMouseEnter={() => setIsAiSlideHovered(true)}
                   onMouseLeave={() => setIsAiSlideHovered(false)}
                 >
+                  {/* Mũi tên chuyển bài trước (bên trái) */}
+                  <button
+                    type="button"
+                    className="hy-ai-nav-arrow hy-ai-arrow-prev"
+                    onClick={() => setAiSlideIndex(prev => (prev - 1 + 3) % 3)}
+                    aria-label="Bài viết trước"
+                  >
+                    <i className="ti ti-chevron-left" />
+                  </button>
+
                   <div className="hy-ai-slider-viewport">
                     <div 
                       className="hy-ai-slider-track"
@@ -993,54 +1003,18 @@ export const Home = () => {
                     </div>
                   </div>
 
-                  {/* Navigation Arrows & Indicators */}
-                  <div className="hy-ai-slider-nav">
-                    <button
-                      type="button"
-                      className="hy-ai-nav-arrow"
-                      onClick={() => setAiSlideIndex(prev => (prev - 1 + 3) % 3)}
-                      aria-label="Bài viết trước"
-                    >
-                      <i className="ti ti-chevron-left" />
-                    </button>
-                    <div className="hy-ai-slider-indicators">
-                      {[0, 1, 2].map((idx) => (
-                        <button
-                          key={idx}
-                          type="button"
-                          className={`hy-ai-indicator ${aiSlideIndex === idx ? 'active' : ''}`}
-                          onClick={() => setAiSlideIndex(idx)}
-                          aria-label={`Chuyển đến bài ${idx + 1}`}
-                        />
-                      ))}
-                    </div>
-                    <button
-                      type="button"
-                      className="hy-ai-nav-arrow"
-                      onClick={() => setAiSlideIndex(prev => (prev + 1) % 3)}
-                      aria-label="Bài viết tiếp theo"
-                    >
-                      <i className="ti ti-chevron-right" />
-                    </button>
-                  </div>
+                  {/* Mũi tên chuyển bài tiếp theo (bên phải) */}
+                  <button
+                    type="button"
+                    className="hy-ai-nav-arrow hy-ai-arrow-next"
+                    onClick={() => setAiSlideIndex(prev => (prev + 1) % 3)}
+                    aria-label="Bài viết tiếp theo"
+                  >
+                    <i className="ti ti-chevron-right" />
+                  </button>
                 </div>
               );
             })()}
-
-            {/* Bottom Actions */}
-            <div className="hy-ai-actions">
-              <Link
-                to="/posts?category=Doanh%20nghi%E1%BB%87p%20%26%20S%E1%BA%A3n%20ph%E1%BA%A9m&sub_category=Showroom%20s%E1%BB%91"
-                className="btn-hy-ai-category"
-              >
-                <i className="ti ti-layout-grid" />
-                <span>{currentLang === 'en' ? 'View all AI Category Articles' : 'Xem toàn bộ bài viết chuyên mục AI'}</span>
-              </Link>
-              <Link to="/ai-chat" className="btn-hy-ai-chat">
-                <i className="ti ti-messages" />
-                <span>{currentLang === 'en' ? 'Chat with AI Assistant' : 'Trò chuyện cùng Trợ lý AI'}</span>
-              </Link>
-            </div>
           </div>
         </section>
 
